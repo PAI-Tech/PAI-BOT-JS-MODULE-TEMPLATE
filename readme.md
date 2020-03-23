@@ -21,7 +21,7 @@
 
 + Documentation is available at [PAI-TECH Knowledge-base](https://blog.pai-tech.org/knowledge-base).
 + Ask for help on the
-[Email](community@pai-tech.org).
+[Email](mailto:community@pai-tech.org).
 
 
 
