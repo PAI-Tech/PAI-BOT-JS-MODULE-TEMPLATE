@@ -1,6 +1,6 @@
-# PAI-BOT Base module
+# PAI-BOT-JS Module Template
 
- > Description     : use this project as a bse project to write your own module
+ > Description     : use this project as a base project to write your own pai-bot module
 
  > Author          : Ron Fridman
 
