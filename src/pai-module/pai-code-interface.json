@@ -1,0 +1,26 @@
+{
+  "pai-code-version":"1.0",
+  "pai-module-name":"pai-bot-js-module-template",
+  "pai-module-settings":[
+    "module-name"
+  ],
+  "pai-code-commands":[
+      {"command-name":"version", "js-function":"version"},
+      {"command-name":"release-notes", "js-function":"get_release_notes"},
+      {"command-name":"get-settings","js-function":"get_settings"},
+      {"command-name":"set-settings-param","js-function":"set_settings_param","params":[
+        {"name":"param-name", "label":"param-name", "description":"param name", "required":true},
+        {"name":"param-value", "label":"param-value", "description":"param value", "required":true}
+      ]}
+    ],
+  "pai-bot-web-interface": {
+    "static-web-folders": ["public", "packages"],
+    "web-services":[
+      {"service-name":"home","js-function":"get_home"}
+    ]
+  }
+}
+
+
+
+

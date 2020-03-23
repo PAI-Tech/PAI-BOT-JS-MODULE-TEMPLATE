@@ -1,0 +1,15 @@
+pcm-pai-bot-js-template-module
+-------------------------
+
+0.0.1:
+--------
+- new module :)
+
+
+
+
+
+
+
+
+
