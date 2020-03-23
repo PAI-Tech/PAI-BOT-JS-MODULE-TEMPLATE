@@ -15,8 +15,17 @@
  5. Write your module code in the `pcm-main.js` file (this is the entry point of the module)
  6. The file `PAI.JS` is used to run the module in development environment, use this file to test your module.
 
- for any questions please send email to community@pai-tech.org.
 
+
+## For more information
+
++ Documentation is available at [PAI-TECH Knowledge-base](https://blog.pai-tech.org/knowledge-base).
++ Ask for help on the
+[Email](community@pai-tech.org).
+
+
+
+## License
 
 PAI-BOT-JS Module Template is copyright (c) 2018-present PAI-TECH ARTIFICIAL INTELLIGENCE  <contact@pai-tech.org>.
 
