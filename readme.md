@@ -1,17 +1,5 @@
 # PAI-BOT-JS Module Template
 
- > Description     : use this project as a base project to write your own pai-bot module
-
- > Author          : Ron Fridman
-
- > Date Created    : 19/11/2018
-
- > Copyright **PAI-TECH** 2018, all right reserved
-
- *      This program is free software; you can redistribute it and/or
- 		modify it under the terms of the GNU General Public License
- 		as published by the Free Software Foundation; either version
- 		3 of the License, or (at your option) any later version.
 
  # Description
 
@@ -29,4 +17,8 @@
 
  for any questions please send email to community@pai-tech.org.
 
- Enjoy :)
+
+PAI-BOT-JS Module Template is copyright (c) 2018-present PAI-TECH ARTIFICIAL INTELLIGENCE  <contact@pai-tech.org>.
+
+PAI-BOT-JS Module Template is free software, licensed under the GNU General Public License, Version 3.0. See the
+`LICENSE` file for more details.
