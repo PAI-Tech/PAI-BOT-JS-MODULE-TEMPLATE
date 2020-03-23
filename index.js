@@ -1,6 +1,4 @@
 
-
-
 /*
  Export module to the bot engine
  Author       : Tamir Fridman

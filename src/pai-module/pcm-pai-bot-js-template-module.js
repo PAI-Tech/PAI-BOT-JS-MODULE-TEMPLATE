@@ -1,5 +1,5 @@
 /**
- * <pai-module-builder>
+ * <pai-bot-js-module-template>
  * Author       : Tamir Fridman
  * Date Created : 9/25/2019
  * Copyright PAI-TECH 2018, all right reserved

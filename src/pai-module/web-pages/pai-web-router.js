@@ -1,4 +1,17 @@
-//    pai-web-router
+
+/*
+
+ PAI-WEB-ROUTER  enables http endpoints
+
+ Author       : Tamir Fridman
+ Date Created : 9/25/2019
+ Copyright PAI-TECH 2018, all right reserved
+
+ *      This program is free software; you can redistribute it and/or
+ *		modify it under the terms of the GNU General Public License
+ *		as published by the Free Software Foundation; either version
+ *		3 of the License, or (at your option) any later version.
+  */
 
 
 
@@ -73,10 +86,6 @@ class PAI_WEB_ROUTER
             title:"Bot Operating System Standard | PAI-TECH",
             buttons: [
                 this.get_header_button("home","Home","public/images/icons/home.png",(selected == "home") ? "selected" : "ok",'pai_go_home()',animation),
-                this.get_header_button("me","My Profile","public/images/icons/me.png",(selected == "me") ? "selected" : "ok",'pai_me()',animation),
-                this.get_header_button("calendar","Scouting Tracking","public/images/icons/calendar.png",(selected == "scouting") ? "selected" : "ok" /*"na"*/,'scouting_tracking()',animation),
-                this.get_header_button("inbox","Inbox","public/images/icons/inbox.png","na",'void',animation),
-                this.get_header_button("notifications","Notifications","public/images/icons/notification.png","na",'void',animation),
                 this.get_header_button("log_out","Logout","public/images/icons/logout.png","ok",'pai_logout()',animation),
             ]
         };

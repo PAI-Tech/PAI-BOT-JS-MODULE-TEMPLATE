@@ -2,7 +2,8 @@
 /*
  Module test page
 
- Export module to the bot engine
+ Export module to the bot engine for debugging purposes
+
  Author       : Tamir Fridman
  Date Created : 9/25/2019
  Copyright PAI-TECH 2018, all right reserved

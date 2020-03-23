@@ -1,6 +1,6 @@
 # PAI-BOT Base module
 
- > Description     : use this project to write your own module
+ > Description     : use this project as a bse project to write your own module
 
  > Author          : Ron Fridman
 

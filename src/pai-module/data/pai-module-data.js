@@ -1,5 +1,5 @@
 /*
- PAI Data Object
+ PAI Module settings & parameters
  Author       : Tamir Fridman
  Date Created : 28/11/2018
  Copyright PAI-TECH 2018, all right reserved
