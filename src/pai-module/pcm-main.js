@@ -24,7 +24,7 @@ const pai_code_interface = require("./pai-code-interface");
 const pai_web_router = require("./web-pages/pai-web-router");
 
 
-class PCM_PAI_BOT_JS_MODULE_TEMPLATE extends PAICodeModule
+class PCM_MAIN extends PAICodeModule
 {
     constructor() {
 
@@ -117,9 +117,17 @@ class PCM_PAI_BOT_JS_MODULE_TEMPLATE extends PAICodeModule
 
 
 	}
-    
-    
+
+
+    /**
+     * @deprecated since pai-bot version 2.0 user get_module_name() instead
+     */
     setModuleName()
+    {
+        return pai_code_interface["pai-module-name"];
+    }
+
+    get_module_name()
     {
         return pai_code_interface["pai-module-name"];
     }
@@ -146,7 +154,7 @@ class PCM_PAI_BOT_JS_MODULE_TEMPLATE extends PAICodeModule
     get_release_notes(cmd)
     {
         let pai_release_notes = fs.readFileSync(path.resolve(__dirname,"release-notes.txt"), 'utf8');
-        return pai_release_notes;
+        return  this.get_module_name() + ":\n--------------\n" + pai_release_notes;
     }
 
 
@@ -193,4 +201,4 @@ class PCM_PAI_BOT_JS_MODULE_TEMPLATE extends PAICodeModule
     }
 }
 
-module.exports = PCM_PAI_BOT_JS_MODULE_TEMPLATE;
+module.exports = PCM_MAIN;

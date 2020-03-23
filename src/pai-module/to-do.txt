@@ -1,5 +1,2 @@
-
-pcm-pai-bot-js-template-module
-
-to-do list
+module to-do list
 ------------------------------

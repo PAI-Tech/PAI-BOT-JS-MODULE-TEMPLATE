@@ -11,7 +11,7 @@
  *		3 of the License, or (at your option) any later version.
   */
 
-const Module = require('./src/pai-module/pcm-pai-bot-js-template-module');
+const Module = require('./src/pai-module/pcm-main');
 
 module.exports = {
     Module
