@@ -6,10 +6,6 @@
      Copyright PAI-TECH 2018, all right reserved
  */
 
-//const PAI_STARTUP_BOT_URL = "https://tf-su.pai-net.org";
-//const THE_FLOOR_BOT_URL = "https://tf-crm.pai-net.org";
-//const PAI_BANK_BOT_URL = "https://tf-bk.pai-net.org";
-//const PAI_INBOX_BOT_URL = "https://tf-bk.pai-net.org:4431";
 
 var pai_desktop_version = "1.0.0";
 

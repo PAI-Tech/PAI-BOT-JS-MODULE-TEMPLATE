@@ -47,14 +47,7 @@ class PAI_HOME_PAGE
     get_html(data)
     {
 
-        let ztag = ` <div>PAI MODULE BUILDER - Please fill</div><hr/>
-        <form name="frm-new-module" action="create" method="post">
-                    <div>Module Name</div><div><input type="text" name="pai-module-name" value="my-module"/></div>
-                    <div>Author</div><div><input type="text" name="pai-module-author" value="Tamir Fridman"/></div>
-                    <div>Company</div><div><input type="text" name="pai-module-company-name" value="PAI-TECH"/></div>
-                    <div>Description</div><div><input type="text" name="pai-module-desc" value="my first module"/></div>
-                    <div><input type="submit" value="create"/></div>
-</form>`;
+        let ztag = ` <div class="bounce-in-top">This is a new module</div><hr/>`;
         return ztag;
     }
 

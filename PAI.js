@@ -26,9 +26,11 @@ async function start(){
         await PAICode.modules["pai-bot"].applyBotDataSource(module);
     
     await module.registerModule(); // register the module to PAICode
-    
-    let context = new PAICodeCommandContext('host','HardCoded');
-    let response = await PAICode.executeString(`pai-bot-js-module-template version`,context);
+    let context = new PAICodeCommandContext('host','HardCoded')
+
+    let pai_code = `pai-bot-js-module-template release-notes`;
+
+    let response = await PAICode.executeString(pai_code,context);
     
     let toPrint = JSON.stringify(response[0].response.data);
     PAILogger.info(toPrint);

@@ -104,19 +104,14 @@ class PAI_WEB_ROUTER
             content: {
                 "pai-desktop": {
                     "pai-page-header" :  this.get_page_header("fade-in","home"),
-                    "pai-video-player": {
-                        id: "preview-player",
-                        style: "display:block;position:absolute;top:10%;left:10%;width:80%;height:80%",
-                        "video-fill": "fill"
-                    },
                     "pai-page": {
                     }
                 }
             }
 
         };
-        //console.log(JSON.stringify(page_data));
         res.send(this.web_builder.get_page(page_data));
+
     }
 
 

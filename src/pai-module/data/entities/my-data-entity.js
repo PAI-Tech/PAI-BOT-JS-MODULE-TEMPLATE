@@ -20,7 +20,7 @@ const schema = {
     /**
      * Name of the entity, this field must be unique
      */
-    name: "my-data-entity",
+    name: "entity-1",
 
     /**
      * Array of fields - for more info check out: field-json-schema.js
@@ -30,7 +30,13 @@ const schema = {
             name: "entity-name",
             type: "string",
             required: true
+        },
+        {
+            name: "entity-creator",
+            type: "string",
+            required: true
         }
+
 
 
         /**
