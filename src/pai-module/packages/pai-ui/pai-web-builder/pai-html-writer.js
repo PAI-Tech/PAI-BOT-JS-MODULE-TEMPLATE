@@ -24,7 +24,6 @@ class PAI_HTML_WRITER {
     static get_html_header(metadata, includes) {
         let head_out = `<head><title>${metadata["page-title"]}</title>
         <script src="public/js/jquery-2.0.0.js"></script>
-        <script src="public/js/notify.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://kit.fontawesome.com/28c96941e4.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -41,7 +40,7 @@ class PAI_HTML_WRITER {
 		<meta content="${this.web_site_url}" property="og:site_name">
 		<meta content="${metadata["page-title"]}" property="og:title">
 		<meta content="${metadata.icon}" property="og:image">
-		<meta content="${metadata.description}"" property="og:description">
+		<meta content="${metadata.description}" property="og:description">
 		
 		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
 		

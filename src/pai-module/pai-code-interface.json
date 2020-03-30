@@ -1,6 +1,7 @@
 {
   "pai-code-version":"1.0",
   "pai-module-name":"pai-bot-js-module-template",
+  "pai-module-desc":"PAI Bot JS Module Template",
   "pai-module-settings":[
     "module-name"
   ],
