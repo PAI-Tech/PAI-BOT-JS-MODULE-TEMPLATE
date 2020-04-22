@@ -19,7 +19,7 @@ const PAIUIBasePackage  = require('../pai-ui-base-package');
 
 const pai_html_writer = require("../pai-web-builder/pai-html-writer");
 
-const pai_module_data = require("../../../data/pai-module-data").get_instance;
+const pai_module_settings = require("@pai-tech/pai-code").PAIModuleSettings.get_instance;
 
 class PAIDesktop extends PAIUIBasePackage {
 
@@ -36,6 +36,7 @@ class PAIDesktop extends PAIUIBasePackage {
             {"file-name": "pai-net-connector.js", "type": "script"},
             {"file-name": "pai-ldb.js", "type": "script"},
             {"file-name": "pai-cdn.js", "type": "script"},
+            {"file-name": "pai-uic.js", "type": "script"},
         ];
 
     }
@@ -48,7 +49,7 @@ class PAIDesktop extends PAIUIBasePackage {
         html_out.start_html += ztag.start_tag;
         html_out.end_html = ztag.end_tag + html_out.end_html;
 
-        let i_data_id = JSON.stringify(pai_module_data.module_data);
+        let i_data_id = JSON.stringify(pai_module_settings.module_data);
 
         let jsf = "pai_desktop_set_params(`" + i_data_id + "`);";
 

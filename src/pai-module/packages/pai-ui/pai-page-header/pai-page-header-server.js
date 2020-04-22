@@ -63,14 +63,18 @@ class PaiPageHeaderServer extends PAIUIBasePackage {
 
         if(data.hasOwnProperty("buttons"))
         {
-            for(let button in data.buttons)
-            {
-                let var_id = "sig_name_" + pai_guid_under();
-                let b1_data = JSON.stringify(data.buttons[button]);
-                let jsf1 = `let ` + var_id +  `= '` + b1_data + `';pph.add_button(` + var_id +  `);`;
-                html_out.main_func_js.push(jsf1);
-            }
+            let var_id = "sig_name_" + pai_guid_under();
+            let b1_data = JSON.stringify(data.buttons);
+            let jsf1 = `let ` + var_id +  `= '` + b1_data + `';pph.add_buttons(` + var_id +  `);`;
+            html_out.main_func_js.push(jsf1);
+        }
 
+        if(data.hasOwnProperty("menu"))
+        {
+            let var_id = "sig_name_" + pai_guid_under();
+            let b1_data = JSON.stringify(data.menu);
+            let jsf1 = `let ` + var_id +  `= '` + b1_data + `';pph.add_menu(` + var_id +  `);`;
+            html_out.main_func_js.push(jsf1);
         }
 
     }

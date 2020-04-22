@@ -44,11 +44,13 @@ class PAI_HOME_PAGE
 
 
 
-    get_html(data)
+    get_html(pc_data)
     {
 
-        let ztag = ` <div class="bounce-in-top">This is a new module</div><hr/>`;
-        return ztag;
+        let html_out = `<div class="container" id="pai-page-container">`;
+        Object.keys(pc_data).forEach(key => {html_out += pai_ui.get_pai_ui_object(pc_data[key]["pai-ui-object"],pc_data[key])});
+        html_out += `</div>`;
+        return html_out;
     }
 
 }

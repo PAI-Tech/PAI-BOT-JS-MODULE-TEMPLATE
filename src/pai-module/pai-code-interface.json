@@ -1,19 +1,31 @@
 {
-  "pai-code-version":"1.0",
+  "pai-code-version":"2.0",
   "pai-module-name":"pai-bot-js-module-template",
   "pai-module-desc":"PAI Bot JS Module Template",
   "pai-module-settings":[
-    "module-name"
+    "module-name","test"
   ],
   "pai-code-commands":[
       {"command-name":"version", "js-function":"version"},
-      {"command-name":"release-notes", "js-function":"get_release_notes"},
-      {"command-name":"get-settings","js-function":"get_settings"},
-      {"command-name":"set-settings-param","js-function":"set_settings_param","params":[
-        {"name":"param-name", "label":"param-name", "description":"param name", "required":true},
-        {"name":"param-value", "label":"param-value", "description":"param value", "required":true}
-      ]}
+      {"command-name":"release-notes", "js-function":"get_release_notes"}
     ],
+  "pai-entities" : {
+    "include" : [
+      "./src/pai-module/data/entities/sample-entity.json"
+    ],
+    "define" : [{
+      "name": "pai-sample-entity",
+      "fields": [
+        {"name": "test-name","type": "string", "required": true},
+        {"name": "writer","type": "string", "required": true}
+      ]
+    }]
+  }
+  ,
+  "pai-ddb" : {
+    "db-name" : "pai-module-db",
+    "data-security" : "plain-text"
+  },
   "pai-bot-web-interface": {
     "static-web-folders": ["public", "packages"],
     "web-services":[

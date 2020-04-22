@@ -15,33 +15,34 @@
   */
 
 
-const { PAICodeCommand,PAILogger, PAICodeCommandContext, PAICodeModule, PAICode } = require('@pai-tech/pai-code');
+
+const {PAILogger, PAICode } = require('@pai-tech/pai-code');
 const { Module } = require('./index');
 
+
+
 async function start(){
-    
+
     let module = new Module();
-    
+
     if(PAICode.modules["pai-bot"])
         await PAICode.modules["pai-bot"].applyBotDataSource(module);
-    
+
+
     await module.registerModule(); // register the module to PAICode
-    let context = new PAICodeCommandContext('host','HardCoded')
 
-    let pai_code = `pai-bot-js-module-template release-notes`;
+    let pai_code_module_name = require("./src/pai-module/pai-code-interface")["pai-module-name"];
 
-    let response = await PAICode.executeString(pai_code,context);
-    
-    let toPrint = JSON.stringify(response[0].response.data);
-    PAILogger.info(toPrint);
-    
+    let pai_code_command_version = pai_code_module_name + " version";
+    PAILogger.info(await PAICode.run(pai_code_command_version));
+
+
     PAICode.start();
 }
 
 start().then().catch(e => {
-    console.log(e)
+    console.log("Error " + e);
 });
-
 
 
 
