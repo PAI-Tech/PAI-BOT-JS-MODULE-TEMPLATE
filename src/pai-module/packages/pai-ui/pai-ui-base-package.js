@@ -55,7 +55,6 @@ class PAIUIBasePackage {
             }
         }
         return res;
-
     }
 
 }

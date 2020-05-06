@@ -4,8 +4,7 @@
   "import": [
     "pai-desktop",
     "pai-page-header",
-    "pai-page",
-    "pai-video-player"
+    "pai-page"
   ],
   "metadata": {
     "page-title": "PAI-BOT-MODULE",

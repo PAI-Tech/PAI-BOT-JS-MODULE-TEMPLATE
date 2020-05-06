@@ -55,7 +55,6 @@ class PAI_WEB_ROUTER
     {
         let pai_page_data = require("./home-page.json");
         res.send(this.web_builder.get_page(pai_page_data));
-
     }
 
 

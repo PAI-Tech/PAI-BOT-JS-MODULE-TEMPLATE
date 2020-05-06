@@ -23,6 +23,7 @@ const pai_module_settings = require("@pai-tech/pai-code").PAIModuleSettings.get_
 const pai_code_interface = require("./pai-code-interface");
 const pai_web_router = require("./web-pages/pai-web-router");
 const pai_ddb = require("@pai-tech/pai-ddb").get_instance;
+const pai_web_server = require("./web-pages/pai-web-server");
 
 class PCM_MAIN extends PAICodeModule
 {
@@ -41,6 +42,7 @@ class PCM_MAIN extends PAICodeModule
         //this.web_static_folders = {};
         //this.web_services = {};
         this.pai_web_router = new pai_web_router();
+        this.pai_web_server = null;
     }
     
     
@@ -71,10 +73,18 @@ class PCM_MAIN extends PAICodeModule
             pai_ddb.init(pai_ddb_folder);
         }
 
+        if(pai_code_interface.hasOwnProperty("pai-web-server")) {
+
+            this.pai_web_server = new pai_web_server(pai_code_interface["pai-web-server"].config);
+            this.pai_web_server.start();
+        }
+
 
         /**
          * add any load processes you want
          */
+
+
 	}
 
 

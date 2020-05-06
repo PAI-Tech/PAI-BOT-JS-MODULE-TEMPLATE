@@ -31,6 +31,26 @@
     "web-services":[
       {"service-name":"home","js-function":"get_home"}
     ]
+  },
+  "pai-web-server": {
+    "config": {
+      "http": {
+        "port" : 80
+      },
+      "https":{
+        "port" : 443,
+        "ssl-files" : [],
+        "force-https" :false
+      },
+      "base-folder" : "$bot-folder/web/"
+    },
+    "static-web-folders": ["public", "packages"],
+    "web-services":[
+      {"service-name":"_home","js-function":"get_home"}
+    ],
+    "web-pages": [
+      {"page-name": "home","file" :"home-page.json"}
+    ]
   }
 }
 
