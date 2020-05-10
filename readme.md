@@ -9,6 +9,7 @@
  How to create a new pai-bot module from this project?
 
  1. Download the project (make sure you have pai-bot configured)
+ 1.1 If you clone from git please DELETE ".git" folder to enable changes.
  2. Change folder name to your-project-name
  3. Change `package.json` "name" field to your-project-name (this will be the npm package name)
  4. Edit `pai-code-interface.json` file and change the "module-name" field  to your-project-name (this will represent the module name for pai-code commands)

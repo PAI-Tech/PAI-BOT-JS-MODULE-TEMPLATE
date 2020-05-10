@@ -24,6 +24,7 @@ const pai_code_interface = require("./pai-code-interface");
 const pai_web_router = require("./web-pages/pai-web-router");
 const pai_ddb = require("@pai-tech/pai-ddb").get_instance;
 const pai_web_server = require("./web-pages/pai-web-server");
+const pai_entity_manager  = require("@pai-tech/pai-code").PAIEntityManager.get_instance;
 
 class PCM_MAIN extends PAICodeModule
 {
@@ -58,6 +59,7 @@ class PCM_MAIN extends PAICodeModule
         try{
             this.bot_folder = await PAICode.run("pai-bot get-bot-folder");
         } catch (exp) {}
+
         /**
          * init pai-ddb
          */
@@ -72,6 +74,10 @@ class PCM_MAIN extends PAICodeModule
             }
             pai_ddb.init(pai_ddb_folder);
         }
+
+        /**
+         * init pai-web-server
+         */
 
         if(pai_code_interface.hasOwnProperty("pai-web-server")) {
 
@@ -130,6 +136,30 @@ class PCM_MAIN extends PAICodeModule
     http_request(cmd) {
         return this.process_http_request(cmd,this.pai_web_router)
     }
+
+
+    async add_sample_entity(cmd)
+    {
+        let sample_entity = pai_entity_manager.get_empty_entity("sample-entity");
+        sample_entity["first-name"] = cmd.params["first-name"].value;
+        sample_entity["last-name"] = cmd.params["last-name"].value;
+        await pai_ddb.add_entity(sample_entity,false);
+        pai_ddb.commit();
+        let msg = "new sample entity created: ";
+        PAILogger.info(msg);
+        return msg;
+    }
+
+    async get_sample_entity(cmd)
+    {
+        let filter = JSON.parse(cmd.params["filter"].value);
+        let res = pai_ddb.find("sample-entity",filter);
+        let res_str = JSON.stringify(res);
+        PAILogger.info(res_str);
+        return res_str;
+    }
+
 }
+
 
 module.exports = PCM_MAIN;

@@ -23,7 +23,7 @@ class PAI_HTML_WRITER {
 
     static get_html_header(metadata, includes) {
         let head_out = `<head><title>${metadata["page-title"]}</title>
-        <script src="public/js/jquery-2.0.0.js"></script>
+        <script src="public/js/jquery-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://kit.fontawesome.com/28c96941e4.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

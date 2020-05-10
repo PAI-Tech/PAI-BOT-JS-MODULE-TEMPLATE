@@ -7,7 +7,18 @@
   ],
   "pai-code-commands":[
       {"command-name":"version", "js-function":"version"},
-      {"command-name":"release-notes", "js-function":"get_release_notes"}
+      {"command-name":"release-notes", "js-function":"get_release_notes"},
+      {"command-name":"add-sample-entity", "js-function":"add_sample_entity",
+        "params" : [
+          {"name":"first-name", "label":"first-name", "description":"first name", "required":true},
+          {"name":"last-name", "label":"last-name", "description":"last name", "required":true}
+        ]
+      },
+    {"command-name":"get-sample-entity", "js-function":"get_sample_entity",
+      "params" : [
+        {"name":"filter", "label":"filter", "description":"query filter", "required":false}
+      ]
+    }
     ],
   "pai-entities" : {
     "include" : [

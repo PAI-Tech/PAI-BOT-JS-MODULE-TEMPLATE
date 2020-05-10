@@ -1,7 +1,7 @@
 {
   "name": "sample-entity",
   "fields": [
-    {"name": "sample-entity","type": "string", "required": true},
-    {"name": "last-name","type": "string", "required": true}
+    {"name": "last-name","type": "string", "required": true},
+    {"name": "first-name","type": "string", "required": true}
   ]
 }
