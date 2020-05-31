@@ -5,9 +5,12 @@
   "pai-module-settings":[
     "module-name","test"
   ],
+  "required-modules":[
+  ],
   "pai-code-commands":[
       {"command-name":"version", "js-function":"version"},
       {"command-name":"release-notes", "js-function":"get_release_notes"},
+    {"command-name":"install_required_modules", "js-function":"install_required_modules"},
       {"command-name":"add-sample-entity", "js-function":"add_sample_entity",
         "params" : [
           {"name":"first-name", "label":"first-name", "description":"first name", "required":true},

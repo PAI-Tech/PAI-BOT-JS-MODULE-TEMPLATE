@@ -32,10 +32,10 @@ class PCM_MAIN extends PAICodeModule
 
         // Module description that will be shown on info command [your-module-name info]
         let infoText = pai_code_interface["pai-module-desc"];
-    
+
         super(infoText);
         this.bot_folder = null;
-    
+
         this.config.schema = [
             //PAIModuleConfigParam(label, description, paramName, defaultValue)
             // TODO: add configuration parameters
@@ -45,8 +45,8 @@ class PCM_MAIN extends PAICodeModule
         this.pai_web_router = new pai_web_router();
         this.pai_web_server = null;
     }
-    
-    
+
+
     /**
      * This method runs when the module is being loaded by the bot it load basic module commands from super
      *
@@ -157,6 +157,19 @@ class PCM_MAIN extends PAICodeModule
         let res_str = JSON.stringify(res);
         PAILogger.info(res_str);
         return res_str;
+    }
+    async install_required_modules(cmd) {
+        let context = cmd.context;
+        let required_modules = pai_code_interface["required-modules"];
+        try {
+            await Promise.all(required_modules.map(async (module) => {
+                await PAICode.executeString(`pai-bot learn module:"${module}"`, context);
+            }));
+            return 'All Modules Installed successfully';
+        } catch (e) {
+            console.log(e);
+            return e;
+        }
     }
 
 }
