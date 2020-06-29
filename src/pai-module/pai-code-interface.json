@@ -46,7 +46,7 @@
       {"service-name":"home","js-function":"get_home"}
     ]
   },
-  "pai-web-server": {
+  "#pai-web-server": {
     "config": {
       "http": {
         "port" : 80

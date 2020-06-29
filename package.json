@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bot": "node $NODE_DEBUG_OPTION node_modules/@pai-tech/pai-bot/PAI.js"
+    "bot": "node $NODE_DEBUG_OPTION node_modules/@pai-tech/pai-bot/PAI.js",
+    "bot-win": "node node_modules/@pai-tech/pai-bot/PAI.js"
   },
   "keywords": [
     "PAI-CODE",

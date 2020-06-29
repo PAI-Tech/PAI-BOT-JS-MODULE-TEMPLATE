@@ -5,14 +5,15 @@
      Copyright PAI-TECH 2020, all right reserved
  */
 
-const fresh_object_fields = ["type","id","name","style","css-class","html","text","title","src"];
+//const fresh_object_fields = ["name","css-class"];
 const html_fields_mapping = {
-    "id": "id", "name": "name", "css-class": "class","style":"style","src":"src"
+    "_id": "id", "name": "name", "css-class": "class","style":"style","src":"src"
 };
 
 const fresh_object_types = {
-    "view" : "div" , "label" : "label", "image":"img"
+    "view" : "div" , "label" : "label", "image":"img","video":"video"
 }
+
 
 
 
@@ -20,12 +21,13 @@ class fresh_object
 {
     constructor(data)
     {
-        fresh_object_fields.forEach(field => this[field] = null);
-        this.id = "pai-code-object-";
-        this["html-tag"] = "div";
-        this.type = "view"
-        this.html = "";
-        this.childs =[];
+       //fresh_object_fields.forEach(field => this[field] = null);
+        this._id = "pai-code-object-";
+        this._html_tag = "div";
+        this._type = "view";
+        this._jq_obj = null;
+        this._html = "";
+        this._childs =[];
         if(data)
         {
             this.parse(data);
@@ -35,12 +37,20 @@ class fresh_object
     parse(data)
     {
 
-        fresh_object_fields.forEach(field => {
+        // fresh_object_fields.forEach(field => {
+        //     if (data.hasOwnProperty(field)) {
+        //         this[field] = data[field];
+        //     }
+        // });
+
+        let cdata = Object.keys(data);
+        cdata.forEach(field => {
             if (data.hasOwnProperty(field)) {
                 this[field] = data[field];
             }
         });
-        this["html-tag"] = fresh_object_types[this.type];
+
+        this._html_tag = fresh_object_types[this._type];
     }
 
 
@@ -60,41 +70,76 @@ class fresh_object
 
     get_html()
     {
-        this.html = `<${this["html-tag"]} `;
-        let fields = Object.keys(html_fields_mapping);
+        this._html = `<${this._html_tag} `;
+
+        // let fields = Object.keys(html_fields_mapping);
+        //
+        // fields.forEach(field => {
+        //     if (this[field]) {
+        //         this._html += ` ${html_fields_mapping[field]}="${this[field]}"`
+        //     }
+        // });
+
+        let fields = Object.keys(this);
 
         fields.forEach(field => {
-            if (this[field]) {
-                this.html += ` ${html_fields_mapping[field]}="${this[field]}"`
+            if (this[field] && this.hasOwnProperty(field)) {
+                let f_out = field;
+                if(html_fields_mapping.hasOwnProperty(field))
+                {
+                    f_out = html_fields_mapping[field];
+                }
+                if(!f_out.startsWith("_")) {
+                    this._html += ` ${f_out}="${this[field]}"`;
+                }
             }
         });
 
-        if( (!this["text"] || this["text"].length == 0) && this.childs.length == 0)
+
+        if( (!this["text"] || this["text"].length == 0) && this._childs.length == 0)
         {
-            this.html += " />";
+            this._html += " />";
         }
         else
         {
-            this.html += ">";
+            this._html += ">";
             if(this["text"] && this["text"].length > 0)
             {
-                this.html += this["text"];
+                this._html += this["text"];
             }
-            if(this.childs.length>0)
+            if(this._childs.length>0)
             {
-                this.childs.forEach( child => {
-                    this.html += child.get_html();
+                this._childs.forEach( child => {
+                    this._html += child.get_html();
                 })
             }
-            this.html += `</${this["html-tag"]}>`;
+            this._html += `</${this._html_tag}>`;
         }
-        return this.html;
+        return this._html;
+    }
+
+    get jquery_object()
+    {
+        if(!this._jq_obj)
+        {
+            this._jq_obj =$("#" + this._id);
+        }
+        return this._jq_obj;
+    }
+
+    get dom_element()
+    {
+        return document.getElementById(this._id);
     }
 
     append(fresh_obj) {
-        this.childs.push(fresh_obj);
-        $("#" + this.id).append(fresh_obj.get_html());
+        this._childs.push(fresh_obj);
+        if(this._html) {
+            this.jquery_object.append(fresh_obj.get_html());
+        }
     }
+
+
 
 }
 

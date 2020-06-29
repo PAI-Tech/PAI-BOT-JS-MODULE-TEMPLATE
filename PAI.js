@@ -36,7 +36,6 @@ async function start(){
     let pai_code_command_version = pai_code_module_name + " version";
     PAILogger.info(await PAICode.run(pai_code_command_version));
 
-
     PAICode.start();
 }
 

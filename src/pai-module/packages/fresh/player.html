@@ -10,32 +10,117 @@
 
     </style>
 </head>
-<body style="margin: 0;padding: 0;">
+<body style="margin: 0;padding: 0;background-color: #4f4f4f">
 
 </body>
 <script language="JavaScript">
 
-    let fo_data = {
-        id: "pai-desktop",
+    let pai_desktop_data = {
+        _id: "pai-desktop",
         name: "pai-desktop",
-        style: "position:absolute;left:0;top:0;width:100%;height:100%"
+        style: "position:absolute;left:0;top:0;width:100%;height:100%;background-color:black"
     };
-    let foo_data = {
-        type : "image",
-        id: "pai-nav-bar",
-        name: "pai-nav-bar",
-        "text": "my-data",
+    let pai_bot_data = {
+        _type : "image",
+        _id: "pai-bot",
+        name: "pai-bot",
         "src":"../../public/images/pai/pai-bot.png",
-        style: "color:red"
+        style: "background-color:red;position:absolute;right:10%;bottom:10%;width:80px;border-radius:0%"
     };
-    let fo = new fresh_object(fo_data);
-    let foo = new fresh_object(foo_data);
-    fo.append(foo);
+
+    let bot_console_output_data = {
+        _type : "view",
+        _id: "pai-bot-console",
+        name: "pai-bot-console",
+        text:"Hey :)",
+        style: "background-color:white;position:absolute;padding-left:10px;left:0;top:10%;width:40%;border-radius:0%"
+    };
 
 
+
+
+    let bg_video_data = {
+        _type : "video",
+        _id: "pai-video-player",
+        name:"pai-video-player",
+        "src":"https://pai-cdn.pai-net.org/pai-cdn/get-file?cdn-key=29ed8209-acf4-45d4-95a3-1067f3d07ea7",
+        text:"Hey :)",
+        "playsinline":true,
+        "autoplay":"true",
+        "muted":"true",
+        style: "position:absolute;padding0;left:0;top:0%;width:100%;height:100%;z-index:0"
+    };
+    // <video id='` + this.id +`' src="` + this.video_src + `" class="pai-video-player-video" playsinline="true" webkit-playsinline="true" ` + autoplay_txt + loop_txt + controls_txt + muted_txt  + ` style="object-fit:` + this.video_fill + `" type="application/x-mpegURL"></video>
+
+
+    let frame_window = {
+        _type : "view",
+        _id: "pai-video-frame",
+        name: "pai-video-frame",
+        text:"&nbsp;",
+        style: "background-color:white;position:absolute;left:20%;top:10%;width:640px;height:480px;"
+    };
+
+
+    let tool_box_data = {
+        _type : "view",
+        _id: "tool-box",
+        name: "tool-box",
+        style: "position:absolute;left:0;top:0;width:10%;height:100%;border-right:white solid 1px;display:flex;flex-direction:column"
+    }
+
+    let add_view_button_data = {
+        _type : "view",
+        _id: "add-view",
+        name: "add-view",
+        text:"View",
+        style: "background-color:white;margin:10% 0 0 10% ;width:80%;height:30px;",
+        onclick: "add_view();"
+    }
+
+
+    let pai_desktop = new fresh_object(pai_desktop_data);
+    let frame = new fresh_object(frame_window);
+    let tool_box = new fresh_object(tool_box_data);
+    let add_view_button = new fresh_object(add_view_button_data);
+    tool_box.append(add_view_button);
+    // let pai_bot = new fresh_object(pai_bot_data);
+    // let pai_bot_console = new fresh_object(bot_console_output_data);
+    // let pai_dektop_video_player = new fresh_object(bg_video_data);
+    // pai_desktop.append(pai_dektop_video_player);
+    // pai_desktop.append(pai_bot);
+
+    //pai_desktop.append(pai_bot_console);
+
+    pai_desktop.append(frame);
+    pai_desktop.append(tool_box);
     //fo.parse(fo_data);
     //fo.log();
-    $("body").append(fo.get_html());
+    $("body").append(pai_desktop.get_html());
+
+    //pai_dektop_video_player.dom_element.play();
+
+
+    jQuery( document ).ready(function($) {
+
+    });
+
+
+
+    function add_view()
+    {
+        let v= {
+        _type : "view",
+        _id: "my_new_view",
+        name: "my_new_view",
+        text:"View",
+        style: "background-color:white;width:100px;margin:10px 0 0 10px; height:100px;border:1px solid black"
+        }
+
+        let vo = new fresh_object(v);
+        frame.append(vo);
+    }
+
 
 </script>
 </html>
