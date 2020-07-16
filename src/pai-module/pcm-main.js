@@ -22,7 +22,7 @@ const fs = require('fs');
 const pai_module_settings = require("@pai-tech/pai-code").PAIModuleSettings.get_instance;
 const pai_code_interface = require("./pai-code-interface");
 const pai_web_router = require("./web-pages/pai-web-router");
-const pai_ddb = require("@pai-tech/pai-ddb").get_instance;
+const pai_ddb = require("@pai-tech/pai-ddb").get_db(pai_code_interface["pai-module-name"]);
 const pai_web_server = require("./web-pages/pai-web-server");
 const pai_entity_manager  = require("@pai-tech/pai-code").PAIEntityManager.get_instance;
 

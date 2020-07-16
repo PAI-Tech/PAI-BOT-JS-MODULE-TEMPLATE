@@ -44,7 +44,6 @@ class PAI_WEB_ROUTER
     {
 
         let path2 = path.resolve(__dirname,"../" + folder);
-
         res.sendFile(path2 + "/" + route);
     }
 

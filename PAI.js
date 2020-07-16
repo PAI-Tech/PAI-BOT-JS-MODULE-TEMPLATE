@@ -34,7 +34,8 @@ async function start(){
     let pai_code_module_name = require("./src/pai-module/pai-code-interface")["pai-module-name"];
 
     let pai_code_command_version = pai_code_module_name + " version";
-    PAILogger.info(await PAICode.run(pai_code_command_version));
+    let res = await PAICode.run(pai_code_command_version);
+    PAILogger.info(pai_code_module_name + " v:" + res);
 
     PAICode.start();
 }
