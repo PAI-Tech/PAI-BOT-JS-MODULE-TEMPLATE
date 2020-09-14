@@ -19,7 +19,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "@pai-tech/pai-bot": "^1.6.5"
+    "@pai-tech/pai-bot": "^1.6.8"
   },
   "PAI": {
     "includeFiles": [
