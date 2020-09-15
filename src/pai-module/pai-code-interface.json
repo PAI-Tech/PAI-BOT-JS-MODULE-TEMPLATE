@@ -43,7 +43,10 @@
   "pai-bot-web-interface": {
     "static-web-folders": ["public", "packages"],
     "web-services":[
-      {"service-name":"home","js-function":"get_home"}
+      {"service-name":"home","js-function":"get_home",
+        "method": "GET"
+      }
+
     ]
   },
   "#pai-web-server": {

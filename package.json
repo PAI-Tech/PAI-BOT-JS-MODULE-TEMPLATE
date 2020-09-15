@@ -14,7 +14,7 @@
   ],
   "license": "GPL-3.0",
   "dependencies": {
-    "@pai-tech/pai-code": "^1.1.95",
+    "@pai-tech/pai-code": "^1.1.96",
     "@pai-tech/pai-ddb": "^1.0.91",
     "express": "^4.17.1"
   },
