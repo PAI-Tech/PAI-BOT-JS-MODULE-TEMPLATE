@@ -13,17 +13,34 @@ spell_object_html_fields_mapping = {
 
 class SPELL_OBJECT
 {
+    static get_spell_uid()
+    {
+        let chars = '0123456789abcdef'.split('');
+        let uuid = [], rnd = Math.random, r;
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4'; // version 4
+        for (let i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | rnd() * 16;
+
+                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
+            }
+        }
+        return uuid.join('');
+    }
+
+
     constructor(data)
     {
 
-        this._id = "spell-object-";
+        let defeault_id_name = "spell-object-" + SPELL_OBJECT.get_spell_uid();
+        this._id = defeault_id_name;
+        this.name = defeault_id_name;
         this._html_tag = "div";
         this._type = "view";
         this._jq_obj = null;
         this._html = "";
         this._childs =[];
-
-
 
         if(data)
         {
@@ -34,20 +51,12 @@ class SPELL_OBJECT
     parse(data)
     {
 
-        // spell_object_fields.forEach(field => {
-        //     if (data.hasOwnProperty(field)) {
-        //         this[field] = data[field];
-        //     }
-        // });
-
         let cdata = Object.keys(data);
         cdata.forEach(field => {
             if (data.hasOwnProperty(field)) {
                 this[field] = data[field];
             }
         });
-
-        //this._html_tag = spell_object_types[this._type];
     }
 
 
@@ -69,13 +78,7 @@ class SPELL_OBJECT
     {
         this._html = `<${this._html_tag} `;
 
-        // let fields = Object.keys(spell_object_html_fields_mapping);
-        //
-        // fields.forEach(field => {
-        //     if (this[field]) {
-        //         this._html += ` ${spell_object_html_fields_mapping[field]}="${this[field]}"`
-        //     }
-        // });
+
 
         let fields = Object.keys(this);
 
@@ -140,10 +143,6 @@ class SPELL_OBJECT
     {
         this.jquery_object.css(attr,val);
     }
-
-
-
-
 }
 
 
@@ -154,8 +153,42 @@ class SPELL_VIEW extends SPELL_OBJECT
     }
 }
 
+
+
+class SPELL_TEXT_FIELD extends SPELL_OBJECT
+{
+    constructor(data) {
+        super(data);
+        this._html_tag = "input";
+        this._type = "text";
+    }
+
+    set_text(text)
+    {
+        this.text = text;
+        this.jquery_object.val(text);
+    }
+}
+
+
 class SPELL_LABEL extends SPELL_OBJECT
 {
+    static get  defaults()  {
+        let oid = "label-" + SPELL_OBJECT.get_spell_uid();
+        let def = {
+            _id: oid,
+            name: oid,
+            text: oid,
+            style: "color:black;margin:10% 0 0 10% ;width:80%;height:30px;",
+        }
+        return def;
+    }
+
+    constructor() {
+        super();
+        this.constructor(data)
+    }
+
     constructor(data) {
         super(data);
         this._html_tag = "label";
@@ -188,6 +221,26 @@ class SPELL_BUTTON extends SPELL_OBJECT
         this.onclick = fun;
     }
 }
+
+
+class SPELL_FORM_TEXT_FIELD extends SPELL_VIEW
+{
+    constructor(data) {
+        super(data);
+        this.label = new SPELL_LABEL(SPELL_LABEL.defaults);
+
+        this.append(this.label);
+
+    }
+
+    set_text(text)
+    {
+        this.text = text;
+        this.jquery_object.val(text);
+    }
+}
+
+
 
 
 class SPELL_WINDOW extends SPELL_VIEW

@@ -24,10 +24,10 @@
     }
     ],
   "pai-entities" : {
-    "include" : [
+    "#include" : [
       "./src/pai-module/data/entities/sample-entity.json"
     ],
-    "define" : [{
+    "#define" : [{
       "name": "pai-sample-entity",
       "fields": [
         {"name": "test-name","type": "string", "required": true},

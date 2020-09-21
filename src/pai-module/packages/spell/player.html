@@ -16,46 +16,30 @@
 </body>
 <script language="JavaScript">
 
+    function get_pai_guid()
+    {
+        let chars = '0123456789abcdef'.split('');
+        let uuid = [], rnd = Math.random, r;
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4'; // version 4
+        for (let i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | rnd() * 16;
+
+                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
+            }
+        }
+        return uuid.join('');
+    }
+
+
+
     let pai_desktop_data = {
         _id: "pai-desktop",
+        _type: "view",
         name: "pai-desktop",
         style: "position:absolute;left:0;top:0;width:100%;height:100%;background-color:black"
     };
-
-
-
-    let pai_bot_data = {
-        _type : "image",
-        _id: "pai-bot",
-        name: "pai-bot",
-        "src":"../../public/images/pai/pai-bot.png",
-        style: "background-color:red;position:absolute;right:10%;bottom:10%;width:80px;border-radius:0%"
-    };
-
-    let bot_console_output_data = {
-        _type : "view",
-        _id: "pai-bot-console",
-        name: "pai-bot-console",
-        text:"Hey :)",
-        style: "background-color:white;position:absolute;padding-left:10px;left:0;top:10%;width:40%;border-radius:0%"
-    };
-
-
-
-
-    let bg_video_data = {
-        _type : "video",
-        _id: "pai-video-player",
-        name:"pai-video-player",
-        "src":"https://pai-cdn.pai-net.org/pai-cdn/get-file?cdn-key=29ed8209-acf4-45d4-95a3-1067f3d07ea7",
-        text:"Hey :)",
-        "playsinline":true,
-        "autoplay":"true",
-        "muted":"true",
-        style: "position:absolute;padding0;left:0;top:0%;width:100%;height:100%;z-index:0"
-    };
-    // <video id='` + this.id +`' src="` + this.video_src + `" class="pai-video-player-video" playsinline="true" webkit-playsinline="true" ` + autoplay_txt + loop_txt + controls_txt + muted_txt  + ` style="object-fit:` + this.video_fill + `" type="application/x-mpegURL"></video>
-
 
     let frame_window = {
         _type : "view",
@@ -73,80 +57,42 @@
         style: "position:absolute;left:0;top:0;width:10%;height:100%;border-right:white solid 1px;display:flex;flex-direction:column"
     }
 
-    let add_view_button_data = {
-        _type : "view",
-        _id: "add-view",
-        name: "add-view",
-        text:"View",
-        style: "background-color:white;margin:10% 0 0 10% ;width:80%;height:30px;",
-        onclick: "add_view();"
-    }
-
-
-    let test_label = {
-        _type : "label",
-        _id: "test-label",
-        name: "test-label",
-        text:"label 1",
-        style: "background-color:red;margin:10% 0 0 10% ;width:80%;height:30px;",
-    }
-
     let pai_desktop = new SPELL_VIEW(pai_desktop_data);
     let frame = new SPELL_VIEW(frame_window);
     let tool_box = new SPELL_VIEW(tool_box_data);
-    let add_view_button = new SPELL_VIEW(add_view_button_data);
 
+    let tool_box_buttons = ["View","Label","Button","Text","Window"];
 
-    tool_box.append(add_view_button);
-
-    let test_label_obj = new SPELL_LABEL(test_label);
-
-    tool_box.append(test_label_obj);
-
-
-
-    let test_button = {
-        _type : "button",
-        _id: "test-btn",
-        name: "test-btn",
-        text:"button 1",
-        value:"button 1",
-        style: "background-color:white;margin:10% 0 0 10% ;width:80%;height:30px;",
-        onclick: "add_window()"
-    }
-
-
-    let btn1 = new SPELL_BUTTON(test_button);
-    tool_box.append(btn1);
-
-
-
-    // let pai_bot = new SPELL_OBJECT(pai_bot_data);
-    // let pai_bot_console = new SPELL_OBJECT(bot_console_output_data);
-    // let pai_dektop_video_player = new SPELL_OBJECT(bg_video_data);
-    // pai_desktop.append(pai_dektop_video_player);
-    // pai_desktop.append(pai_bot);
-
-    //pai_desktop.append(pai_bot_console);
+    tool_box_buttons.forEach(button =>  add_tool_box_button(button,button.toLowerCase()) );
 
     pai_desktop.append(frame);
     pai_desktop.append(tool_box);
-    //fo.parse(fo_data);
-    //fo.log();
-    $("body").append(pai_desktop.get_html());
-
-    //pai_dektop_video_player.dom_element.play();
-
 
     jQuery( document ).ready(function($) {
-
+        $("body").append(pai_desktop.get_html());
     });
 
 
 
 
+    function add_tool_box_button(text,type)
+    {
+        let pid = get_pai_guid();
+        let test_button = {
+            _type : type,
+            _id: "test-" + type + "-" + pid,
+            name: "test-" + type + "-" + pid,
+            "text" : text,
+            style: "background-color:white;margin:10% 0 0 10% ;width:80%;height:30px;",
+            onclick: "add_object('" + type +  "')"
+        }
 
-    //alert(HTML_SPELLS.instance.get_html_spell("view"));
+        let btn1 = new SPELL_BUTTON(test_button);
+        tool_box.append(btn1);
+    }
+
+
+
 
 
 
@@ -165,20 +111,126 @@
         frame.append(win1);
     }
 
-    function add_view()
+
+    let tool_box_objects = {
+        "view" :   {
+            "js-class" :SPELL_VIEW,
+            "defaults": {
+              _type : "view",
+              _id: "pai-view-" ,
+              name: "pai-view-",
+              text: "new view",
+              style: "background-color:white;width:100px;margin:10px 0 0 10px; height:100px;border:1px solid black",
+              onclick: ""
+            }
+        },
+        "label" : {
+            "js-class" : SPELL_LABEL,
+            "defaults": {
+                _type : "label",
+                _id: "test-label",
+                name: "test-label",
+                text:"label 1",
+                style: "background-color:red;margin:10% 0 0 10% ;width:80%;height:30px;",
+            }
+        }
+        ,
+        "button" : {
+            "js-class" : SPELL_BUTTON,
+            "defaults": {
+                _type : "button",
+                _id: "test-btn",
+                name: "test-btn",
+                text:"button 1",
+                value:"button 1",
+                style: "background-color:white;margin:10% 0 0 10% ;width:80%;height:30px;",
+                onclick: "alert(this.id)"
+            }
+        },
+        "text" : {
+            "js-class" : SPELL_TEXT_FIELD,
+            "defaults": {
+                _type : "text",
+                _id: "test-txt",
+                name: "test-txt",
+                value:"text 1",
+                placeholder:"write your text here",
+                style: "background-color:white;margin:10% 0 0 10% ;width:80%;height:30px;",
+            }
+        },
+        "window" : {
+            "js-class" : SPELL_WINDOW,
+            "defaults": {
+                _type : "window",
+                _id: "test-win",
+                name: "test-win",
+                _caption: "window -1 ",
+                style: "width:480px;height:480px;background-color:gray;border-radius:5px",
+            }
+        }
+    };
+
+
+    function add_object(obj_type)
     {
-        let v= {
-        _type : "view",
-        _id: "my_new_view",
-        name: "my_new_view",
-        text: new Date().toString(),
-        style: "background-color:white;width:100px;margin:10px 0 0 10px; height:100px;border:1px solid black",
-        onclick: "test_label_obj.set_text('this is me')"
+        if(tool_box_objects.hasOwnProperty(obj_type))
+        {
+            let pid = get_pai_guid();
+            let class_name = tool_box_objects[obj_type]["js-class"];
+            let defs = tool_box_objects[obj_type]["defaults"];
+            if(defs.hasOwnProperty("_id"))
+            {
+                defs["_id"] += pid;
+            }
+            if(defs.hasOwnProperty("name"))
+            {
+                defs["name"] += pid;
+            }
+            //console.log(" creating " + class_name);
+            //console.log(" with defaults  " + JSON.stringify(defs));
+            let vo = new class_name(defs);
+
+            frame.append(vo);
         }
 
-        let vo = new SPELL_VIEW(v);
-        frame.append(vo);
     }
+
+
+
+    //
+    // let pai_bot_data = {
+    //     _type : "image",
+    //     _id: "pai-bot",
+    //     name: "pai-bot",
+    //     "src":"../../public/images/pai/pai-bot.png",
+    //     style: "background-color:red;position:absolute;right:10%;bottom:10%;width:80px;border-radius:0%"
+    // };
+    //
+    // let bot_console_output_data = {
+    //     _type : "view",
+    //     _id: "pai-bot-console",
+    //     name: "pai-bot-console",
+    //     text:"Hey :)",
+    //     style: "background-color:white;position:absolute;padding-left:10px;left:0;top:10%;width:40%;border-radius:0%"
+    // };
+    //
+    //
+    //
+    //
+    // let bg_video_data = {
+    //     _type : "video",
+    //     _id: "pai-video-player",
+    //     name:"pai-video-player",
+    //     "src":"https://pai-cdn.pai-net.org/pai-cdn/get-file?cdn-key=29ed8209-acf4-45d4-95a3-1067f3d07ea7",
+    //     text:"Hey :)",
+    //     "playsinline":true,
+    //     "autoplay":"true",
+    //     "muted":"true",
+    //     style: "position:absolute;padding0;left:0;top:0%;width:100%;height:100%;z-index:0"
+    // };
+    // // <video id='` + this.id +`' src="` + this.video_src + `" class="pai-video-player-video" playsinline="true" webkit-playsinline="true" ` + autoplay_txt + loop_txt + controls_txt + muted_txt  + ` style="object-fit:` + this.video_fill + `" type="application/x-mpegURL"></video>
+
+
 
 
 </script>
