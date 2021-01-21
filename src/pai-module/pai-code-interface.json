@@ -11,6 +11,18 @@
     {"command-name":"version", "js-function":"version"},
     {"command-name":"release-notes", "js-function":"get_release_notes"},
     {"command-name":"install_required_modules", "js-function":"install_required_modules"},
+    {"command-name":"backup_ddb", "js-function":"backup_ddb",
+      "params" : [
+        {"name":"name", "label":"name", "description":"backup name", "required":true}
+      ]
+    },
+
+    {"command-name":"restore_ddb", "js-function":"restore_ddb",
+      "params" : [
+        {"name":"name", "label":"name", "description":"backup name", "required":true}
+      ]
+    },
+    {"command-name":"get_backups", "js-function":"get_backups"},
       {"command-name":"add-sample-entity", "js-function":"add_sample_entity",
         "params" : [
           {"name":"first-name", "label":"first-name", "description":"first name", "required":true},
