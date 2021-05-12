@@ -7,24 +7,14 @@
  * This file is the entry point of your base module.
 
  *      This program is free software; you can redistribute it and/or
- *        modify it under the terms of the GNU General Public License
- *        as published by the Free Software Foundation; either version
- *        3 of the License, or (at your option) any later version.
- */
+ *		modify it under the terms of the GNU General Public License
+ *		as published by the Free Software Foundation; either version
+ *		3 of the License, or (at your option) any later version.
+  */
 
 
-const {
-    PAICodeCommand,
-    PAIUtils,
-    PAICodeCommandContext,
-    PAICodeModule,
-    PAICode,
-    PAIModuleConfigParam,
-    PAIModuleConfig,
-    PAILogger,
-    PAIModuleCommandSchema,
-    PAIModuleCommandParamSchema
-} = require('@pai-tech/pai-code');
+const { PAICodeCommand, PAIUtils, PAICodeCommandContext, PAICodeModule, PAICode, PAIModuleConfigParam, PAIModuleConfig, PAILogger, PAIModuleCommandSchema, PAIModuleCommandParamSchema } = require('@pai-tech/pai-code');
+
 
 
 const path = require('path');
@@ -67,6 +57,7 @@ class PCM_MAIN extends PAICodeModule {
         try {
             this.bot_folder = await PAICode.run("pai-bot get-bot-folder");
         } catch (exp) {
+            this.bot_folder ="./"; //just for backup
         }
 
         /**
@@ -92,6 +83,17 @@ class PCM_MAIN extends PAICodeModule {
             this.pai_web_server = new pai_web_server(pai_code_interface["pai-web-server"].config);
             this.pai_web_server.start();
         }
+
+
+        /**
+         * Setup the pai-entity-manager
+         */
+
+        await pai_entity_manager.set_backup_folder(this.bot_folder + "data" + path.sep + this.get_module_name() + path.sep);
+
+        pai_entity_manager.load_from_disk();
+        PAILogger.info("pai-entities: " + JSON.stringify(pai_entity_manager.pai_entities));
+
 
 
         /**
@@ -143,6 +145,8 @@ class PCM_MAIN extends PAICodeModule {
 
     async add_sample_entity(cmd) {
         let sample_entity = pai_entity_manager.get_empty_entity("sample-entity");
+        sample_entity["sample-entity-name"] = cmd.params["sample-entity-name"].value;
+        await pai_ddb.add_entity(sample_entity,false);
         sample_entity["first-name"] = cmd.params["first-name"].value;
         sample_entity["last-name"] = cmd.params["last-name"].value;
         await pai_ddb.add_entity(sample_entity, false);
@@ -159,6 +163,8 @@ class PCM_MAIN extends PAICodeModule {
         PAILogger.info(res_str);
         return res_str;
     }
+
+
 
     async restore_ddb(cmd) {
         try {

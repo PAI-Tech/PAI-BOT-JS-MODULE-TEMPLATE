@@ -184,11 +184,6 @@ class SPELL_LABEL extends SPELL_OBJECT
         return def;
     }
 
-    constructor() {
-        super();
-        this.constructor(data)
-    }
-
     constructor(data) {
         super(data);
         this._html_tag = "label";

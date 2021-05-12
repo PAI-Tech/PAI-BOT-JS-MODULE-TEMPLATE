@@ -139,7 +139,6 @@ class PAI_WEB_SERVER {
         }
         if(this.sws)
             this.sws.close();
-        //return resolve(`File service web interface started on port ${port}!`);
 
     }
 

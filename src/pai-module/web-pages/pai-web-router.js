@@ -22,6 +22,8 @@ const { PAICodeCommand, PAICodeCommandContext, PAICodeModule, PAICode, PAIModule
 const pai_utils = require('@pai-tech/pai-code').PAIUtils;
 
 const path = require('path');
+
+const express = require('express')
 const fs = require('fs');
 
 
@@ -48,14 +50,31 @@ class PAI_WEB_ROUTER
     }
 
 
-
-
     get_home(req, res,route)
     {
         let pai_page_data = require("./home-page.json");
         res.send(this.web_builder.get_page(pai_page_data));
     }
 
+    get_admin_page(req, res,route)
+    {
+
+        let route_ep = "/admin/:id/:name";
+        let has_params = route_ep.indexOf("/",1);
+        let params_str = "no params found"
+        if(has_params < route_ep.length) {
+            params_str = route_ep.substr(has_params + 1);
+            let params = params_str.split("/");
+            for(let idx=0;idx<params.length;++idx)
+            {
+                console.log(params[idx]);
+            };
+
+        }
+
+
+        res.send("params are " +  params_str);
+    }
 
 }
 

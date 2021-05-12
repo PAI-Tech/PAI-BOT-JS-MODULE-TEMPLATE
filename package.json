@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bot": "node $NODE_DEBUG_OPTION node_modules/@pai-tech/pai-bot/PAI.js",
-    "bot-win": "node node_modules/@pai-tech/pai-bot/PAI.js"
+    "bot": "node node_modules/@pai-tech/pai-bot/PAI.js",
+    "config": "node node_modules/@pai-tech/pai-bot/src/scripts/config-generator.js",
+    "pai-net": "node node_modules/@pai-tech/pai-bot/src/scripts/config-pai-net.js"
   },
   "keywords": [
     "PAI-CODE",
@@ -14,12 +15,10 @@
   ],
   "license": "GPL-3.0",
   "dependencies": {
-    "@pai-tech/pai-code": "^1.2.7",
-    "@pai-tech/pai-ddb": "^1.0.991",
+    "@pai-tech/pai-code": "^1.2.6",
+    "@pai-tech/pai-bot": "^1.6.8",
+    "@pai-tech/pai-ddb": "^1.0.91",
     "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "@pai-tech/pai-bot": "^1.6.8"
   },
   "PAI": {
     "includeFiles": [

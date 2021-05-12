@@ -10,6 +10,12 @@
   "pai-code-commands":[
     {"command-name":"version", "js-function":"version"},
     {"command-name":"release-notes", "js-function":"get_release_notes"},
+    {"command-name":"install-required-modules", "js-function":"install_required_modules"},
+    {"command-name":"add-sample-entity", "js-function":"add_sample_entity",
+      "params" : [
+        {"name":"sample-entity-name", "label":"sample-entity-name", "description":"sample name", "required":true}
+      ]
+    },
     {"command-name":"install_required_modules", "js-function":"install_required_modules"},
     {"command-name":"backup_ddb", "js-function":"backup_ddb",
       "params" : [
