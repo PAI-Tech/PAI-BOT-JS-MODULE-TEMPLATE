@@ -11,35 +11,18 @@
     {"command-name":"version", "js-function":"version"},
     {"command-name":"release-notes", "js-function":"get_release_notes"},
     {"command-name":"install-required-modules", "js-function":"install_required_modules"},
-    {"command-name":"add-sample-entity", "js-function":"add_sample_entity",
-      "params" : [
-        {"name":"sample-entity-name", "label":"sample-entity-name", "description":"sample name", "required":true}
-      ]
-    },
-    {"command-name":"install_required_modules", "js-function":"install_required_modules"},
-    {"command-name":"backup_ddb", "js-function":"backup_ddb",
+    {"command-name":"backup-pai-ddb", "js-function":"backup_ddb",
       "params" : [
         {"name":"name", "label":"name", "description":"backup name", "required":true}
       ]
     },
 
-    {"command-name":"restore_ddb", "js-function":"restore_ddb",
+    {"command-name":"restore-pai-ddb", "js-function":"restore_ddb",
       "params" : [
         {"name":"name", "label":"name", "description":"backup name", "required":true}
       ]
     },
-    {"command-name":"get_backups", "js-function":"get_backups"},
-      {"command-name":"add-sample-entity", "js-function":"add_sample_entity",
-        "params" : [
-          {"name":"first-name", "label":"first-name", "description":"first name", "required":true},
-          {"name":"last-name", "label":"last-name", "description":"last name", "required":true}
-        ]
-      },
-    {"command-name":"get-sample-entity", "js-function":"get_sample_entity",
-      "params" : [
-        {"name":"filter", "label":"filter", "description":"query filter", "required":false}
-      ]
-    }
+    {"command-name":"get-pai-ddb-backups", "js-function":"get_backups"}
     ],
   "pai-entities" : {
     "#include" : [
