@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create-module": "node src/pai-module/scripts/module-generator.js",
+    "module-generator": "node src/pai-module/scripts/module-generator.js",
+    "generate-docs": "pwd && jsdoc -c jsdoc-config.json --verbose",
     "bot": "node node_modules/@pai-tech/pai-bot/PAI.js",
     "config": "node node_modules/@pai-tech/pai-bot/src/scripts/config-generator.js",
     "pai-net": "node node_modules/@pai-tech/pai-bot/src/scripts/config-pai-net.js"
@@ -18,6 +19,7 @@
     "@pai-tech/pai-bot": "^1.0.1",
     "@pai-tech/pai-code": "^1.2.6",
     "@pai-tech/pai-ddb": "^1.0.91",
+    "clean-jsdoc-theme": "^3.2.7",
     "express": "^4.17.1",
     "inquirer": "^8.1.1"
   },

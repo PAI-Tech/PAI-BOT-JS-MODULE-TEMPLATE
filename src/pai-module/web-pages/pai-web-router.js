@@ -1,16 +1,9 @@
-
-/*
-
- PAI-WEB-ROUTER  enables http endpoints
-
- Author       : Tamir Fridman
- Date Created : 9/25/2019
- Copyright PAI-TECH 2018, all right reserved
-
- *      This program is free software; you can redistribute it and/or
- *		modify it under the terms of the GNU General Public License
- *		as published by the Free Software Foundation; either version
- *		3 of the License, or (at your option) any later version.
+/**
+ * PAI-WEB-ROUTER  enables http endpoints
+ * @class PAI_WEB_ROUTER
+ * @author captain-crypto
+ * @since 9/25/2019
+ * @Copyright PAI-TECH 2018, all right reserved
   */
 
 
@@ -39,9 +32,13 @@ class PAI_WEB_ROUTER
     }
 
 
-
-
-
+    /**
+     * Get file from static folder and send back to the client (Http response)
+     * @param req - Http Request
+     * @param res = Http Response
+     * @param folder - the static folder name
+     * @param route - the route including file name
+     */
     get_static_folder(req, res,folder,route)
     {
 
@@ -50,12 +47,24 @@ class PAI_WEB_ROUTER
     }
 
 
+    /**
+     * Get Home Page from PAI-UI builder send back to the client (Http response)
+     * @param req - Http Request
+     * @param res = Http Response
+     * @param route - the route including file name
+     */
     get_home(req, res,route)
     {
         let pai_page_data = require("./home-page.json");
         res.send(this.web_builder.get_page(pai_page_data));
     }
 
+    /**
+     * Get Admin page
+     * @param req - Http Request
+     * @param res - Http Response
+     * @param route - the route including file name
+     */
     get_admin_page(req, res,route)
     {
 

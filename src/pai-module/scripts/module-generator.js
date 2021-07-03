@@ -1,3 +1,15 @@
+/**
+ * Module Generator Script
+ * @description  Run this script to configure you PAI Bot Module
+ * @example npm run module-generator
+ * @module module-generator
+ * @author captain-crypto
+ * @since 01/07/2021
+ * @Copyright PAI-TECH 2018, all right reserved
+ */
+
+
+
 const {PAILogger, PAIUtils} = require("@pai-tech/pai-code");
 //BOTS 2.0
 
@@ -7,6 +19,7 @@ const fs = require("fs");
 const inquirer = require('inquirer');
 
 const __dms = ""; //dev mode separator ->  dev = "__" / prod = ""
+
 
 run_bot_script().then((success) => {
     if (success) {
@@ -18,13 +31,24 @@ run_bot_script().then((success) => {
 });
 
 
+/**
+ * Runs the bot wizard script
+ * @function run_bot_script
+ * @memberOf module-generator
+ */
 async function run_bot_script() {
-
+    //wait for PAI-Code compiler to start
     await PAICode.on_ready();
     await ask_questions();
     return true;
 }
 
+/**
+ * Wizard - ask the question script
+ * @async
+ * @function ask_questions
+ * @memberOf module-generator
+ */
 async function ask_questions() {
 
     return new Promise((resolve, reject) => {
@@ -98,7 +122,11 @@ async function ask_questions() {
 }
 
 
-
+/**
+ * Create the pai-code-interface.json file
+ * @function create_pai_code_interface_file
+ * @memberOf module-generator
+ */
 function create_pai_code_interface_file(pai_code_interface) {
     let pci_folder = "src/pai-module/"
     let pci_file_name = pci_folder + __dms + "pai-code-interface.json";
@@ -106,6 +134,11 @@ function create_pai_code_interface_file(pai_code_interface) {
     PAILogger.info("pai-code-interface file created");
 }
 
+/**
+ * Create the update package.json file
+ * @function update_package_json_file
+ * @memberOf module-generator
+ */
 function update_package_json_file(pai_code_interface) {
     let pkg_json_file_name =  "package.json";
     let data = JSON.parse(fs.readFileSync(pkg_json_file_name,'utf8'));

@@ -1,16 +1,10 @@
-/*
- PAI Web Server
- Author       : Tamir Fridman
- Date Created : 28/11/2018
- Copyright PAI-TECH 2018, all right reserved
-
- This is a web server for PAI platform,
-
-
- *      This program is free software; you can redistribute it and/or
- *		modify it under the terms of the GNU General Public License
- *		as published by the Free Software Foundation; either version
- *		3 of the License, or (at your option) any later version.
+/**
+ * PAI Web Server - PWS
+ * @description  PWS is a web server for PAI platform based on Express.JS
+ * @class PAI_WEB_SERVER
+ * @author captain-crypto
+ * @since 28/11/2018
+ * @Copyright PAI-TECH 2018, all right reserved
   */
 
 
@@ -70,12 +64,10 @@ class PAI_WEB_SERVER {
     }
 
 
-
-
+    /**
+     * Start PAI Web Server
+     */
     start() {
-
-        this.check_folders();
-
         let target = path.join(__dirname, '../public');
         this.exp.use('/public', express.static(target));
         this.exp.use('/packages', express.static(path.join(__dirname, '../packages')));
@@ -126,12 +118,9 @@ class PAI_WEB_SERVER {
     }
 
 
-    check_folders()
-    {
-
-
-    }
-
+    /**
+     * Stops PAI Web Server
+     */
     stop() {
 
         if(this.ws) {
@@ -143,6 +132,12 @@ class PAI_WEB_SERVER {
     }
 
 
+    /**
+     * Get homepage
+     * @param req - Http Request
+     * @param res - Http Response
+     * @param route - Route (params)
+     */
     get_home_page(req,res,route)
     {
         let pai_web_router = new PAIWebRouter();

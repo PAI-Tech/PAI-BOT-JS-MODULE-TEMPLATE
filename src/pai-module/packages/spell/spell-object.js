@@ -1,8 +1,8 @@
 /**
  * spell - universal user interface (UI) framework
-     Author       : Tamir Fridman
-     Date Created : 03/09/2020
-     Copyright PAI-TECH 2020, all right reserved
+ * Author       : Tamir Fridman
+ * Date Created : 03/09/2020
+ * Copyright PAI-TECH 2020, all right reserved
  */
 
 //special html attribute mapping (for reserved words)

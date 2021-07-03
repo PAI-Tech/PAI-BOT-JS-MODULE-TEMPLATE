@@ -1,22 +1,19 @@
 /**
- * <pai-bot-js-module-template>
- * Author       : Tamir Fridman
- * Date Created : 9/25/2019
- * Copyright PAI-TECH 2018, all right reserved
-
- * This file is the entry point of your base module.
-
+ * The main class of the module (the entry point of module).
+ * This class initialized and loads the module components like setting, `pai-ddb`, `pai-web-server` and more.
+ * @class PCM_MAIN
+ * @since : 9/25/2019
+ * @author captain-crypto
+ * @Copyright PAI-TECH 2018, all right reserved
+ * @license
  *      This program is free software; you can redistribute it and/or
  *		modify it under the terms of the GNU General Public License
  *		as published by the Free Software Foundation; either version
  *		3 of the License, or (at your option) any later version.
-  */
+ */
 
 
 const { PAICodeCommand, PAIUtils, PAICodeCommandContext, PAICodeModule, PAICode, PAIModuleConfigParam, PAIModuleConfig, PAILogger, PAIModuleCommandSchema, PAIModuleCommandParamSchema } = require('@pai-tech/pai-code');
-
-
-
 const path = require('path');
 const fs = require('fs');
 const pai_module_settings = require("@pai-tech/pai-code").PAIModuleSettings.get_instance;
@@ -26,7 +23,9 @@ const pai_ddb = require("@pai-tech/pai-ddb").get_db(pai_code_interface["pai-modu
 const pai_web_server = require("./web-pages/pai-web-server");
 const pai_entity_manager = require("@pai-tech/pai-code").PAIEntityManager.get_instance;
 
+
 class PCM_MAIN extends PAICodeModule {
+
     constructor() {
 
         // Module description that will be shown on info command [your-module-name info]
@@ -47,9 +46,10 @@ class PCM_MAIN extends PAICodeModule {
 
 
     /**
-     * This method runs when the module is being loaded by the bot it load basic module commands from super
+     * This method runs when the module is being loaded by the bot.
+     * The method loads basic module commands from super class and load all the functions for this module
+     * @memberOf PCM_MAIN
      *
-     * and load all the functions for this module
      */
     async load() {
         await super.load();
@@ -115,14 +115,20 @@ class PCM_MAIN extends PAICodeModule {
 
 
     /**
-     * Echo version number of your module
-     * @param {PAICodeCommand} cmd
+     * Returns version number of your module (from package.json)
+     * @param {PAICodeCommand} cmd PAI-Code_Command
+     * @return {string} module version
      */
     version(cmd) {
         return require("./../../package").version;
     }
 
 
+    /**
+     * Returns the module release-note file content
+     * @param {PAICodeCommand} cmd PAI-Code_Command
+     * @return {string} module version
+     */
     get_release_notes(cmd) {
         let pai_release_notes = fs.readFileSync(path.resolve(__dirname, "release-notes.txt"), 'utf8');
         return this.get_module_name() + ":\n--------------\n" + pai_release_notes;
@@ -135,37 +141,22 @@ class PCM_MAIN extends PAICodeModule {
      *
      * - change this function only if you want to override pai-code-interface settings
      * @override
-     * @param cmd
-     * @return {*}
+     * @param cmd {PAICodeCommand}
+     * @return {string} HTTP request status
      */
     http_request(cmd) {
         return this.process_http_request(cmd, this.pai_web_router)
     }
 
 
-    async add_sample_entity(cmd) {
-        let sample_entity = pai_entity_manager.get_empty_entity("sample-entity");
-        sample_entity["sample-entity-name"] = cmd.params["sample-entity-name"].value;
-        await pai_ddb.add_entity(sample_entity,false);
-        sample_entity["first-name"] = cmd.params["first-name"].value;
-        sample_entity["last-name"] = cmd.params["last-name"].value;
-        await pai_ddb.add_entity(sample_entity, false);
-        pai_ddb.commit();
-        let msg = "new sample entity created: ";
-        PAILogger.info(msg);
-        return msg;
-    }
-
-    async get_sample_entity(cmd) {
-        let filter = JSON.parse(cmd.params["filter"].value);
-        let res = pai_ddb.find("sample-entity", filter);
-        let res_str = JSON.stringify(res);
-        PAILogger.info(res_str);
-        return res_str;
-    }
 
 
 
+    /**
+     * Returns version number of your module (from package.json)
+     * @param {PAICodeCommand} cmd PAI-Code_Command
+     * @return {string} module version
+     */
     async restore_ddb(cmd) {
         try {
             const backupName = cmd.params['name'].value;
@@ -199,6 +190,11 @@ class PCM_MAIN extends PAICodeModule {
 
     }
 
+    /**
+     * This method installs all the required modules as defined in pai-code-interface file
+     * @param {PAICodeCommand} cmd PAI-Code_Command
+     * @return {string} result
+     */
     async install_required_modules(cmd) {
         let context = cmd.context;
         let required_modules = pai_code_interface["required-modules"];

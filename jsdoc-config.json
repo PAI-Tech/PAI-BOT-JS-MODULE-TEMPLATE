@@ -1,0 +1,53 @@
+{
+  "source": {
+    "include": ["package.json", "README.md","PAI.js","src/","LICENSE"],
+    "exclude": ["src/public"],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+
+  "plugins": ["plugins/markdown"],
+
+  "opts": {
+    "encoding": "utf8",
+    "readme": "./README.md",
+    "destination": "docs/",
+    "recurse": true,
+    "recurseDepth": 10,
+    "verbose": true,
+    "template": "./node_modules/clean-jsdoc-theme",
+    "#template": "./node_modules/docdash",
+    "theme_opts": {
+      "theme": "dark",
+      "title": "PAI-BOT JS Module Template",
+      "menu": [
+        {
+          "title": "Website",
+          "link": "https://pai-tech.org",
+          "target": "_blank",
+          "id": "pai-web-site"
+        },
+        {
+          "title": "Github",
+          "link": "https://github.com/PAI-Tech/PAI-BOT-JS-MODULE-TEMPLATE",
+          "target": "_blank",
+          "id": "pai-bot-github"
+        }
+      ],
+      "meta" : [
+        {
+          "name": "author",
+          "content": "PAI-Tech"
+        },
+        {
+          "name": "description",
+          "content": "PAI-Bot-JS-Module Template Source Code"
+        }
+      ]
+    },
+    "tags": {
+      "allowUnknownTags": true,
+      "dictionaries": ["jsdoc","closure"]
+    }
+  }
+}
