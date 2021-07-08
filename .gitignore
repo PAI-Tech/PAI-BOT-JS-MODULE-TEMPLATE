@@ -67,3 +67,7 @@ typings/
 
 # Webstorm
 .idea/*
+
+#PAI
+PAI/
+docs/

@@ -1,7 +1,8 @@
 {
+  "title": "PAI-Bot-JS-Module Template",
   "source": {
-    "include": ["package.json", "README.md","PAI.js","src/","LICENSE"],
-    "exclude": ["src/public"],
+    "include": ["package.json", "readme.md","PAI.js","src/","LICENSE"],
+    "exclude": ["src/pai-module/public/","src/pai-module/packages"],
     "includePattern": ".js$",
     "excludePattern": "(node_modules/|docs)"
   },
@@ -15,35 +16,12 @@
     "recurse": true,
     "recurseDepth": 10,
     "verbose": true,
-    "template": "./node_modules/clean-jsdoc-theme",
-    "#template": "./node_modules/docdash",
-    "theme_opts": {
-      "theme": "dark",
-      "title": "PAI-BOT JS Module Template",
-      "menu": [
-        {
-          "title": "Website",
-          "link": "https://pai-tech.org",
-          "target": "_blank",
-          "id": "pai-web-site"
-        },
-        {
-          "title": "Github",
-          "link": "https://github.com/PAI-Tech/PAI-BOT-JS-MODULE-TEMPLATE",
-          "target": "_blank",
-          "id": "pai-bot-github"
-        }
-      ],
-      "meta" : [
-        {
-          "name": "author",
-          "content": "PAI-Tech"
-        },
-        {
-          "name": "description",
-          "content": "PAI-Bot-JS-Module Template Source Code"
-        }
-      ]
+    "templates": {
+      "default": {
+        "outputSourceFiles": false
+      },
+      "cleverLinks": false,
+      "monospaceLinks": false
     },
     "tags": {
       "allowUnknownTags": true,
