@@ -16,12 +16,13 @@
         {"name":"name", "label":"you name", "description":"what is your name", "required":true}
       ]
     }
-    ],
+  ],
   "pai-entities" : {
-    "#define" : [{
-      "name": "pai-sample-entity",
+    "define" : [{
+      "name": "hello-world-entity",
       "fields": [
-        {"name": "sample-string","type": "string", "required": true}
+        {"name": "world-id","type": "string", "required": true},
+        {"name": "world-name","type": "string", "required": true}
       ]
     }]
   }

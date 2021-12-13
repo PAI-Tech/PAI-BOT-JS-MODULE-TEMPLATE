@@ -44,7 +44,10 @@ async function start(){
     let res = await PAICode.run(pai_code_command_version);
     PAILogger.info(pai_code_module_name + " version:" + res);
 
-   
+    //execute hello-world pai-code-command
+    const hello_world_pai_code = `${pai_code_module_name} hello-world name:"pai-bot"`
+    res = await PAICode.run(hello_world_pai_code);
+    PAILogger.info(res);
 
 
 }

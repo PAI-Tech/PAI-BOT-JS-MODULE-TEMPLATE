@@ -13,7 +13,7 @@
  */
 
 
-const { PAICodeCommand, PAIUtils, PAICodeCommandContext, PAICodeModule, PAICode, PAIModuleConfigParam, PAIModuleConfig, PAILogger, PAIModuleCommandSchema, PAIModuleCommandParamSchema } = require('@pai-tech/pai-code');
+const { PAICodeCommand, PAIUtils, PAICodeCommandContext, PAICodeModule, PAICode, PAIModuleConfigParam, PAIModuleConfig, PAILogger, PAIModuleCommandSchema, PAIModuleCommandParamSchema, PAIEntity } = require('@pai-tech/pai-code');
 const path = require('path');
 const fs = require('fs');
 const pai_module_settings = require("@pai-tech/pai-code").PAIModuleSettings.get_instance;
@@ -89,9 +89,10 @@ class PCM_MAIN extends PAICodeModule {
          * Setup the pai-entity-manager
          */
 
-        await pai_entity_manager.set_backup_folder(this.bot_folder + "data" + path.sep + this.get_module_name() + path.sep);
+        //await pai_entity_manager.set_backup_folder(this.bot_folder + "data" + path.sep + this.get_module_name() + path.sep);
 
-        pai_entity_manager.load_from_disk();
+        //pai_entity_manager.load_from_disk();
+        await pai_entity_manager.load(this.pai_code_interface);
         PAILogger.info("pai-entities: " + JSON.stringify(pai_entity_manager.pai_entities));
 
 
@@ -100,6 +101,7 @@ class PCM_MAIN extends PAICodeModule {
          * add any load processes you want
          */
 
+         
 
     }
 
@@ -164,7 +166,7 @@ class PCM_MAIN extends PAICodeModule {
      * @return {string} HTTP request status
      */
     http_request(cmd) {
-        return this.process_http_request(cmd, this.pai_web_router)
+        return this.process_http_request(cmd, this.pai_web_router);
     }
 
 
@@ -177,8 +179,18 @@ class PCM_MAIN extends PAICodeModule {
      * @return {string} module version
      */
     async hello_world(cmd) {
-        const user_name = cmd.params['name'].value // this is how to access the PAICodeParameter value 
-        return `hello world ${user_name}`  
+        const world_name = cmd.params['name'].value; // this is how to access the PAICodeParameter value 
+        //this.add_world(world_name); //unmark this to use pai-ddb
+        return `hello world ${world_name}`;  
+    }
+
+
+    async add_world(world_name) {
+        let hello_world_entity = pai_entity_manager.get_empty_entity("hello-world-entity");
+        hello_world_entity["world-id"] = PAIUtils.pai_guid();
+        hello_world_entity["world-name"] = world_name;
+        await pai_ddb.add_entity(hello_world_entity);
+        console.log(`new world id: ${hello_world_entity["world-id"]} name:${hello_world_entity["world-name"]}`);
     }
 
 }
