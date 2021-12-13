@@ -1,7 +1,7 @@
 {
   "pai-code-version":"2.0",
-  "pai-module-name":"pai-bot-js-module-template",
-  "pai-module-desc":"PAI Bot JS Module Template",
+  "pai-module-name":"module-1",
+  "pai-module-desc":"Module 1",
   "pai-module-settings":[
     "module-name"
   ],
@@ -10,29 +10,18 @@
   "pai-code-commands":[
     {"command-name":"version", "js-function":"version"},
     {"command-name":"release-notes", "js-function":"get_release_notes"},
-    {"command-name":"install-required-modules", "js-function":"install_required_modules"},
-    {"command-name":"backup-pai-ddb", "js-function":"backup_ddb",
+    {"command-name":"install-required-modules", "js-function":"install_required_modules","invisible":true},
+    {"command-name":"hello-world", "js-function":"hello_world",
       "params" : [
-        {"name":"name", "label":"name", "description":"backup name", "required":true}
+        {"name":"name", "label":"you name", "description":"what is your name", "required":true}
       ]
-    },
-
-    {"command-name":"restore-pai-ddb", "js-function":"restore_ddb",
-      "params" : [
-        {"name":"name", "label":"name", "description":"backup name", "required":true}
-      ]
-    },
-    {"command-name":"get-pai-ddb-backups", "js-function":"get_backups"}
+    }
     ],
   "pai-entities" : {
-    "#include" : [
-      "./src/pai-module/data/entities/sample-entity.json"
-    ],
     "#define" : [{
       "name": "pai-sample-entity",
       "fields": [
-        {"name": "test-name","type": "string", "required": true},
-        {"name": "writer","type": "string", "required": true}
+        {"name": "sample-string","type": "string", "required": true}
       ]
     }]
   }
@@ -44,10 +33,7 @@
   "pai-bot-web-interface": {
     "static-web-folders": ["public", "packages"],
     "web-services":[
-      {"service-name":"home","js-function":"get_home",
-        "method": "GET"
-      }
-
+      {"service-name":"home","js-function":"get_home","method": "GET"}
     ]
   },
   "#pai-web-server": {

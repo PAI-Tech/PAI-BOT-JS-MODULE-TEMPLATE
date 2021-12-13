@@ -9,10 +9,10 @@ How to create a new pai-bot module from this project?
 
 1. Install require npm packages ('npm install')
 2. Change folder name to your-project-name
-3. Create module config files by running 'module-generator' npm script ('npm run module-generator')
-4. Configure the PAI-BOT by running 'config' npm script ('npm run config')
-5. Write your module code in the [pcm-main.js](PCM_MAIN.html) file (this is the entry point of the module)
-6. The file `PAI.JS` is used to run the module in development environment, use this file to test your module.
+3. Configure the PAI-BOT by running 'config' npm script ('npm run config')
+4. Connect the PAI-BOT to a PAI-NET with 'pai-net' npm script ('npm run pai-net') - optional
+4. Write your module code in the [pcm-main.js](PCM_MAIN.html) file (this is the entry point of the module)
+5. The file `PAI.JS` is used to run the module in development environment, use this file to test your module.
 
 
 

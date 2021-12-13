@@ -136,6 +136,25 @@ class PCM_MAIN extends PAICodeModule {
 
 
     /**
+     * This method installs all the required modules as defined in pai-code-interface file
+     * @param {PAICodeCommand} cmd PAI-Code_Command
+     * @return {string} result
+     */
+     async install_required_modules(cmd) {
+        let context = cmd.context;
+        let required_modules = pai_code_interface["required-modules"];
+        try {
+            await Promise.all(required_modules.map(async (module) => {
+                await PAICode.executeString(`pai-bot learn module:"${module}"`, context);
+            }));
+            return 'All Modules Installed successfully';
+        } catch (e) {
+            console.log(e);
+            return e;
+        }
+    }
+
+    /**
      * process incoming http requests from bot web interface.
      * by default it being processed in the super class by the pai-code-interface configuration
      *
@@ -153,60 +172,13 @@ class PCM_MAIN extends PAICodeModule {
 
 
     /**
-     * Returns version number of your module (from package.json)
+     * This command acceptes the user name and welcome it with hello world!
      * @param {PAICodeCommand} cmd PAI-Code_Command
      * @return {string} module version
      */
-    async restore_ddb(cmd) {
-        try {
-            const backupName = cmd.params['name'].value;
-            pai_ddb.rollback(backupName);
-            return 'ddb restored!';
-        } catch (e) {
-            return e;
-        }
-
-    }
-
-
-    async backup_ddb(cmd) {
-        try {
-            const backupName = cmd.params['name'].value;
-            pai_ddb.backup(backupName);
-            return 'ddb backed!';
-        } catch (e) {
-            return e;
-        }
-
-    }
-
-
-    async get_backups() {
-        try {
-            return pai_ddb.getBackups();
-        } catch (e) {
-            return e;
-        }
-
-    }
-
-    /**
-     * This method installs all the required modules as defined in pai-code-interface file
-     * @param {PAICodeCommand} cmd PAI-Code_Command
-     * @return {string} result
-     */
-    async install_required_modules(cmd) {
-        let context = cmd.context;
-        let required_modules = pai_code_interface["required-modules"];
-        try {
-            await Promise.all(required_modules.map(async (module) => {
-                await PAICode.executeString(`pai-bot learn module:"${module}"`, context);
-            }));
-            return 'All Modules Installed successfully';
-        } catch (e) {
-            console.log(e);
-            return e;
-        }
+    async hello_world(cmd) {
+        const user_name = cmd.params['name'].value // this is how to access the PAICodeParameter value 
+        return `hello world ${user_name}`  
     }
 
 }

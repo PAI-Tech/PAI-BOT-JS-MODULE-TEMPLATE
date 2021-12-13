@@ -42,7 +42,11 @@ async function start(){
 
     //execute pai-code and log response
     let res = await PAICode.run(pai_code_command_version);
-    PAILogger.info(pai_code_module_name + " v:" + res);
+    PAILogger.info(pai_code_module_name + " version:" + res);
+
+   
+
+
 }
 
 
