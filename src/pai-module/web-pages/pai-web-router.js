@@ -22,13 +22,15 @@ const fs = require('fs');
 
 
 
-const PAIWebBuilder = require('../packages/pai-ui/pai-web-builder/pai-html-builder');
+//const PAIWebBuilder = require('../packages/pai-ui/pai-web-builder/pai-html-builder');
+
+const spell_server = require('../packages/spell/spell-server');
 
 class PAI_WEB_ROUTER
 {
     constructor() {
 
-        this.web_builder = new PAIWebBuilder();
+        
     }
 
 
@@ -55,8 +57,10 @@ class PAI_WEB_ROUTER
      */
     get_home(req, res,route)
     {
-        let pai_page_data = require("./home-page.json");
-        res.send(this.web_builder.get_page(pai_page_data));
+        //let pai_page_data = require("./home-page.json");
+        //res.send(this.web_builder.get_page(pai_page_data));
+        let page = spell_server.get_spell_html_page("spell-page.html")
+        res.send(page);
     }
 
     /**

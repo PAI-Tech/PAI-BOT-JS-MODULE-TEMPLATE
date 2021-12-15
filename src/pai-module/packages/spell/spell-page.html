@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PAI-TECH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@animxyz/core@0.1.1/dist/animxyz.min.css">
+    <script src="packages/spell/spell.js"></script>
+    <script src="packages/spell/spell-extended.js"></script>
+    <script src="packages/spell/pai-web-bot.js"></script>
+
+    <link href="public/images/pai/pai-bot-fav-icon.png" rel="icon"  />
+    <meta name="keywords" content="PAI-TECH, BOT, OPERATING, SYSTEM">
+    <meta name="author" content="EVE - PAI-DEV-BOT">
+    <meta name="generator" content="PAI-BOT" />
+    <meta content="PAI-TECH" name="title">
+    <meta content="BOT OPERATING SYSTEM" name="description">
+    <meta content="PAI-TECH.ORG" property="og:site_name">
+    <meta content="PAI-TECH | BOTS | BOT Operating System" property="og:title">
+    <meta content="/public/images/pai/pai-bot-fav-icon.png" property="og:image">
+    <meta content="BOT OPERATING SYSTEM" property="og:description">
+    <link rel="stylesheet" href="public/style/pai-web.css">
+</head>
+<body class="bg-light" style=''>
+<div id="spell-data" style='display: none;' >
+</div>
+<div id="pai-desktop" >
+    <header>
+        <!--nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/" style="color:#afafaf;">PAI-TECH</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="javascript:show_view('about-view')">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="javascript:show_view('contact-view')">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="https://developers.pai-tech.org/knowledge-base">Developers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="https://developers.pai-tech.org">Blog</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown link
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav -->
+    </header>
+    <div id="spell-player" style="width: 100%;padding: 0;margin: 0">
+        <div id="pai-view-1"></div>
+    </div>
+    <!--footer id="pai-footer" style="" class="xyz-in"  xyz="fade delay2" >
+        <div style="margin-top:5px;text-align: center">PAI-TECH - MAKING COMPUTER SMARTER</div>
+    </footer-->
+</div>
+
+</body>
+<script language="JavaScript">
+
+
+
+    let pai_web_pages_str = "$pai-web-page";
+    
+    let pron = {
+        "-": " ",
+        "pai" : "pi"
+    }
+
+    const vuz = {        
+        "main-view": {
+            _type : "view",
+            _id: "main-view" ,
+            style: "width:100%;margin: 0;padding:0;display:none",
+            "class":"container-fluid xyz-in",
+            animation:"fade",
+            spells: [
+                {
+                    _type : "image", _id: "pai-logo",
+                    src: "public/images/pai/pai-tech-open.png",
+                    class:"bots-logo xyz-in", "animation":"fade ease-in-back delay-2",
+                    style:"margin-top:5%"
+                },
+                {
+                    _type : "label",
+                    text:"PAI-Code Module Editor",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade ease-in-back",
+                    style: "margin-top:5%;"
+                },
+                {
+                    _id:"buttons-pack" ,
+                    _type:"grid",
+                    class:"container-fluid ",
+                    style:"margin-top: 3vw;display:block",
+                    rows: [
+                        {
+                            _id:"first_row",
+                            cols: [
+                                {
+                                    "_id":"g1",
+                                    spells: [
+                                        {
+                                            _type:"button",
+                                            text:"Entites",
+                                            style:"text-align:center",
+                                            class:"xyz-in pai-button",
+                                            "animation":"fade  ease-out-back",
+                                            onclick:"show_view('vision-view')"
+                                        }
+                                    ]
+                                },
+                                {
+                                    spells: [
+                                        
+                                        {
+                                            _type:"button",
+                                            text:"Web Services",
+                                            class:"xyz-in  pai-button",
+                                            style:"",
+                                            "animation":"fade  ease-out-back",
+                                            onclick:" show_view('connect-view')"
+                                        }
+                                    ]
+                                },
+                                {
+                                    spells: [
+                                        
+                                        {
+                                            _type:"button",
+                                            text:"Commands",
+                                            class:"xyz-in pai-button",
+                                            style:"",
+                                            "animation":"fade ease-out-back",
+                                            onclick:" show_view('product-view')"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "about-view": {
+            _type : "view",
+            _id: "about-view" ,
+            style: "width:100%;margin: 0;padding:0;display:block",
+            "class":"container-fluid xyz-in",
+            animation:"fade",
+            spells: [
+            
+                {
+                    _type : "image", _id: "aime-sketch",
+                    src: "/public/images/pai/PAI_Logo_V.png",
+                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                    style:"margin-top:50px;margin-left:calc(50% - 150px);"
+                },
+                {
+                    _type : "label",
+                    text:"Headquartered in Israel, a privately held company, PAI-Tech established in 2018 and comprises of software experts, AI visionaries and high-skilled professionals that together deliver a new standard of AI technology.",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade  ease-in-back",
+                    style: "margin-top:50px",
+                },
+                {
+                    _type : "label",
+                    text:"It is this experience that enables us to leverage strategic partnerships and seamlessly integrate our technology into existing hardware with minimal time of integration.",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade  ease-in-back",
+                    style: "margin-top:50px",
+                },
+                {
+                    _type : "image", _id: "aime-sketch",
+                    src: "/public/images/aime/aime-sketch-4-t.png",
+                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                    style:"margin-top:50px;margin-left:calc(50% - 160px);"
+                }
+            ]
+        },
+        "product-view": {
+            _type : "view",
+            _id: "product-view" ,
+            style: "width:100%;margin: 0;padding:0;display:block",
+            "class":"container-fluid xyz-in",
+            animation:"fade",
+            spells: [
+            
+                {
+                    _type : "image", _id: "aime-sketch",
+                    src: "/public/images/pai/PAI_Logo_V.png",
+                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                    style:"margin-top:50px;margin-left:calc(50% - 150px);"
+                },
+                {
+                    _type : "label",
+                    text:"AIME",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade  ease-in-back",
+                    style: "margin-top:50px",
+                },
+                {
+                    _type : "label",
+                    text:"Plug & Play",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade  ease-in-back",
+                    style: "margin-top:50px",
+                },
+                {
+                    _type : "image", _id: "aime-sketch",
+                    src: "/public/images/aime/aime-sketch-4-t.png",
+                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                    style:"margin-top:50px;margin-left:calc(50% - 160px);"
+                }
+            ]
+        },
+        "vision-view": {
+            _type : "view",
+            _id: "vision-view" ,
+            style: "width:100%;margin: 0;padding:0;display:block",
+            "class":"container-fluid xyz-in",
+            animation:"fade",
+            spells: [
+            {
+                    _type : "label",
+                    text:"Unlocking AI. From Enterprise to All.",
+                    class:"xyz-in page-title",
+                    "animation":"fade",
+                    style: "margin-top:50px;"
+                },
+                {
+                    _type : "label",
+                    text:"Our vision is to make AI accessible to everyone from home use and SMBs with unlimited scalability needs.",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade  ease-in-back",
+                    style: "margin-top:50px",
+                },
+                {
+                    _type : "image", _id: "aime-sketch",
+                    src: "/public/images/aime/aime-sketch-5-t.png",
+                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                    style:"margin-top:50px;margin-left:calc(50% - 80px);"
+                },
+                {
+                    _type : "label",
+                    text:"With affordable hardware and super-intelligent software, we'll deliver a game-changing, Personal Supercomputer that for the first time will make artificial intelligence part of every home, business & market",
+                    class:"xyz-in page-subtitle",
+                    "animation":"fade  ease-in-back",
+                    style: "margin-top:50px",
+                },
+                {
+                    _type : "image", _id: "aime-sketch",
+                    src: "/public/images/aime/aime-sketch-4-t.png",
+                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                    style:"margin-top:50px;margin-left:calc(50% - 160px);"
+                }
+            ]
+        },
+        "aime-menu": {
+            _type : "view",
+            _id: "aime-menu" ,
+            style: "width:100%;margin: 0;padding:0;display:none",
+            "class":"container-fluid xyz-in",
+            animation:"fade",
+            spells: [
+                {
+                    _type : "label",
+                    text:"A I M E",
+                    class:"xyz-in",
+                    "animation":"fade ease-in-back delay-2",
+                    style: "margin-top:5%;width: 100%;text-align: center;font-size:80px;"
+                },
+                {
+                    _id:"buttons-pack" ,
+                    _type:"grid",
+                    class:"container-fluid ",
+                    style:"margin-top: 50px;display:block",
+                    rows: [
+                        {
+                            _id:"first_row",
+                            cols: [
+                                {
+                                    "_id":"g1",
+                                    spells: [
+                                        {
+                                            _type : "image", _id: "aime-sketch-1",
+                                            src: "/public/images/aime/aime-sketech-t-1-1.png",
+                                            class:"aime-sketch xyz-in", 
+                                            "animation":"fade ease-in-back",
+                                            style:""
+                                        },
+                                        {
+                                            _type:"button",
+                                            text:"The Vision",
+                                            class:"xyz-in pai-button",
+                                            "animation":"fade  ease-out-back",
+                                            onclick:"show_view('vision-view')"
+                                        }
+                                    ]
+                                },
+                                {
+                                    spells: [
+                                        {
+                                            _type : "image", _id: "aime-sketch-2",
+                                            src: "/public/images/aime/aime-sketech-t-1-2.png",
+                                            class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                                            style:""
+                                        },
+                                        {
+                                            _type:"button",
+                                            text:"Product",
+                                            class:"xyz-in pai-button",
+                                            "animation":"fade  ease-out-back",
+                                            onclick:" show_view('connect-view')"
+                                        }
+                                    ]
+                                },
+                                {
+                                    spells: [
+                                        {
+                                            _type : "image", _id: "aime-sketch-3",
+                                            src: "/public/images/aime/aime-sketech-t-2.png",
+                                            class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
+                                            style:""
+                                        },
+                                        {
+                                            _type:"button",
+                                            text:"About US",
+                                            class:"xyz-in pai-button",
+                                            "animation":"fade  ease-out-back",
+                                            onclick:" show_view('learn-view')"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+
+    $(document).ready( function () {
+        //start_flow();
+        Spell.init();
+        $("#spell-data").hide();
+
+
+        // Get data from spell-server
+        //if(pai_web_pages_str != "$pai-web-page") {
+            //console.log(JSON.stringify(pai_web_pages_str));
+        //}
+        
+        $('.navbar-nav>li>a').on('click', function(){
+            $('.navbar-collapse').collapse('hide');
+        });
+
+        Spell.view_manager.add_raw_views(vuz);
+        
+        let view_to_show = "main-view";
+        let anc = $(location).attr('hash');
+        if(anc && anc.length>1) {
+            view_to_show = anc.substring(1);
+        }
+
+        Spell.view_manager.load_page(view_to_show);
+
+        //show_view(view_to_show)
+        window.addEventListener('hashchange', Spell.view_manager.hashchange)
+        spell_start();
+    });
+
+
+
+    
+
+    
+    
+    let pai_web_bot = null;
+
+    let colors=["rgba(255,255,255,0.2)","rgba(255,255,255,0.4)","rgba(255,255,255,0.6)","rgba(255,255,255,0.8)"]
+    let cidx = 0;
+    let spk_icon =  null;
+
+    function on_speech_interval(event) {
+        //console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.');
+        let bgcolor = colors[cidx];
+        if(++cidx >= colors.length)
+            cidx = 0;
+        spk_icon.css('background-color',bgcolor)
+    }
+
+    function on_speech_end(event) {
+        spk_icon.css('background-color',"rgba(0,0,0,0)");
+    }
+
+    async function bot_speak(elem_to_speak) {
+
+        //console.log(elem_to_speak)
+        spk_icon = $("#"+elem_to_speak + "-bot");
+
+
+        let txt = "";
+        $("#" + elem_to_speak).find(".speak").each(function() {
+
+            let l_txt_u = $(this).text();
+            pai_web_bot.speech.speak(l_txt_u,on_speech_interval,on_speech_end);
+        });
+    }
+
+
+    function spell_start() {
+        //let spell_program = `spell-player load spell:'${JSON.stringify(vuz)}'`;
+
+        //Spell.play(spell_program);
+        pai_web_bot = new PAIWebBot();
+        pai_web_bot.load_speech_abilities("Samantha");
+        pai_web_bot.speech.set_pron(pron);
+        //pai_web_bot.speech.set_voice_by_name();
+
+
+
+    }
+
+    
+
+
+
+
+    function show_view(view_name)
+    {
+        
+
+        Spell.view_manager.show_view(view_name);
+    }
+
+    function create_view(vdata) {
+        let spellview = Spell.create(vdata);
+        return spellview;
+    }
+
+    function play_video()
+    {
+        let pai_player = document.getElementById("pai-tv-player");
+        pai_player.src = "https://pai-cdn.pai-net.org/pai-cdn/get-file?cdn-key=f24e2974-a2bc-4471-9ae0-bc273dab3a8c";
+        pai_player.load();
+    }
+
+    function start_flow()
+    {
+        setTimeout('show_view("aime-view")',3000)
+    }
+
+
+
+    function get_attr(obj,attr)
+    {
+        let out = "";
+        if(obj.hasOwnProperty(attr)) {
+            out = attr + "=`" + obj[attr] + "`";
+        }
+        return out;
+    }
+
+    function create_pai_view(vdata)
+    {
+        let out = "<div " + get_attr(vdata,"style") + " >";
+        out += "</div>";
+        return out;
+    }
+
+
+
+</script>
+</html>
