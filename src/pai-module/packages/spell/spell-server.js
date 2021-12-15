@@ -17,16 +17,16 @@ class SPELL_SERVER  {
 
 
 
-    static get_spell_html_page(html_file_name="spell-page.html",pages = null)
+    static get_spell_html_page(html_file_name="spell-page.html",data_to_client = null)
     {
         const vrs = {
-            pwp : "$pai-web-page"
+            pwp : "$spell_data_from_server"
         }
         let  spell_html_page = fs.readFileSync(path.resolve(__dirname,html_file_name), 'utf8');
         let pwp_start = spell_html_page.indexOf(vrs.pwp);
         let out = spell_html_page;
-        if(pages && pwp_start>-1 ) {
-            out = spell_html_page.substring(0,pwp_start -1) + JSON.stringify(pages) + spell_html_page.substring(pwp_start + vrs.pwp.length + 1);
+        if(data_to_client && pwp_start>-1 ) {
+            out = spell_html_page.substring(0,pwp_start -1) + JSON.stringify(data_to_client) + spell_html_page.substring(pwp_start + vrs.pwp.length + 1);
         }
         return out;
     }

@@ -7,6 +7,16 @@
  * @copyright PAI-TECH 2020, all right reserved
  */
 
+class SpellExtended {
+
+    static init() {
+        Spell.Object_Manager.add_objects({
+                "youtube":SpellYoutubeVideo,
+                "pai-entity-view":PAIEntityView
+            })
+    }
+}
+
 
 class SpellYoutubeVideo extends SpellObject {
     constructor(data) {
@@ -17,7 +27,44 @@ class SpellYoutubeVideo extends SpellObject {
 }
 
 
+class PAIEntityView extends SpellObject {
+    /*
+    "pai-entity-view": {
+        
+      "name": "hello-world-entity",
+      "fields": [
+        {"name": "field-1","type": "string", "required": true,"xdata":"pk"}
+      ]
+    }*/
 
+    constructor(data) {
+        data["_ignore"] = "xdata";
+        if(!data.spells) {data.spells = []}
+        if(data["xdata"]) {
+            data.spells.push({
+                _type : "view",
+                _id: data["xdata"].name  + "-title",
+                text:data["xdata"].name,
+                "animation":"fade",
+                class:"h4 speak",
+                style: ""
+            });
+            data["xdata"].fields.forEach(field => {
+                data.spells.push({
+                    _type : "view",
+                    _id: field.name  + "-title",
+                    text:field.name,
+                    "animation":"fade",
+                    class:"speak",
+                    style: ""
+                });
+            });
+        }
+        super(data);
+    }
+
+    
+}
 
 class PAIWebPage extends SpellObject {
     constructor(data) {

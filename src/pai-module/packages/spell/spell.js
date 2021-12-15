@@ -86,9 +86,9 @@ class Spell {
                 "image" : SpellImage,
                 "grid" : SpellGrid,
                 "list": SpellList,
-                "youtube":SpellYoutubeVideo
             }
         )
+        SpellExtended.init();
     }
 
 
@@ -158,16 +158,14 @@ class SpellUtils {
      * create ignore list for parser to ignore spells words
      * @param list - list of reserved words (comma separated)
      */
-    static create_ignore_list(list)
-    {
+    static create_ignore_list(list){
         let words = list.split(",");
         let out_list = reserved_words;
         words.forEach(word => out_list[word] = "");
         return out_list;
     }
 
-    static get_spell_unique_id()
-    {
+    static guid() {
         let chars = '0123456789abcdef'.split('');
         let uuid = [], rnd = Math.random, r;
         uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
@@ -183,7 +181,7 @@ class SpellUtils {
     }
 
     static merge_defaults_with_data(data,defaults) {
-        let pid = SpellUtils.get_spell_unique_id();
+        let pid = SpellUtils.guid();
 
         //prevent duplication
         if (defaults.hasOwnProperty("_id")) {
@@ -214,10 +212,6 @@ class SpellViewManager {
         this.views = {};
         this.active_view = null;
     }
-
-
-
-
 
     add_raw_views(vuz) {
         let rvuz = Object.keys(vuz);
@@ -325,7 +319,7 @@ class SpellViewManager {
 class SpellObject {
 
     constructor(data) {
-        let default_id_name = "so-" + SpellUtils.get_spell_unique_id();
+        let default_id_name = "so-" + SpellUtils.guid();
         this._id = default_id_name;
         this._html_tag = "div";
         this._dom_object = null;
@@ -550,7 +544,7 @@ class SpellTextField extends SpellObject {
 }
 class SpellLink extends SpellObject {
     static get  defaults()  {
-        let oid = "link-" + SpellUtils.get_spell_unique_id();
+        let oid = "link-" + SpellUtils.guid();
         let def = {
             _id: oid,
             name: oid,
@@ -699,7 +693,7 @@ class SpellGridRow extends SpellObject {
 
 class SpellCommand {
     constructor() {
-        this.id = SpellUtils.get_spell_unique_id();
+        this.id = SpellUtils.guid();
         this.module = null;
         this.op = null;
         this.execute_on_frame = 0;

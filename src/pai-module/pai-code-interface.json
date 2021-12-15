@@ -22,7 +22,8 @@
       "name": "hello-world-entity",
       "fields": [
         {"name": "world-id","type": "string", "required": true},
-        {"name": "world-name","type": "string", "required": true}
+        {"name": "world-name","type": "string", "required": true},
+        {"name": "world-image","type": "string", "required": true}
       ]
     }]
   }

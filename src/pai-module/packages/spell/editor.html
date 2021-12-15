@@ -95,7 +95,7 @@
 
     function add_tool_box_button(text,type)
     {
-        let pid = SpellUtils.get_spell_unique_id();
+        let pid = SpellUtils.guid();
         let test_button = {
             _type : type,
             _id: "test-" + type + "-" + pid,

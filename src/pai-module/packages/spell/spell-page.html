@@ -84,7 +84,7 @@
 
 
 
-    let pai_web_pages_str = "$pai-web-page";
+    let spell_data_from_server = "$spell_data_from_server";
     
     let pron = {
         "-": " ",
@@ -130,7 +130,7 @@
                                             style:"text-align:center",
                                             class:"xyz-in pai-button",
                                             "animation":"fade  ease-out-back",
-                                            onclick:"show_view('vision-view')"
+                                            onclick:"show_view('enteties-view')"
                                         }
                                     ]
                                 },
@@ -166,214 +166,44 @@
                 }
             ]
         },
-        "about-view": {
+        "enteties-view": {
             _type : "view",
-            _id: "about-view" ,
+            _id: "enteties-view" ,
             style: "width:100%;margin: 0;padding:0;display:block",
             "class":"container-fluid xyz-in",
             animation:"fade",
             spells: [
-            
-                {
-                    _type : "image", _id: "aime-sketch",
-                    src: "/public/images/pai/PAI_Logo_V.png",
-                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                    style:"margin-top:50px;margin-left:calc(50% - 150px);"
-                },
                 {
                     _type : "label",
-                    text:"Headquartered in Israel, a privately held company, PAI-Tech established in 2018 and comprises of software experts, AI visionaries and high-skilled professionals that together deliver a new standard of AI technology.",
-                    class:"xyz-in page-subtitle",
-                    "animation":"fade  ease-in-back",
-                    style: "margin-top:50px",
-                },
-                {
-                    _type : "label",
-                    text:"It is this experience that enables us to leverage strategic partnerships and seamlessly integrate our technology into existing hardware with minimal time of integration.",
-                    class:"xyz-in page-subtitle",
-                    "animation":"fade  ease-in-back",
-                    style: "margin-top:50px",
-                },
-                {
-                    _type : "image", _id: "aime-sketch",
-                    src: "/public/images/aime/aime-sketch-4-t.png",
-                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                    style:"margin-top:50px;margin-left:calc(50% - 160px);"
-                }
-            ]
-        },
-        "product-view": {
-            _type : "view",
-            _id: "product-view" ,
-            style: "width:100%;margin: 0;padding:0;display:block",
-            "class":"container-fluid xyz-in",
-            animation:"fade",
-            spells: [
-            
-                {
-                    _type : "image", _id: "aime-sketch",
-                    src: "/public/images/pai/PAI_Logo_V.png",
-                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                    style:"margin-top:50px;margin-left:calc(50% - 150px);"
-                },
-                {
-                    _type : "label",
-                    text:"AIME",
-                    class:"xyz-in page-subtitle",
-                    "animation":"fade  ease-in-back",
-                    style: "margin-top:50px",
-                },
-                {
-                    _type : "label",
-                    text:"Plug & Play",
-                    class:"xyz-in page-subtitle",
-                    "animation":"fade  ease-in-back",
-                    style: "margin-top:50px",
-                },
-                {
-                    _type : "image", _id: "aime-sketch",
-                    src: "/public/images/aime/aime-sketch-4-t.png",
-                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                    style:"margin-top:50px;margin-left:calc(50% - 160px);"
-                }
-            ]
-        },
-        "vision-view": {
-            _type : "view",
-            _id: "vision-view" ,
-            style: "width:100%;margin: 0;padding:0;display:block",
-            "class":"container-fluid xyz-in",
-            animation:"fade",
-            spells: [
-            {
-                    _type : "label",
-                    text:"Unlocking AI. From Enterprise to All.",
+                    text:"PAI-Entites",
                     class:"xyz-in page-title",
-                    "animation":"fade",
-                    style: "margin-top:50px;"
-                },
-                {
-                    _type : "label",
-                    text:"Our vision is to make AI accessible to everyone from home use and SMBs with unlimited scalability needs.",
-                    class:"xyz-in page-subtitle",
                     "animation":"fade  ease-in-back",
                     style: "margin-top:50px",
-                },
-                {
-                    _type : "image", _id: "aime-sketch",
-                    src: "/public/images/aime/aime-sketch-5-t.png",
-                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                    style:"margin-top:50px;margin-left:calc(50% - 80px);"
-                },
-                {
-                    _type : "label",
-                    text:"With affordable hardware and super-intelligent software, we'll deliver a game-changing, Personal Supercomputer that for the first time will make artificial intelligence part of every home, business & market",
-                    class:"xyz-in page-subtitle",
-                    "animation":"fade  ease-in-back",
-                    style: "margin-top:50px",
-                },
-                {
-                    _type : "image", _id: "aime-sketch",
-                    src: "/public/images/aime/aime-sketch-4-t.png",
-                    class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                    style:"margin-top:50px;margin-left:calc(50% - 160px);"
-                }
-            ]
-        },
-        "aime-menu": {
-            _type : "view",
-            _id: "aime-menu" ,
-            style: "width:100%;margin: 0;padding:0;display:none",
-            "class":"container-fluid xyz-in",
-            animation:"fade",
-            spells: [
-                {
-                    _type : "label",
-                    text:"A I M E",
-                    class:"xyz-in",
-                    "animation":"fade ease-in-back delay-2",
-                    style: "margin-top:5%;width: 100%;text-align: center;font-size:80px;"
-                },
-                {
-                    _id:"buttons-pack" ,
-                    _type:"grid",
-                    class:"container-fluid ",
-                    style:"margin-top: 50px;display:block",
-                    rows: [
-                        {
-                            _id:"first_row",
-                            cols: [
-                                {
-                                    "_id":"g1",
-                                    spells: [
-                                        {
-                                            _type : "image", _id: "aime-sketch-1",
-                                            src: "/public/images/aime/aime-sketech-t-1-1.png",
-                                            class:"aime-sketch xyz-in", 
-                                            "animation":"fade ease-in-back",
-                                            style:""
-                                        },
-                                        {
-                                            _type:"button",
-                                            text:"The Vision",
-                                            class:"xyz-in pai-button",
-                                            "animation":"fade  ease-out-back",
-                                            onclick:"show_view('vision-view')"
-                                        }
-                                    ]
-                                },
-                                {
-                                    spells: [
-                                        {
-                                            _type : "image", _id: "aime-sketch-2",
-                                            src: "/public/images/aime/aime-sketech-t-1-2.png",
-                                            class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                                            style:""
-                                        },
-                                        {
-                                            _type:"button",
-                                            text:"Product",
-                                            class:"xyz-in pai-button",
-                                            "animation":"fade  ease-out-back",
-                                            onclick:" show_view('connect-view')"
-                                        }
-                                    ]
-                                },
-                                {
-                                    spells: [
-                                        {
-                                            _type : "image", _id: "aime-sketch-3",
-                                            src: "/public/images/aime/aime-sketech-t-2.png",
-                                            class:"aime-sketch xyz-in", "animation":"fade ease-in-back",
-                                            style:""
-                                        },
-                                        {
-                                            _type:"button",
-                                            text:"About US",
-                                            class:"xyz-in pai-button",
-                                            "animation":"fade  ease-out-back",
-                                            onclick:" show_view('learn-view')"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
                 }
             ]
         }
+        
     }
 
+    if (spell_data_from_server["pai-entities"])
+    {
+        spell_data_from_server["pai-entities"].forEach(ent => {
+            vuz["enteties-view"].spells.push({
+                _type:"pai-entity-view",
+                _id: SpellUtils.guid() ,
+                style: "width:250px;border:1px solid black;margin: 0;padding:0;display:block",
+                "css-class":" xyz-in",
+                animation:"fade",
+                "xdata":ent
+            })
+        })        
+    }
+    
+
     $(document).ready( function () {
-        //start_flow();
         Spell.init();
-        $("#spell-data").hide();
-
-
-        // Get data from spell-server
-        //if(pai_web_pages_str != "$pai-web-page") {
-            //console.log(JSON.stringify(pai_web_pages_str));
-        //}
+        
+        
         
         $('.navbar-nav>li>a').on('click', function(){
             $('.navbar-collapse').collapse('hide');
@@ -453,8 +283,6 @@
 
     function show_view(view_name)
     {
-        
-
         Spell.view_manager.show_view(view_name);
     }
 
@@ -463,35 +291,16 @@
         return spellview;
     }
 
-    function play_video()
-    {
-        let pai_player = document.getElementById("pai-tv-player");
-        pai_player.src = "https://pai-cdn.pai-net.org/pai-cdn/get-file?cdn-key=f24e2974-a2bc-4471-9ae0-bc273dab3a8c";
-        pai_player.load();
-    }
+    
 
     function start_flow()
     {
-        setTimeout('show_view("aime-view")',3000)
+        //setTimeout('show_view("main-view")',3000)
     }
 
 
 
-    function get_attr(obj,attr)
-    {
-        let out = "";
-        if(obj.hasOwnProperty(attr)) {
-            out = attr + "=`" + obj[attr] + "`";
-        }
-        return out;
-    }
 
-    function create_pai_view(vdata)
-    {
-        let out = "<div " + get_attr(vdata,"style") + " >";
-        out += "</div>";
-        return out;
-    }
 
 
 
