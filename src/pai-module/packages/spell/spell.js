@@ -11,7 +11,7 @@
  *		3 of the License, or (at your option) any later version.
  */
 
-const spell_object_html_fields_mapping = {"_id": "id",  "css-class": "class","animation":"xyz"};
+const spell_object_html_fields_mapping = {"_id": "id",  "css-class": "class","animation":"xyz","input-type":"type"};
 
 const reserved_words = {"spells" :"child spells"}
 
@@ -86,6 +86,8 @@ class Spell {
                 "image" : SpellImage,
                 "grid" : SpellGrid,
                 "list": SpellList,
+                "form":SpellForm,
+                "table":SpellTable
             }
         )
         SpellExtended.init();
@@ -122,10 +124,15 @@ class Spell {
                 }
                 ro = new spell_object_class(data);
             }
+            else {
+                throw "Spell object '" + data["_type"] + "' not found";
+            }
         }
         else {
             ro = new SpellObject(data);
         }
+
+        ro.init();
 
         if(data.hasOwnProperty("spells"))
         {
@@ -173,10 +180,10 @@ class SpellUtils {
         for (let i = 0; i < 36; i++) {
             if (!uuid[i]) {
                 r = 0 | rnd() * 16;
-
                 uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
             }
         }
+        //console.log('spell-guid')
         return uuid.join('');
     }
 
@@ -218,6 +225,10 @@ class SpellViewManager {
         rvuz.forEach((vu) => this.raw_views[vu] = vuz[vu]); 
     }
 
+    add_raw_view(view_name,view_data) {
+        this.raw_views[view_name] = view_data
+    }
+
     load_page(default_view_name) {
         let anc = $(location).attr('hash');
         if(anc && anc.length>1) {
@@ -227,6 +238,8 @@ class SpellViewManager {
         }
         this.show_view(this.active_view)
     }
+
+
     
     
     /**
@@ -255,7 +268,9 @@ class SpellViewManager {
 
         if(auto_add && view_data.hasOwnProperty("name"))
         {
+            $("#spell-player").append(new_view.get_html());
             this.add_view(new_view,view_data.name)
+
         }
 
         return new_view;
@@ -278,19 +293,15 @@ class SpellViewManager {
         let vu = "",new_view;
 
         let oncreate = false;
-        if(this.has_view(view_name))
-        {
+        
+        if(this.has_view(view_name)){
             new_view = this.get_view(view_name);
-            console.log("loading view " + view_name)
         }
         else {
             vu = this.raw_views[view_name];
             vu.name = view_name;
             new_view = this.create_view(vu) //create_view(vu);
             oncreate = true;
-            console.log("creating view " + view_name)
-            this.add_view(new_view,view_name);
-            $("#spell-player").append(new_view.get_html());
         }
 
 
@@ -300,7 +311,7 @@ class SpellViewManager {
         
 
        // setTimeout(function () {
-            if(v_active ){
+            if(v_active){
                 v_active.hide();
             }
             new_view.show();
@@ -318,9 +329,8 @@ class SpellViewManager {
 
 class SpellObject {
 
-    constructor(data) {
-        let default_id_name = "so-" + SpellUtils.guid();
-        this._id = default_id_name;
+    constructor(data) {       
+        this._id = (data._id) ? data._id : "so-" + SpellUtils.guid();
         this._html_tag = "div";
         this._dom_object = null;
         this._type = "view";
@@ -338,6 +348,16 @@ class SpellObject {
             //this._dom_object = this.get_dom_object();
         }
     }
+
+
+    /**
+     * occurs on Spell.init
+     * @override 
+     */
+    init() {
+        //console.log("init " + this._type ) //DEBUG
+    }
+
 
     parse(data,ignore = reserved_words) {
         let cdata = Object.keys(data);
@@ -472,7 +492,7 @@ class SpellObject {
         if(this.animation && jqo.hasClass("xyz-in")){
             jqo.toggleClass("xyz-in xyz-out");
         }
-        console.log("hiding " + this._id);
+        //console.log("hiding " + this._id);
         jqo.hide();
     }
 }
@@ -501,6 +521,7 @@ class SpellHeader extends SpellObject {
         super(data);
     }
 }
+
 class SpellNavBar extends SpellObject {
     constructor(data) {
         data["_type"] = "navbar";
@@ -508,6 +529,16 @@ class SpellNavBar extends SpellObject {
         this._html_tag = "nav";
     }
 }
+
+class SpellForm extends SpellObject {
+    constructor(data) {
+        data["_type"] = "form";
+        super(data);
+        this._html_tag = "form";
+    }
+}
+
+
 class SpellImage extends SpellObject {
     static get defaults() {
         return  {
@@ -542,6 +573,7 @@ class SpellTextField extends SpellObject {
         this.jquery_object.val(text);
     }
 }
+
 class SpellLink extends SpellObject {
     static get  defaults()  {
         let oid = "link-" + SpellUtils.guid();
@@ -549,7 +581,8 @@ class SpellLink extends SpellObject {
             _id: oid,
             name: oid,
             text: oid,
-            style: "color:black;margin:10% 0 0 10% ;width:80%;height:30px;",
+            style: "",
+            class:"pai-link"
         }
         return def;
     }
@@ -640,8 +673,6 @@ class SpellGrid extends SpellObject {
             })
         }
     }
-
-
 }
 class SpellGridCol extends SpellObject {
     static get defaults() {
@@ -686,9 +717,102 @@ class SpellGridRow extends SpellObject {
 }
 
 
+/**
+ * _header : {
+ *      _fields : ["field-1","field-2"...],
+ *      style: "th"
+ * }
+ */
+class SpellTable extends SpellObject {
+    static get defaults() {
+        return  {
+            _type:"table",
+            class:"pai-table",
+            style:"margin-top: 50px;"
+        };
+    }
+    
+    constructor(data) {
+        if(!data._type) {data._type = SpellTable.defaults._type;}
+        super(data);
+        this._html_tag = "table";
+        if(data._header) {
+            let tbr = new SpellTableRow();
+            if(data._header._fields) {
+                data._header._fields.forEach(field => tbr.append(new SpellTableHeader({"id":"eth"+field,"text":field})))
+            }
+            this.append(tbr)
+        }
+        if(data._data) {
+            data._data.forEach(field => {
+                    let tbr = new SpellTableRow();
+                    Object.keys(field).forEach(cell => tbr.append(new SpellTableCell({"text":String(field[cell])})))
+                    this.append(tbr)         
+                })
+        }
+    }
+}
+
+class SpellTableRow extends SpellObject {
+    static get defaults() {
+        return  {
+            _type:"table-row"
+        };
+    }
+    
+    constructor(data) {
+        
+        // full protection
+        if(!data){
+            data = SpellTableRow.defaults;
+        }
+        else if(!data._type) {
+            data._type = SpellTableRow.defaults._type;
+        }
+
+        super(data);
+        this._html_tag = "tr";
+    }
+}
+
+class SpellTableCell extends SpellObject {
+    static get defaults() {
+        return  {
+            _type:"table-cell"
+        };
+    }
+    
+    constructor(data) {
+        // full protection
+        if(!data){
+            data = SpellTableCell.defaults;
+        }
+        else if(!data._type) {
+            data._type = SpellTableCell.defaults._type;
+        }
+        super(data);
+        this._html_tag = "td";
+    }
+}
 
 
-/** Spell COMPILER **/
+class SpellTableHeader extends SpellObject {
+    static get defaults() {
+        return  {
+            _type:"table-header"
+        };
+    }
+    
+    constructor(data) {
+        if(!data._type) {
+            data._type = SpellTableHeader.defaults._type;
+        }
+        super(data);
+        this._html_tag = "th";
+    }
+}
+
+/** Spell Interperter **/
 
 
 class SpellCommand {

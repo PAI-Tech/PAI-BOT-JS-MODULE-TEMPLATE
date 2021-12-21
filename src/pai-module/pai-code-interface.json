@@ -18,14 +18,24 @@
     }
   ],
   "pai-entities" : {
-    "define" : [{
+    "define" : [
+      {
       "name": "hello-world-entity",
       "fields": [
         {"name": "world-id","type": "string", "required": true},
         {"name": "world-name","type": "string", "required": true},
         {"name": "world-image","type": "string", "required": true}
-      ]
-    }]
+        ]
+      },
+      {
+        "name": "hello-world-entity2",
+        "fields": [
+          {"name": "world-id","type": "string", "required": true},
+          {"name": "world-name","type": "string", "required": true},
+          {"name": "world-image","type": "string", "required": true}
+          ]
+        }
+  ]
   }
   ,
   "pai-ddb" : {

@@ -58,15 +58,22 @@ class PAI_WEB_ROUTER
      */
     get_home(req, res,route)
     {
-        //let pai_page_data = require("./home-page.json");
-        //res.send(this.web_builder.get_page(pai_page_data));
-        
+            
         let data_to_client = {}
         if(pai_code_interface["pai-entities"] && pai_code_interface["pai-entities"]["define"]) {
             data_to_client["pai-entities"] = pai_code_interface["pai-entities"]["define"];
         }
         let page = spell_server.get_spell_html_page("spell-page.html",data_to_client)
         res.send(page);
+    }
+
+
+    /**
+     * Update pai-code-intercafe file
+     */
+    upci(req,res,route) {
+        console.log(req.body["entity"])
+        res.send("ok")
     }
 
     /**

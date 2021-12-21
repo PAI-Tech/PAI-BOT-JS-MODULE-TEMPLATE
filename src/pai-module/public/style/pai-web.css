@@ -1,26 +1,44 @@
+:root {
+    --text-color:#afafaf;
+}
+
 html{
     height:100%;
 }
 
 body {
     height: 100%;
-    color:#4E2D64;
+    color:var(--text-color);
     padding:0;
     margin:0;
     font-family: Quicksand, sans-serif
 }
 
 a:hover {
-    color:#4E2D64;
+    color:var(--text-color);
     text-decoration: underline;
 }
 
 a  {
-    color:#4E2D64;
+    color:var(--text-color);
     text-decoration: none;
 }
 
+.pai-link  {
+    color:var(--text-color);
+    text-decoration: none;
+    cursor:pointer;
+}
 
+.pai-link:hover {
+    color:var(--text-color);
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+.pai-table {
+    width:100%
+}
 
 #spell-data {
     color: #212529;
@@ -55,25 +73,28 @@ a  {
 
 .pai-button
 {
-    border:2px #4E2D64 solid;
+    /*border:2px #4E2D64 solid;*/
+    border:2px var(--text-color) solid;
     border-radius:5px;
     background-color: transparent;
     margin-left: calc(50% - 60px);
     padding: 5px;
     min-width: 120px;
-    color:#4E2D64;
+    color:var(--text-color);
+
 }
 
 .pai-circle-button
 {
-    border:2px #4E2D64 solid;
+    /*border:2px #4E2D64 solid;*/
+    border:2px var(--text-color) solid;
     border-radius:50%;
     background-color: transparent;
     margin-left: calc(50% - 50px);
     padding: 5px;
     width: 100px;
     height: 100px;
-    color:#4E2D64;
+    color:var(--text-color);
 }
 
 #pai-desktop {

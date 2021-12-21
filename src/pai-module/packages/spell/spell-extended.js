@@ -87,9 +87,10 @@ class PAIEntityView extends SpellObject {
         //console.log("init pai-entity")
     }
     
-    static edit_entity(entity_name) {
-        let ent = JSON.parse(entity_name);
-        const vn = "pai-entity-form" + SpellUtils.guid();
+    static edit_entity(entity) {
+        let ent = JSON.parse(entity);
+        const v_guid = SpellUtils.guid();
+        const vn = "pai-entity-form" + v_guid;
         let mview = {
             _type : "view",
             name: vn,
@@ -99,7 +100,7 @@ class PAIEntityView extends SpellObject {
             spells:[ 
                 {
                     _type : "view",
-                    _id: "pai-entity-editor" + SpellUtils.guid(),
+                    _id: "pai-entity-editor-" + v_guid,
                     text:"Edit Entity: " + ent.name,
                     "animation":"fade",
                     class:"h4",
@@ -108,23 +109,31 @@ class PAIEntityView extends SpellObject {
                 },
                 {
                     _type:"label",
-                    _id:SpellUtils.guid(),
+                    _id:"en-label-" + v_guid,
                     class:"form-label",
                     text:"Entity Name"
                 },
                 {
                     _type:"text",
                     "input-type":"text",
-                    _id:SpellUtils.guid(),
+                    _id:"en-text-"+v_guid,
                     class:"form-control",
                     value:ent.name
                 },
                 {
-                    _type:"text",
-                    "input-type":"text",
-                    _id:SpellUtils.guid(),
-                    class:"form-control",
-                    value:ent.name
+                    _type:"label",
+                    _id:"en-label-flds-" + v_guid,
+                    class:"form-label",
+                    text:"Fields:"
+                },
+                {
+                    _type:"table",
+                    _id:"en-table-"+v_guid,
+                    class:"pai-table",
+                    _header : {
+                        _fields : ["Name","Data Type","Required"]
+                    },
+                    _data:ent.fields
                 }
 
             ]
