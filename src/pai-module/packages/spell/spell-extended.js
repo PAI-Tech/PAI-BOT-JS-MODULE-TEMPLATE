@@ -29,7 +29,7 @@ class SpellYoutubeVideo extends SpellObject {
 
 class PAIEntityView extends SpellObject {
     /*
-    "pai-entity-view": {
+    (xdata)"pai-entity-view": {
         
       "name": "hello-world-entity",
       "fields": [
@@ -37,6 +37,7 @@ class PAIEntityView extends SpellObject {
       ]
     }*/
 
+    
     constructor(data) {
         data["_ignore"] = "xdata";
         if(!data.spells) {data.spells = []}
@@ -47,20 +48,89 @@ class PAIEntityView extends SpellObject {
                 text:data["xdata"].name,
                 "animation":"fade",
                 class:"h4 speak",
-                style: ""
+                style: "text-align:center;border-bottom:solid 1px var(--text-color)"
             });
             data["xdata"].fields.forEach(field => {
                 data.spells.push({
                     _type : "view",
                     _id: field.name  + "-title",
                     text:field.name,
-                    "animation":"fade",
-                    class:"speak",
+                    "animation":"flip delay-2",
+                    class:"xyz-in speak",
                     style: ""
                 });
             });
+            let v_action = {
+                _type:"view",
+                _id: data["xdata"].name  + "-action",
+                style:"display:block;text-align:right;padding-right:10px",
+                spells: [
+                    {
+                        _type:"link",
+                        _id:data["xdata"].name  + "-edit",
+                        text:"edit",
+                        class:"pai-link",
+                        style:"width:100px;",
+                        onclick:"PAIEntityView.edit_entity('" + JSON.stringify(data["xdata"]) + "')",
+                    },
+                ]
+            }
+            data.spells.push(v_action);
         }
         super(data);
+    }
+
+    /**
+     * @override
+     */
+    init() {
+        //console.log("init pai-entity")
+    }
+    
+    static edit_entity(entity_name) {
+        let ent = JSON.parse(entity_name);
+        const vn = "pai-entity-form" + SpellUtils.guid();
+        let mview = {
+            _type : "view",
+            name: vn,
+            _id: vn,
+            class:"",
+            style: "",
+            spells:[ 
+                {
+                    _type : "view",
+                    _id: "pai-entity-editor" + SpellUtils.guid(),
+                    text:"Edit Entity: " + ent.name,
+                    "animation":"fade",
+                    class:"h4",
+                    style: "text-align:center;border-bottom:solid 1px var(--text-color)",
+                    
+                },
+                {
+                    _type:"label",
+                    _id:SpellUtils.guid(),
+                    class:"form-label",
+                    text:"Entity Name"
+                },
+                {
+                    _type:"text",
+                    "input-type":"text",
+                    _id:SpellUtils.guid(),
+                    class:"form-control",
+                    value:ent.name
+                },
+                {
+                    _type:"text",
+                    "input-type":"text",
+                    _id:SpellUtils.guid(),
+                    class:"form-control",
+                    value:ent.name
+                }
+
+            ]
+        }
+        Spell.view_manager.create_view(mview);
+        Spell.view_manager.show_view(mview.name);
     }
 
     

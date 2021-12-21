@@ -28,12 +28,12 @@
     <meta content="BOT OPERATING SYSTEM" property="og:description">
     <link rel="stylesheet" href="public/style/pai-web.css">
 </head>
-<body class="bg-light" style=''>
+<body class="bg-dark" style=''>
 <div id="spell-data" style='display: none;' >
 </div>
 <div id="pai-desktop" >
     <header>
-        <!--nav class="navbar navbar-expand-lg bg-light">
+        <!--nav class="navbar navbar-expand-lg bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/" style="color:#afafaf;">PAI-TECH</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,13 +98,15 @@
             style: "width:100%;margin: 0;padding:0;display:none",
             "class":"container-fluid xyz-in",
             animation:"fade",
+            "_zibi":"ada",
             spells: [
-                {
-                    _type : "image", _id: "pai-logo",
-                    src: "public/images/pai/pai-tech-open.png",
-                    class:"bots-logo xyz-in", "animation":"fade ease-in-back delay-2",
-                    style:"margin-top:5%"
-                },
+                {   
+                    _type : "label",
+                    text:"pai tech",
+                    class:"xyz-in page-title",
+                    "animation":"fade ease-in-back",
+                    style: "margin-top:5%;"
+                }, 
                 {
                     _type : "label",
                     text:"PAI-Code Module Editor",
@@ -187,37 +189,37 @@
 
     if (spell_data_from_server["pai-entities"])
     {
-        spell_data_from_server["pai-entities"].forEach(ent => {
+        spell_data_from_server["pai-entities"].forEach(entity => {
             vuz["enteties-view"].spells.push({
                 _type:"pai-entity-view",
                 _id: SpellUtils.guid() ,
-                style: "width:250px;border:1px solid black;margin: 0;padding:0;display:block",
+                style: "width:250px;border:1px solid var(--text-color);margin: 20px;padding:10px;display:block",
                 "css-class":" xyz-in",
                 animation:"fade",
-                "xdata":ent
+                "xdata":entity
             })
         })        
     }
     
-
+    
     $(document).ready( function () {
         Spell.init();
         
         
         
-        $('.navbar-nav>li>a').on('click', function(){
-            $('.navbar-collapse').collapse('hide');
-        });
+        // $('.navbar-nav>li>a').on('click', function(){
+        //     $('.navbar-collapse').collapse('hide');
+        // });
 
         Spell.view_manager.add_raw_views(vuz);
         
-        let view_to_show = "main-view";
-        let anc = $(location).attr('hash');
-        if(anc && anc.length>1) {
-            view_to_show = anc.substring(1);
-        }
+        let default_view = "main-view";
+        // let anc = $(location).attr('hash');
+        // if(anc && anc.length>1) {
+        //     view_to_show = anc.substring(1);
+        // }
 
-        Spell.view_manager.load_page(view_to_show);
+        Spell.view_manager.load_page(default_view);
 
         //show_view(view_to_show)
         window.addEventListener('hashchange', Spell.view_manager.hashchange)
