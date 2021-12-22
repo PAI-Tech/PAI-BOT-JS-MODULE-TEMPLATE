@@ -138,8 +138,8 @@ class PAIEntityView extends SpellObject {
 
             ]
         }
-        Spell.view_manager.create_view(mview);
-        Spell.view_manager.show_view(mview.name);
+        //Spell.vm.create_view(mview);
+        Spell.vm.show_dialog(mview);
     }
 
     

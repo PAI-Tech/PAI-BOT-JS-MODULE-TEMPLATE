@@ -98,7 +98,6 @@
             style: "width:100%;margin: 0;padding:0;display:none",
             "class":"container-fluid xyz-in",
             animation:"fade",
-            "_zibi":"ada",
             spells: [
                 {   
                     _type : "label",
@@ -203,26 +202,14 @@
     
     
     $(document).ready( function () {
-        Spell.init();
-        
-        
         
         // $('.navbar-nav>li>a').on('click', function(){
         //     $('.navbar-collapse').collapse('hide');
         // });
 
-        Spell.view_manager.add_raw_views(vuz);
-        
-        let default_view = "main-view";
-        // let anc = $(location).attr('hash');
-        // if(anc && anc.length>1) {
-        //     view_to_show = anc.substring(1);
-        // }
-
-        Spell.view_manager.load_page(default_view);
-
-        //show_view(view_to_show)
-        window.addEventListener('hashchange', Spell.view_manager.hashchange)
+        Spell.init();
+        Spell.vm.add_raw_views(vuz);
+        Spell.vm.load_page("main-view");
         spell_start();
     });
 

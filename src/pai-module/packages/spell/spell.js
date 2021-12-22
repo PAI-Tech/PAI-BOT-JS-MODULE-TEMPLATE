@@ -67,6 +67,13 @@ class Spell {
         return _view_manager;
     }
 
+    /**
+     * aliast to view_manager getter
+     */
+    static get vm() {
+        return Spell.view_manager;
+    }
+
     static get Object_Manager() {
         if(!_object_manager) {
             _object_manager = new SpellObjectManager();
@@ -171,6 +178,7 @@ class SpellUtils {
         words.forEach(word => out_list[word] = "");
         return out_list;
     }
+    
 
     static guid() {
         let chars = '0123456789abcdef'.split('');
@@ -214,10 +222,52 @@ class SpellUtils {
  * */
 class SpellViewManager {
 
+    /**
+     * Spell View Manager constructor
+     * @member raw_views This object contains the textual JSON representation of views (these are not SpellView objects, uses for caching views before loading)
+     * @member views SpellView objects that are ready to use (show, hide...)
+     */
     constructor() {
         this.raw_views = {};
         this.views = {};
         this.active_view = null;
+        this.init();
+    }
+
+    init() {
+        //handle back functionality for browser
+        console.log ("init view manager")
+        window.addEventListener('hashchange', this.hashchange)
+    }
+
+    /**
+     * Creates new SpellView 
+     * @description turns view-data (JSON) to a spell object 
+     * @param view_data
+     * @param auto_add - if true and the view data {view_data} contains a "name" string the new view will be added automatically to the view manager
+     * @return {SpellView}
+     */
+     create_view(view_data,auto_add = true) {
+        
+        let new_view = Spell.create(view_data);
+        if(auto_add && view_data.hasOwnProperty("name")) {
+            $("#spell-player").append(new_view.get_html());
+            this.add_view(new_view,view_data.name)
+        }
+        return new_view;
+    }
+
+
+    add_view(view,view_name) {
+        this.views[view_name] = view;
+    }
+
+    get_view(view_name) {
+        return this.views[view_name];
+    }
+
+    has_view(view_name) {
+        return this.views.hasOwnProperty(view_name)
     }
 
     add_raw_views(vuz) {
@@ -239,8 +289,6 @@ class SpellViewManager {
         this.show_view(this.active_view)
     }
 
-
-    
     
     /**
      * handle the hashchange browser event, used to support Back funcionality.
@@ -256,44 +304,11 @@ class SpellViewManager {
     }
 
     
-    /**
-     * Creates new view
-     * @param view_data
-     * @param auto_add - if true and the view data {view_data} contains a "name" string the new view will be added automatically to the view manager
-     * @return {SpellView}
-     */
-    create_view(view_data,auto_add = true) {
-        let new_view = Spell.create(view_data);
-
-
-        if(auto_add && view_data.hasOwnProperty("name"))
-        {
-            $("#spell-player").append(new_view.get_html());
-            this.add_view(new_view,view_data.name)
-
-        }
-
-        return new_view;
-    }
-
-
-    add_view(view,view_name) {
-        this.views[view_name] = view;
-    }
-
-    get_view(view_name) {
-        return this.views[view_name];
-    }
-
-    has_view(view_name) {
-        return this.views.hasOwnProperty(view_name)
-    }
+    
 
     show_view(view_name) {
         let vu = "",new_view;
-
         let oncreate = false;
-        
         if(this.has_view(view_name)){
             new_view = this.get_view(view_name);
         }
@@ -304,26 +319,27 @@ class SpellViewManager {
             oncreate = true;
         }
 
-
-        //SpellView 
+        //get the active view
         let v_active = this.get_view(this.active_view);
+        if(v_active){
+            v_active.hide();
+        }
+        new_view.show();
+        this.active_view = view_name;
+    
+        if(oncreate)
+        {
+            //temporary should be raplaced with pai-code
+            eval(new_view.oncreate);
+        }
+        Spell.open_url("#" + this.active_view);
+    }
 
-        
 
-       // setTimeout(function () {
-            if(v_active){
-                v_active.hide();
-            }
-            new_view.show();
-            this.active_view = view_name;
-        
-            if(oncreate)
-            {
-                //temporary should be raplaced with pai-code
-                eval(new_view.oncreate);
-            }
-            Spell.open_url("#" + this.active_view);
-       // }, 1000);
+    show_dialog(view_data) {
+        let new_view = this.create_view(view_data) //create_view(vu);
+        $("#spell-player").append(new_view.get_html())
+        //Spell.open_url("#" + this.active_view);
     }
 }
 

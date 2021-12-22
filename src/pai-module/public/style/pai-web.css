@@ -37,7 +37,9 @@ a  {
 }
 
 .pai-table {
-    width:100%
+    width:100%;
+    border:solid 1px var(--text-color);
+    padding:5px;
 }
 
 #spell-data {
