@@ -139,10 +139,37 @@ class PAIEntityView extends SpellObject {
             ]
         }
         //Spell.vm.create_view(mview);
-        Spell.vm.show_dialog(mview);
+        let sdialog = {
+            _id:"pai-entity-editor",
+            _header: {
+                title:"Entity Editor"
+            },
+            _body: mview,
+            _footer:{
+                _buttons:[
+                    {
+                        _id:"dialog-close-button",
+                        text:"Close",
+                        class:"btn btn-secondary",
+                        "data-dismiss":"modal"
+                    },
+                    {
+                        _id:"dialog-save-button",
+                        text:"Save",
+                        class:"btn btn-primary",
+                        onclick:"PAIEntityView.save_entity('" + ent.name +  "')",
+                    }
+                ]
+            }
+        }
+        let  dialog = new SpellDialog(sdialog);
+        dialog.show()
     }
 
-    
+    static save_entity(entity) {
+        alert("savint entity" + entity)
+        Spell.vm.hide_dialog()
+    }
 }
 
 class PAIWebPage extends SpellObject {
