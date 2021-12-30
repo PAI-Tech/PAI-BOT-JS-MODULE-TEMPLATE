@@ -13,7 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@animxyz/core@0.1.1/dist/animxyz.min.css">
     <script src="packages/spell/spell.js"></script>
-    <script src="packages/spell/spell-extended.js"></script>
     <script src="packages/spell/pai-web-bot.js"></script>
 
     <link href="public/images/pai/pai-bot-fav-icon.png" rel="icon"  />
@@ -99,6 +98,12 @@
             "class":"container-fluid xyz-in",
             animation:"fade",
             spells: [
+                {
+                    _id:"air-cursor",
+                    _type:"air-cursor",
+                    class:"spell-air-cursor",
+                    src:"public/images/pai/pai-bot.png"
+                },
                 {   
                     _type : "label",
                     text:"pai tech",
@@ -144,7 +149,7 @@
                                             class:"xyz-in  pai-button",
                                             style:"",
                                             "animation":"fade  ease-out-back",
-                                            onclick:" show_view('connect-view')"
+                                            onclick:"fire()"
                                         }
                                     ]
                                 },
@@ -207,13 +212,21 @@
         //     $('.navbar-collapse').collapse('hide');
         // });
 
-        Spell.init();
-        Spell.vm.add_raw_views(vuz);
-        Spell.vm.load_page("main-view");
-        spell_start();
+        Spell.init().then(() => {
+            Spell.vm.add_raw_views(vuz);
+            Spell.vm.load_page("main-view");
+            spell_start();
+        });
+        
     });
 
+    let fx = 100,fy=100;
 
+    function fire() {
+        let se = new SpellEvent('air-move', {detail:{x:++fx,y:++fy}})
+
+            SpellEventManager.fire(se);
+    }
 
     
 

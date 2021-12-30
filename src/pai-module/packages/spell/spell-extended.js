@@ -167,7 +167,7 @@ class PAIEntityView extends SpellObject {
     }
 
     static save_entity(entity) {
-        alert("savint entity" + entity)
+        //alert("savint entity" + entity)
         Spell.vm.hide_dialog()
     }
 }
@@ -457,3 +457,6 @@ class PAICard extends SpellObject {
 
 
 }
+
+
+SpellExtended.init();

@@ -11,6 +11,8 @@
  *		3 of the License, or (at your option) any later version.
  */
 
+
+
 const spell_object_html_fields_mapping = {"_id": "id",  "css-class": "class","animation":"xyz","input-type":"type"};
 
 const reserved_words = {"spells" :"child spells"}
@@ -83,23 +85,9 @@ class Spell {
         return _object_manager;
     }
 
-    static init() {
-        Spell.Object_Manager.add_objects(
-            {
-                "view":SpellView,
-                "label":SpellLabel,
-                "link" :SpellLink,
-                "button" :SpellButton,
-                "text" : SpellTextField,
-                "video" : SpellVideo,
-                "image" : SpellImage,
-                "grid" : SpellGrid,
-                "list": SpellList,
-                "form":SpellForm,
-                "table":SpellTable
-            }
-        )
-        SpellExtended.init();
+    static async  init() {
+        await SpellUtils.load_script("packages/spell/spell-objects.js")
+        await SpellUtils.load_script("packages/spell/spell-extended.js")        
     }
 
 
@@ -166,201 +154,6 @@ class Spell {
         //console.log(JSON.stringify(cmd));
     }
 
-
-}
-
-class SpellUtils {
-    /**
-     * create ignore list for parser to ignore spells words
-     * @param list - list of reserved words (comma separated)
-     */
-    static create_ignore_list(list){
-        let words = list.split(",");
-        let out_list = reserved_words;
-        words.forEach(word => out_list[word] = "");
-        return out_list;
-    }
-    
-
-    static guid() {
-        let chars = '0123456789abcdef'.split('');
-        let uuid = [], rnd = Math.random, r;
-        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-        uuid[14] = '4'; // version 4
-        for (let i = 0; i < 36; i++) {
-            if (!uuid[i]) {
-                r = 0 | rnd() * 16;
-                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
-            }
-        }
-        //console.log('spell-guid')
-        return uuid.join('');
-    }
-
-    static merge_defaults_with_data(data,defaults) {
-        
-        if(!data._id && !data.id) {
-            let pid = SpellUtils.guid();
-
-            //prevent duplication
-            if (defaults.hasOwnProperty("_id")) {
-                defaults["_id"] += pid;
-            }
-            else {
-                defaults["_id"] = pid;
-            }
-        }
-        //selective assign
-        let dkey = Object.keys(defaults);
-        dkey.forEach(key => {
-            if (!data.hasOwnProperty(key)) {
-                data[key] = defaults[key];
-            }
-        })
-    }
-}
-
-/**
- * @class SpellViewManager
- * @description manage views activities
- * */
-class SpellViewManager {
-
-    /**
-     * Spell View Manager constructor
-     * @member raw_views This object contains the textual JSON representation of views (these are not SpellView objects, uses for caching views before loading)
-     * @member views SpellView objects that are ready to use (show, hide...)
-     */
-    constructor() {
-        this.raw_views = {};
-        this.views = {};
-        this.active_view = null;
-        this.active_modal = null;
-        this.init();
-    }
-
-    init() {
-        //handle back functionality for browser
-        console.log ("init view manager")
-        window.addEventListener('hashchange', this.hashchange)
-    }
-
-    /**
-     * Creates new SpellView 
-     * @description turns view-data (JSON) to a spell object 
-     * @param view_data
-     * @param auto_add - if true and the view data {view_data} contains a "name" string the new view will be added automatically to the view manager
-     * @return {SpellView}
-     */
-     create_view(view_data,auto_add = true) {
-        
-        let new_view = Spell.create(view_data);
-        if(auto_add && view_data.hasOwnProperty("name")) {
-            $(spell_element).append(new_view.get_html());
-            this.add_view(new_view,view_data.name)
-        }
-        return new_view;
-    }
-
-
-    add_view(view,view_name) {
-        this.views[view_name] = view;
-    }
-
-    get_view(view_name) {
-        return this.views[view_name];
-    }
-
-    has_view(view_name) {
-        return this.views.hasOwnProperty(view_name)
-    }
-
-    add_raw_views(vuz) {
-        let rvuz = Object.keys(vuz);
-        rvuz.forEach((vu) => this.raw_views[vu] = vuz[vu]); 
-    }
-
-    add_raw_view(view_name,view_data) {
-        this.raw_views[view_name] = view_data
-    }
-
-    load_page(default_view_name) {
-        let anc = $(location).attr('hash');
-        if(anc && anc.length>1) {
-            this.active_view = anc.substring(1);
-        } else {
-            this.active_view = default_view_name;
-        }
-        this.show_view(this.active_view)
-    }
-
-    
-    /**
-     * handle the hashchange browser event, used to support Back funcionality.
-     */
-    hashchange() {
-        let anc = $(location).attr('hash');
-        if(anc && anc.length>1) {
-            let v_name = anc.substring(1);
-            if(this.active_view != v_name) {
-                this.show_view(v_name)
-            }
-        }
-    }
-
-    
-    
-
-    show_view(view_name) {
-        let vu = "",new_view;
-        let oncreate = false;
-        if(this.has_view(view_name)){
-            new_view = this.get_view(view_name);
-        }
-        else {
-            vu = this.raw_views[view_name];
-            vu.name = view_name;
-            new_view = this.create_view(vu) //create_view(vu);
-            oncreate = true;
-        }
-
-        //get the active view
-        let v_active = this.get_view(this.active_view);
-        if(v_active){
-            v_active.hide();
-        }
-        new_view.show();
-        this.active_view = view_name;
-    
-        if(oncreate)
-        {
-            //temporary should be raplaced with pai-code
-            eval(new_view.oncreate);
-        }
-        Spell.open_url("#" + this.active_view);
-    }
-
-
-    /**
-     * Show spell modal dialog
-     * @param {*} spell_dialog_data 
-     */
-    show_dialog(spell_dialog_data) {
-        
-        if(!spell_dialog_data._id && spell_dialog_data.id){
-            spell_dialog_data._id = "spell-dialog-" + SpellUtils.guid();
-        }
-        let dialog = new SpellDialog(spell_dialog_data);
-        dialog.show()
-    }
-
-    hide_dialog(dialog_id){
-        if(!dialog_id){
-            dialog_id = this.active_modal;
-        }
-        $("#"+dialog_id).modal('hide')
-        this.active_modal = null;
-    }
 
 }
 
@@ -537,423 +330,206 @@ class SpellObject {
     }
 }
 
-
-
-class SpellView extends SpellObject {
-    static get defaults()
-    {
-        let defs =  {
-            _type : "view",
-            "class":"pai-view"
-        };
-        return defs;
+class SpellUtils {
+    /**
+     * create ignore list for parser to ignore spells words
+     * @param list - list of reserved words (comma separated)
+     */
+    static create_ignore_list(list){
+        let words = list.split(",");
+        let out_list = reserved_words;
+        words.forEach(word => out_list[word] = "");
+        return out_list;
     }
-
-    constructor(data) {
-        if(!data) {data = SpellView.defaults;}
-        data["_type"] = "view";
-        super(data);
-    }
-}
-class SpellHeader extends SpellObject {
-    constructor(data) {
-        data["_type"] = "header";
-        super(data);
-    }
-}
-
-class SpellNavBar extends SpellObject {
-    constructor(data) {
-        data["_type"] = "navbar";
-        super(data);
-        this._html_tag = "nav";
-    }
-}
-
-class SpellForm extends SpellObject {
-    constructor(data) {
-        data["_type"] = "form";
-        super(data);
-        this._html_tag = "form";
-    }
-}
-
-
-class SpellImage extends SpellObject {
-    static get defaults() {
-        return  {
-            _type : "image",
-        };
-    }
-
-    constructor(data) {
-        data["_type"] = "image";
-        super(data);
-        this._html_tag = "img";
-    }
-}
-class SpellVideo extends SpellObject {
-    constructor(data) {
-        data["_type"] = "video";
-        super(data);
-        this._html_tag = "video";
-
-    }
-}
-class SpellTextField extends SpellObject {
-    constructor(data) {
-        data["_type"] = "text";
-        super(data);
-        this._html_tag = "input";
-    }
-
-    set_text(text)
-    {
-        this.text = text;
-        this.jquery_object.val(text);
-    }
-}
-
-class SpellLink extends SpellObject {
-    static get  defaults()  {
-        let oid = "link-" + SpellUtils.guid();
-        let def = {
-            _id: oid,
-            name: oid,
-            text: oid,
-            style: "",
-            class:"pai-link"
-        }
-        return def;
-    }
-
-    constructor(data) {
-        data["_type"] = "link";
-        super(data);
-        this._html_tag = "a";
-    }
-}
-
-class SpellLabel extends SpellObject {
-    static get  defaults()  {
-        let oid = "label-";
-        let def = {
-            _id: oid
-        }
-        return def;
-    }
-
-    constructor(data) {
-        data["_type"] = "label";
-        super(data);
-        this._html_tag = "label";
-    }
-
-    set_text(text)
-    {
-        this.text = text;
-        this.jquery_object.text(text);
-    }
-}
-
-class SpellButton extends SpellObject {
     
-    static get defaults() {
-        return  {
-            _type : "button",
-            class:"pai-button"
-        };
-    }
 
-    constructor(data) {
-        if(!data) {data=SpellButton.defaults;}
-        data["_type"] = SpellButton.defaults._type;
-        super(data);
-        this._html_tag = "button";
-    }
-
-    set_text(text)
-    {
-        this.text = text;
-        this.jquery_object.val(text);
-    }
-
-    set_onclick(fun)
-    {
-        this.onclick = fun;
-    }
-}
-
-
-class SpellList extends SpellObject {
-    constructor(data) {
-        data["_type"] = "list";
-
-        super(data);
-        this._html_tag = "ul";
-    }
-
-    set_text(text)
-    {
-        this.text = text;
-        this.jquery_object.val(text);
-    }
-}
-
-class SpellGrid extends SpellObject {
-    static get defaults() {
-        return  {
-            _type : "grid",
-            class:"container-fluid",
-            style:"margin-top: 50px;"
-        };
-    }
-    constructor(data) {
-        data["_type"] = "grid";
-        data["_ignore"] = "rows";
-        super(data);
-        if(data.hasOwnProperty("rows"))
-        {
-            data.rows.forEach(row => {
-                SpellUtils.merge_defaults_with_data(row,SpellGridRow.defaults);
-                this.append(new SpellGridRow(row));
-            })
-        }
-    }
-}
-class SpellGridCol extends SpellObject {
-    static get defaults() {
-        return  {
-            _type : "grid-col",
-            class:"col-sm spell-grid-col"
-        };
-    }
-    constructor(data) {
-        data["_type"] = "grid-col";
-        super(data);
-        if(data.hasOwnProperty("spells"))
-            {
-                //console.log();
-                data.spells.forEach(spell => {
-                    let spell_object = Spell.create(spell);
-                    this.append(spell_object)
-                });
+    static guid() {
+        let chars = '0123456789abcdef'.split('');
+        let uuid = [], rnd = Math.random, r;
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4'; // version 4
+        for (let i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | rnd() * 16;
+                uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
             }
-    }
-}
-class SpellGridRow extends SpellObject {
-    static get defaults() {
-        return  {
-            _type : "grid-row",
-            class:"row spell-grid-row",
-        };
-    }
-
-    constructor(data) {
-        data["_type"] = "grid-row";
-        data["_ignore"] = "cols";
-        super(data);
-        if(data.hasOwnProperty("cols"))
-        {
-            data.cols.forEach(col => {
-                SpellUtils.merge_defaults_with_data(col,SpellGridCol.defaults);
-                this.append(new SpellGridCol(col));
-            })
         }
+        //console.log('spell-guid')
+        return uuid.join('');
     }
-}
 
-/******* Spell Table *******/
-/**
- * _header : {
- *      _fields : ["field-1","field-2"...],
- *      style: "th"
- * }
- */
-class SpellTable extends SpellObject {
-    static get defaults() {
-        return  {
-            _type:"table",
-            class:"pai-table",
-            style:"margin-top: 50px;"
-        };
-    }
-    
-    constructor(data) {
-        if(!data._type) {data._type = SpellTable.defaults._type;}
-        super(data);
-        this._html_tag = "table";
-        if(data._header) {
-            let tbr = new SpellTableRow();
-            if(data._header._fields) {
-                data._header._fields.forEach(field => tbr.append(new SpellTableHeader({"id":"eth"+field,"text":field})))
+    static merge_defaults_with_data(data,defaults) {
+        
+        if(!data._id && !data.id) {
+            let pid = SpellUtils.guid();
+
+            //prevent duplication
+            if (defaults.hasOwnProperty("_id")) {
+                defaults["_id"] += pid;
             }
-            this.append(tbr)
+            else {
+                defaults["_id"] = pid;
+            }
         }
-        if(data._data) {
-            data._data.forEach(field => {
-                    let tbr = new SpellTableRow();
-                    Object.keys(field).forEach(cell => tbr.append(new SpellTableCell({"text":String(field[cell])})))
-                    this.append(tbr)         
-                })
-        }
-    }
-}
-
-class SpellTableRow extends SpellObject {
-    static get defaults() {
-        return  {
-            _type:"table-row"
-        };
-    }
-    
-    constructor(data) {
-        
-        // full protection
-        if(!data){
-            data = SpellTableRow.defaults;
-        }
-        else if(!data._type) {
-            data._type = SpellTableRow.defaults._type;
-        }
-
-        super(data);
-        this._html_tag = "tr";
-    }
-}
-
-class SpellTableCell extends SpellObject {
-    static get defaults() {
-        return  {
-            _type:"table-cell"
-        };
-    }
-    
-    constructor(data) {
-        // full protection
-        if(!data){
-            data = SpellTableCell.defaults;
-        }
-        else if(!data._type) {
-            data._type = SpellTableCell.defaults._type;
-        }
-        super(data);
-        this._html_tag = "td";
-    }
-}
-
-class SpellTableHeader extends SpellObject {
-    static get defaults() {
-        return  {
-            _type:"table-header"
-        };
-    }
-    
-    constructor(data) {
-        if(!data._type) {
-            data._type = SpellTableHeader.defaults._type;
-        }
-        super(data);
-        this._html_tag = "th";
-    }
-}
-
-
-/******* Spell Modal *******/
-
-class SpellDialog extends SpellObject {
-    
-    
-    constructor(data) {
-        const defaults =  {
-            _type:"dialog",
-            class:"modal fade",
-            "aria-hidden":"true",
-            _header:{}, 
-            _body:{},
-            _footer:{},
-        };         
-        super(data,defaults);
-        
-        
-        this.binded = false;
-
-        let md = new SpellView({"_id":"spell-modal-dialog","class":"modal-dialog"});
-        let mc = new SpellView({"_id":"spell-modal-content","class":"modal-content"});
-        if(data._header){
-            let dialog_header = new SpellDialogHeader(data._header)
-            mc.append(dialog_header);
-        }
-
-        let modal_body = new SpellView({"_id":"spell-modal-body","class":"modal-body"});
-        if(data._body._type){
-            let internal_view = Spell.create(data._body)
-            modal_body.append(internal_view)
-        }
-
-        mc.append(modal_body);
-
-        if(data._footer._buttons) {
-            let modal_footer = new SpellDialogFooter({"_id":"spell-modal-footer","_buttons":data._footer._buttons});
-            mc.append(modal_footer)
-        }
-        
-        md.append(mc)
-        this.append(md);
-        
-        
-    }
-
-    bind(element) {
-        $(element).append(this.get_html())
-        this.binded = true;
-        $("#"+this._id).on('hidden.bs.modal', function (e) {
-            //TO-DO handle modal close event
-            console.log("hiding modal")
-          })
-    }
-
-    close() {
-        $("#"+this._id).modal('hide')
-        Spell.vm.active_modal=this._id;
-    }
-
-    show() {
-        if(!this.binded) {this.bind(spell_element)}
-        Spell.vm.active_modal=this._id;
-        $("#"+this._id).modal('show')
-    }
-}
-
-class SpellDialogHeader extends SpellObject {
-    constructor(data) {
-        const defaults={
-            _type:"dialog-header",
-            class:"modal-header"            
-        };
-        super(data,defaults);
-        let h5 = new SpellView({"_id":"spell-modal-title","class":"modal-title","text":data.title,_html_tag : "h5"});
-        let btn_modal_close = new SpellButton({"class":"btn-close","data-bs-dismiss":"modal","aria-label":"Close"})
-        this.append(h5);
-        this.append(btn_modal_close);
-    }
-}
-
-class SpellDialogFooter extends SpellObject {
-    constructor(data) {
-        const defaults={
-            _type:"dialog-footer",
-            _buttons:[], //Array of SpellButtons
-            class:"modal-footer"            
-        };
-        super(data,defaults);
-        data._buttons.forEach(button => {
-            let btn_modal = new SpellButton(button);
-            this.append(btn_modal);
+        //selective assign
+        let dkey = Object.keys(defaults);
+        dkey.forEach(key => {
+            if (!data.hasOwnProperty(key)) {
+                data[key] = defaults[key];
+            }
         })
-        
-        
     }
+
+    static async  load_script(url) {
+            return new Promise(function(resolve, reject) {
+              jQuery.getScript(url).done(function (script) {
+                resolve(script);
+              });
+            });
+    }
+}
+
+/**
+ * @class SpellViewManager
+ * @description manage views activities
+ * */
+class SpellViewManager {
+
+    /**
+     * Spell View Manager constructor
+     * @member raw_views This object contains the textual JSON representation of views (these are not SpellView objects, uses for caching views before loading)
+     * @member views SpellView objects that are ready to use (show, hide...)
+     */
+    constructor() {
+        this.raw_views = {};
+        this.views = {};
+        this.active_view = null;
+        this.active_modal = null;
+        this.init();
+    }
+
+    init() {
+        //handle back functionality for browser
+        window.addEventListener('hashchange', this.hashchange)
+    }
+
+    /**
+     * Creates new SpellView 
+     * @description turns view-data (JSON) to a spell object 
+     * @param view_data
+     * @param auto_add - if true and the view data {view_data} contains a "name" string the new view will be added automatically to the view manager
+     * @return {SpellView}
+     */
+     create_view(view_data,auto_add = true) {
+        
+        let new_view = Spell.create(view_data);
+        if(auto_add && view_data.hasOwnProperty("name")) {
+            $(spell_element).append(new_view.get_html());
+            this.add_view(new_view,view_data.name)
+        }
+        return new_view;
+    }
+
+
+    add_view(view,view_name) {
+        this.views[view_name] = view;
+    }
+
+    get_view(view_name) {
+        return this.views[view_name];
+    }
+
+    has_view(view_name) {
+        return this.views.hasOwnProperty(view_name)
+    }
+
+    add_raw_views(vuz) {
+        let rvuz = Object.keys(vuz);
+        rvuz.forEach((vu) => this.raw_views[vu] = vuz[vu]); 
+    }
+
+    add_raw_view(view_name,view_data) {
+        this.raw_views[view_name] = view_data
+    }
+
+    load_page(default_view_name) {
+        let anc = $(location).attr('hash');
+        if(anc && anc.length>1) {
+            this.active_view = anc.substring(1);
+        } else {
+            this.active_view = default_view_name;
+        }
+        this.show_view(this.active_view)
+    }
+
+    
+    /**
+     * handle the hashchange browser event, used to support Back funcionality.
+     */
+    hashchange() {
+        let anc = $(location).attr('hash');
+        if(anc && anc.length>1) {
+            let v_name = anc.substring(1);
+            if(this.active_view != v_name) {
+                this.show_view(v_name)
+            }
+        }
+    }
+
+    
+    
+
+    show_view(view_name) {
+        let vu = "",new_view;
+        let oncreate = false;
+        if(this.has_view(view_name)){
+            new_view = this.get_view(view_name);
+        }
+        else {
+            vu = this.raw_views[view_name];
+            vu.name = view_name;
+            new_view = this.create_view(vu) //create_view(vu);
+            oncreate = true;
+        }
+
+        //get the active view
+        let v_active = this.get_view(this.active_view);
+        if(v_active){
+            v_active.hide();
+        }
+        new_view.show();
+        this.active_view = view_name;
+    
+        if(oncreate)
+        {
+            //temporary should be raplaced with pai-code
+            eval(new_view.oncreate);
+        }
+        Spell.open_url("#" + this.active_view);
+    }
+
+
+    /**
+     * Show spell modal dialog
+     * @param {*} spell_dialog_data 
+     */
+    show_dialog(spell_dialog_data) {
+        
+        if(!spell_dialog_data._id && spell_dialog_data.id){
+            spell_dialog_data._id = "spell-dialog-" + SpellUtils.guid();
+        }
+        let dialog = new SpellDialog(spell_dialog_data);
+        dialog.show()
+    }
+
+    hide_dialog(dialog_id){
+        if(!dialog_id){
+            dialog_id = this.active_modal;
+        }
+        $("#"+dialog_id).modal('hide')
+        this.active_modal = null;
+    }
+
 }
 
 
@@ -1130,5 +706,23 @@ class SpellCLIParser {
         }
 
         return idx;
+    }
+}
+
+class SpellEvent extends CustomEvent {
+    
+    constructor(type_arg, options) {
+        super( type_arg,options)
+    }
+}
+
+class SpellEventManager {
+    
+    constructor() {
+
+    }
+
+    static fire(spell_event) {
+        document.dispatchEvent(spell_event)
     }
 }

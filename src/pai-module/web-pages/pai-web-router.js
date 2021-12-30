@@ -44,11 +44,18 @@ class PAI_WEB_ROUTER
      */
     get_static_folder(req, res,folder,route)
     {
-
+        if(route.indexOf("?")>-1) {route = route.split("?")[0]}
         let path2 = path.resolve(__dirname,"../" + folder);
         res.sendFile(path2 + "/" + route);
     }
 
+    /**
+     * Update pai-code-intercafe file
+     */
+     upci(req,res,route) {
+        console.log(req.body["entity"])
+        res.send("ok")
+    }
 
     /**
      * Get Home Page from PAI-UI builder send back to the client (Http response)
@@ -68,39 +75,9 @@ class PAI_WEB_ROUTER
     }
 
 
-    /**
-     * Update pai-code-intercafe file
-     */
-    upci(req,res,route) {
-        console.log(req.body["entity"])
-        res.send("ok")
-    }
+    
 
-    /**
-     * Get Admin page
-     * @param req - Http Request
-     * @param res - Http Response
-     * @param route - the route including file name
-     */
-    get_admin_page(req, res,route)
-    {
-
-        let route_ep = "/admin/:id/:name";
-        let has_params = route_ep.indexOf("/",1);
-        let params_str = "no params found"
-        if(has_params < route_ep.length) {
-            params_str = route_ep.substr(has_params + 1);
-            let params = params_str.split("/");
-            for(let idx=0;idx<params.length;++idx)
-            {
-                console.log(params[idx]);
-            };
-
-        }
-
-
-        res.send("params are " +  params_str);
-    }
+    
 
 }
 
