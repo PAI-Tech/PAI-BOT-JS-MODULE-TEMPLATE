@@ -102,6 +102,7 @@
                     _id:"air-cursor",
                     _type:"air-cursor",
                     class:"spell-air-cursor",
+                    _source:"hands",
                     src:"public/images/pai/pai-bot.png"
                 },
                 {   
@@ -216,6 +217,8 @@
             Spell.vm.add_raw_views(vuz);
             Spell.vm.load_page("main-view");
             spell_start();
+
+
         });
         
     });
@@ -273,7 +276,8 @@
         pai_web_bot.load_speech_abilities("Samantha");
         pai_web_bot.speech.set_pron(pron);
         //pai_web_bot.speech.set_voice_by_name();
-
+        let player = new SpellPlayer()
+        player.load();
 
 
     }

@@ -533,8 +533,64 @@ class SpellViewManager {
 }
 
 
-/** Spell Interperter **/
+/** Spell Player **/
 
+class SpellPlayerModule {
+    constructor() {
+        this.name = "simple-module"
+    }
+
+    load(){
+        console.log("module " + this.name + " loaded")
+    }
+
+    execute(spell_command_str) {
+        console.log("executing  " +  spell_command_str)
+    }
+}
+
+
+
+const SpellPlayerState = {
+    fresh:0,
+    loading:1,
+    loaded:2,
+    ready:10
+}
+
+class SpellPlayer {
+
+    constructor(data) {
+        const defaults = {
+            fps:1
+        }
+
+        this.frame = 0 //start frame
+        this.state = SpellPlayerState.fresh
+        this.modules = {}
+    }
+
+    import_module(spell_module) {
+        if(this.modules.hasOwnProperty(spell_module.name)) {
+            console.log("module " + spell_module.name + " already loaded")
+        }
+        else {
+            this.modules[spell_module.name] = spell_module;
+        }
+    }
+
+    load_modules() {
+        this.import_module(new SpellPlayerModule())
+        Object.keys(this.modules).forEach((sm) => this.modules[sm].load());
+    }
+
+    load(){
+        this.load_modules();
+        this.state = SpellPlayerState.loaded
+    }
+
+    
+}
 
 class SpellCommand {
     constructor() {
