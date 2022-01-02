@@ -53,7 +53,7 @@ class PAIEntityView extends SpellObject {
             data["xdata"].fields.forEach(field => {
                 data.spells.push({
                     _type : "view",
-                    _id: field.name  + "-title",
+                    _id: field.name ,
                     text:field.name,
                     "animation":"flip delay-2",
                     class:"xyz-in speak",
