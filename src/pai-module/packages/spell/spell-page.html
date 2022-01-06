@@ -102,7 +102,7 @@
                     _id:"air-cursor",
                     _type:"air-cursor",
                     class:"spell-air-cursor",
-                    _source:"hands",
+                    _source:"air",
                     src:"public/images/pai/pai-bot.png"
                 },
                 {   
@@ -118,8 +118,7 @@
                     class:"xyz-in page-subtitle",
                     "animation":"fade ease-in-back",
                     style: "margin-top:5%;"
-                },
-                {
+                },                {
                     _id:"buttons-pack" ,
                     _type:"grid",
                     class:"container-fluid ",
@@ -136,7 +135,7 @@
                                             text:"Entites",
                                             style:"text-align:center",
                                             class:"xyz-in pai-button",
-                                            "animation":"fade  ease-out-back",
+                                            "animation":"fade flip ease-out-back",
                                             onclick:"show_view('enteties-view')"
                                         }
                                     ]
@@ -227,7 +226,7 @@
 
     function fire() {
         let se = new SpellEvent('air-move', {detail:{x:++fx,y:++fy}})
-
+            console.log('fire')
             SpellEventManager.fire(se);
     }
 
@@ -279,7 +278,45 @@
         let player = new SpellPlayer()
         player.load();
 
+        test_ws()
 
+    }
+
+    function test_ws(){
+        //const ws = require('ws');
+
+        const ws = new WebSocket('ws://localhost:3141/module-1');
+        ws.onopen = function() {
+                    
+            // Web Socket is connected, send data using send()
+            const pai_code_command = {
+                "op":"subscribe-client",
+                "params": {
+                    "event":"pose-est"
+                }
+            }
+
+            ws.send(JSON.stringify(pai_code_command));
+            console.log("Message is sent...");
+        };
+        
+        ws.onmessage = function (evt) { 
+            try{
+                const msg = JSON.parse(evt.data)
+                if(msg.id && msg.id == "pai-event") {
+                    let se = new SpellEvent('air-move', {detail:{x:msg.data.hands["right-palm"].x,y:msg.data.hands["right-palm"].y}})
+                    SpellEventManager.fire(se);
+                }
+            }catch(e){
+                console.error(e);
+            }
+            
+        };
+        
+        ws.onclose = function() { 
+            // websocket is closed.
+            console.log("Connection is closed..."); 
+        };
     }
 
     

@@ -42,6 +42,8 @@ class PCM_MAIN extends PAICodeModule {
         //this.web_services = {};
         this.pai_web_router = new pai_web_router();
         this.pai_web_server = null;
+        this.ws_clients = {}; //websocket clients
+        this.local_es = {}; //local event subscribers
     }
 
 
@@ -170,7 +172,128 @@ class PCM_MAIN extends PAICodeModule {
     }
 
 
+    async handle_event(cmd) {
+        let pai_event = cmd.params["event"].value
+        console.log("event is being handled by module")
+        if(this.local_es[pai_event.name]) {
+            //console.dir()
+            this.local_es[pai_event.name].forEach(wsid => {
+                this.ws_clients[wsid].ws.send(JSON.stringify(pai_event))
+            })
 
+        }
+        
+    }
+
+
+    check_ws_auth(cmd,wsid) {
+        if(!this.ws_clients[wsid].sender && cmd.sender) {
+            this.ws_clients[wsid].sender = cmd.sender
+            this.ws_clients[wsid].identified = true;
+        }
+    }
+
+    /**
+     * TO-DO: 
+     * 1. add handle pai-event function
+     * 2. connect between ws and event
+     * 3. populate events
+     */
+
+    subscribe_client(cmd){
+        const event = cmd.params["event"].value
+        const wsid = cmd.params["wsid"].value
+        if(!this.local_es[event]) {
+            this.local_es[event] = []
+        }
+        this.local_es[event].push(wsid)
+        const pc = `pai-event subscribe event-name:"${event}" module:"${this.get_module_name()}"`
+        //console.log(pc)
+        PAICode.run(pc)
+
+        console.log(wsid + " socket has been subscribed to event " + event )
+    }
+
+    async parse_ws_msg(msg,wsid) {
+        try {
+            let cmd = JSON.parse(msg)
+            this.check_ws_auth(cmd,wsid)
+            if(!cmd.module) {
+                cmd.module = this.get_module_name()
+            }
+            cmd.params["wsid"] = wsid;
+            
+            console.log("parsing command op " + cmd.op + " for module " + cmd.module )
+            
+            
+            //console.dir(cmd)
+            
+            
+            let command = new PAICodeCommand(new PAICodeCommandContext('host','pai-bot'),cmd);
+            try {
+                PAICode.execute(command);
+            } catch (e){
+                    const err_msg = "Error op " + cmd.op + " not found"
+                    console.error(err_msg)
+                    this.ws_clients[wsid].ws.send(err_msg )
+            }
+            
+            //this[pc.func](cmd_out)
+            
+           
+            //console.log(cmd)
+            
+        } catch(e) {console.log(e)}
+    }
+
+    async handle_ws_message(cmd){
+        const ws = cmd.params.ws.value
+        const msg = cmd.params.msg.value
+        const ws_id = this.validate_wsid(ws)
+        this.parse_ws_msg(msg,ws_id)
+    }
+
+    get_wsid(ws) {
+        return ws._socket.remoteAddress + ":" + ws._socket.remotePort;
+    }
+
+    validate_wsid(ws){
+        const wsid = this.get_wsid(ws)
+        if(!this.ws_clients[wsid]) {
+            this.add_ws_connection(ws,wsid)
+        }
+        return wsid;
+    }
+
+    add_ws_connection(ws,wsid) {
+        if(!wsid) wsid = this.get_wsid(ws)
+        let ws_con = {
+            "connect-time":Date.now(),
+            "identified":false,
+            "sender":null,
+            "status":"open",
+            ws:ws
+        }
+        this.ws_clients[wsid] = ws_con;
+        PAILogger.info("New websocket conection "+ wsid)
+    }
+
+    async handle_ws_open(cmd){
+        const ws = cmd.params.ws.value
+        this.add_ws_connection(ws)
+    }
+
+    async handle_ws_close(cmd){
+        const wsid = cmd.params["wsid"].value
+        
+        //console.log("socket  " + wsid + " is closed")
+        // const wsid = ws._socket.remoteAddress + ":" + ws._socket.remotePort
+        if(this.ws_clients.hasOwnProperty(wsid)) {
+            this.ws_clients[wsid].status = "closed"
+           // this.ws_clients[wsid].ws = null
+        }
+
+    }
 
 
     /**

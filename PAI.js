@@ -48,7 +48,7 @@ async function start(){
     const hello_world_pai_code = `${pai_code_module_name} hello-world name:"pai-bot"`
     res = await PAICode.run(hello_world_pai_code);
     PAILogger.info(res);
-
+    //PAICode.start()
 
 }
 
@@ -56,6 +56,8 @@ async function start(){
 /***
  * Script activation command
  */
+
+require("../PAI-BOT-JS/PAI");
 
 start().then().catch(e => {
     console.log("Error " + e);

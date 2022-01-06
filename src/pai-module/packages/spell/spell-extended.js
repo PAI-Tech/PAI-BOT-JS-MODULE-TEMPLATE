@@ -18,6 +18,7 @@ class SpellExtended {
 }
 
 
+
 class SpellYoutubeVideo extends SpellObject {
     constructor(data) {
         data["_type"] = "youtube";
@@ -137,8 +138,7 @@ class PAIEntityView extends SpellObject {
                 }
 
             ]
-        }
-        //Spell.vm.create_view(mview);
+        };
         let sdialog = {
             _id:"pai-entity-editor",
             _header: {
