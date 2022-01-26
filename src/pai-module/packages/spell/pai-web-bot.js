@@ -19,6 +19,7 @@ class PAIWebVoice {
 
     constructor() {
 
+
         this.synth = null;
         this.voices = null;
         this.defaults_voice = null;
@@ -119,13 +120,55 @@ class PAIWebVoice {
 class PAIWebBot {
     constructor() {
         this.speech = null;
+        this.ws = null;
     }
 
-    load_speech_abilities(default_voice_name = null) {
+    load_speech_abilities(default_voice_name = "Samantha") {
         this.speech =  PAIWebVoice.get_instance();
 
         this.speech.load_voices(default_voice_name);
         console.log("now I can speak :]");
+    }
+
+    /**
+     * Opens a Wormhole to the PAI-BOT on the server (client-to-server wormhole)
+     * @param {*} ws_url 
+     */
+    open_wormhole(ws_url){
+
+        this.ws = new WebSocket(ws_url);
+        const wss = this.ws;
+        this.ws.onopen = function() {
+                    
+            // Web Socket is connected, send data using send()
+            const pai_code_command = {
+                "op":"subscribe-client",
+                "params": {
+                    "event":"pose-est"
+                }
+            }
+
+            wss.send(JSON.stringify(pai_code_command));
+            console.log("Message is sent...");
+        };
+        
+        this.ws.onmessage = function (evt) { 
+            try{
+                const msg = JSON.parse(evt.data)
+                if(msg.id && msg.id == "pai-event") {
+                    let se = new SpellEvent('air-move', {detail:{x:msg.data.hands["right-palm"].x,y:msg.data.hands["right-palm"].y}})
+                    SpellEventManager.fire(se);
+                }
+            }catch(e){
+                console.error(e);
+            }
+            
+        };
+        
+        this.ws.onclose = function() { 
+            // websocket is closed.
+            console.log("Connection is closed..."); 
+        };
     }
 }
 

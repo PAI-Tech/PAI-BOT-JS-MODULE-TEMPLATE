@@ -90,6 +90,11 @@ class Spell {
         await SpellUtils.load_script("packages/spell/spell-extended.js")        
     }
 
+    static load_app(spell_app){
+        Spell.vm.add_raw_views(spell_app.views);
+        const v = (spell_app.defaults && spell_app.defaults.view) ? spell_app.defaults.view : Spell.vm.raw_views[0].name
+        Spell.vm.load_page(v);
+    }
 
     static open_url(url, target = null)
     {
@@ -159,9 +164,9 @@ class Spell {
 
 class SpellObject {
 
-    constructor(data,defauts) {     
-        if(defauts) {
-            SpellUtils.merge_defaults_with_data(data,defauts)
+    constructor(data,defaults) {     
+        if(defaults) {
+            SpellUtils.merge_defaults_with_data(data,defaults)
         }  
         this._id = (data._id) ? data._id : "so-" + SpellUtils.guid();
         this._html_tag = "div";
@@ -359,25 +364,21 @@ class SpellUtils {
     }
 
     static merge_defaults_with_data(data,defaults) {
-        
-        if(!data._id && !data.id) {
-            let pid = SpellUtils.guid();
-
-            //prevent duplication
-            if (defaults.hasOwnProperty("_id")) {
-                defaults["_id"] += pid;
+        if(data){
+            if(!data._id && !data.id) {
+                defaults["_id"] = SpellUtils.guid();
             }
-            else {
-                defaults["_id"] = pid;
-            }
+            //selective assign
+            let dkey = Object.keys(defaults);
+            dkey.forEach(key => {
+                if (!data.hasOwnProperty(key)) {
+                    data[key] = defaults[key];
+                }
+            })
         }
-        //selective assign
-        let dkey = Object.keys(defaults);
-        dkey.forEach(key => {
-            if (!data.hasOwnProperty(key)) {
-                data[key] = defaults[key];
-            }
-        })
+        else {
+            data = defaults
+        }
     }
 
     static async  load_script(url) {
@@ -782,3 +783,11 @@ class SpellEventManager {
         document.dispatchEvent(spell_event)
     }
 }
+
+
+ /* 
+    //example for event fire
+        const se = new SpellEvent('event-name', {detail:{x:100,y:100}})
+        SpellEventManager.fire(se);
+    }
+    */

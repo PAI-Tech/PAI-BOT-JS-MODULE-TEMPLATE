@@ -42,6 +42,22 @@
       "params" : [
         {"name":"name", "label":"you name", "description":"what is your name", "required":true}
       ]
+    },
+    {"command-name":"search-world", "js-function":"search_world",
+      "params" : [
+        {"name":"filter", "label":"filter", "description":"filter", "required":true}
+      ]
+    },
+    {"command-name":"update-world", "js-function":"update_world",
+      "params" : [
+        {"name":"filter", "label":"filter", "description":"filter", "required":true},
+        {"name":"updates", "label":"updates", "description":"updates", "required":true}
+      ]
+    },
+    {"command-name":"del-world", "js-function":"del_world",
+      "params" : [
+        {"name":"filter", "label":"filter", "description":"filter", "required":true}
+      ]
     }
   ],
   "pai-entities" : {
@@ -51,17 +67,10 @@
       "fields": [
         {"name": "world-id","type": "string", "required": true},
         {"name": "world-name","type": "string", "required": true},
-        {"name": "world-image","type": "string", "required": true}
+        {"name": "world-image","type": "string", "required": true},
+        {"name": "Creator","type": "string", "required": true}
         ]
-      },
-      {
-        "name": "hello-world-entity2",
-        "fields": [
-          {"name": "world-id","type": "string", "required": true},
-          {"name": "world-name","type": "string", "required": true},
-          {"name": "world-image","type": "string", "required": true}
-          ]
-        }
+      }
   ]
   }
   ,

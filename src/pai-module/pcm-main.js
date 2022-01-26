@@ -303,7 +303,7 @@ class PCM_MAIN extends PAICodeModule {
      */
     async hello_world(cmd) {
         const world_name = cmd.params['name'].value; // this is how to access the PAICodeParameter value 
-        //this.add_world(world_name); //unmark this to use pai-ddb
+        await this.add_world(world_name); //unmark this to use pai-ddb
         return `hello world ${world_name}`;  
     }
 
@@ -314,6 +314,27 @@ class PCM_MAIN extends PAICodeModule {
         hello_world_entity["world-name"] = world_name;
         await pai_ddb.add_entity(hello_world_entity);
         console.log(`new world id: ${hello_world_entity["world-id"]} name:${hello_world_entity["world-name"]}`);
+    }
+
+
+    async search_world(cmd) {
+        const filter = cmd.params["filter"].value;
+        const res = pai_ddb.find("hello-world-entity", JSON.parse(filter));
+        return JSON.stringify(res);
+    }
+
+
+    async del_world(cmd) {
+        const filter = JSON.parse(cmd.params["filter"].value);
+        const res = pai_ddb.delete("hello-world-entity", filter);
+        return JSON.stringify(res);
+    }
+
+    async update_world(cmd) {
+        const filter = JSON.parse(cmd.params["filter"].value);
+        const updates = JSON.parse(cmd.params["updates"].value);
+        const res = pai_ddb.update("hello-world-entity",updates,filter);
+        return JSON.stringify(res);
     }
 
 }

@@ -1,19 +1,12 @@
 
 
 class SpellView extends SpellObject {
-    static get defaults()
-    {
-        let defs =  {
+    constructor(data) {
+        const defaults =  {
             _type : "view",
             "class":"pai-view"
         };
-        return defs;
-    }
-
-    constructor(data) {
-        if(!data) {data = SpellView.defaults;}
-        data["_type"] = "view";
-        super(data);
+        super(data,defaults);
     }
 }
 

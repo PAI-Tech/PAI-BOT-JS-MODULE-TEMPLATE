@@ -31,51 +31,8 @@
 <div id="spell-data" style='display: none;' >
 </div>
 <div id="pai-desktop" >
-    <header>
-        <!--nav class="navbar navbar-expand-lg bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/" style="color:#afafaf;">PAI-TECH</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="javascript:show_view('about-view')">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="javascript:show_view('contact-view')">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="https://developers.pai-tech.org/knowledge-base">Developers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="https://developers.pai-tech.org">Blog</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown link
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav -->
-    </header>
     <div id="spell-player" style="width: 100%;padding: 0;margin: 0">
-        <div id="pai-view-1"></div>
     </div>
-    <!--footer id="pai-footer" style="" class="xyz-in"  xyz="fade delay2" >
-        <div style="margin-top:5px;text-align: center">PAI-TECH - MAKING COMPUTER SMARTER</div>
-    </footer-->
 </div>
 
 </body>
@@ -83,241 +40,137 @@
 
 
 
-    let spell_data_from_server = "$spell_data_from_server";
+    //static data that was sent from the server when the page was loaded
+    const spell_data_from_server = "$spell_data_from_server";
     
-    let pron = {
-        "-": " ",
-        "pai" : "pi"
-    }
-
-    const vuz = {        
-        "main-view": {
-            _type : "view",
-            _id: "main-view" ,
-            style: "width:100%;margin: 0;padding:0;display:none",
-            "class":"container-fluid xyz-in",
-            animation:"fade",
-            spells: [
-                {
-                    _id:"air-cursor",
-                    _type:"air-cursor",
-                    class:"spell-air-cursor",
-                    _source:"air",
-                    src:"public/images/pai/pai-bot.png"
-                },
-                {   
-                    _type : "label",
-                    text:"pai tech",
-                    class:"xyz-in page-title",
-                    "animation":"fade ease-in-back",
-                    style: "margin-top:5%;"
-                }, 
-                {
-                    _type : "label",
-                    text:"PAI-Code Module Editor",
-                    class:"xyz-in page-subtitle",
-                    "animation":"fade ease-in-back",
-                    style: "margin-top:5%;"
-                },                {
-                    _id:"buttons-pack" ,
-                    _type:"grid",
-                    class:"container-fluid ",
-                    style:"margin-top: 3vw;display:block",
-                    rows: [
-                        {
-                            _id:"first_row",
-                            cols: [
-                                {
-                                    "_id":"g1",
-                                    spells: [
-                                        {
-                                            _type:"button",
-                                            text:"Entites",
-                                            style:"text-align:center",
-                                            class:"xyz-in pai-button",
-                                            "animation":"fade flip ease-out-back",
-                                            onclick:"show_view('enteties-view')"
-                                        }
-                                    ]
-                                },
-                                {
-                                    spells: [
-                                        
-                                        {
-                                            _type:"button",
-                                            text:"Web Services",
-                                            class:"xyz-in  pai-button",
-                                            style:"",
-                                            "animation":"fade  ease-out-back",
-                                            onclick:"fire()"
-                                        }
-                                    ]
-                                },
-                                {
-                                    spells: [
-                                        
-                                        {
-                                            _type:"button",
-                                            text:"Commands",
-                                            class:"xyz-in pai-button",
-                                            style:"",
-                                            "animation":"fade ease-out-back",
-                                            onclick:" show_view('product-view')"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+    const spell_app = {
+        views:{        
+            "main-view": {
+                _type : "view",
+                _id: "main-view" ,
+                style: "width:100%;margin: 0;padding:0;display:none",
+                "class":"container-fluid xyz-in",
+                animation:"fade",
+                spells: [
+                    {
+                        _id:"air-cursor",
+                        _type:"air-cursor",
+                        class:"spell-air-cursor",
+                        _source:"air",
+                        src:"public/images/pai/pai-bot.png"
+                    },
+                    {   
+                        _type : "label",
+                        text:"pai tech",
+                        class:"xyz-in page-title",
+                        "animation":"fade ease-in-back",
+                        style: "margin-top:5%;"
+                    }, 
+                    {
+                        _type : "label",
+                        text:"S P E L L",
+                        class:"xyz-in page-subtitle",
+                        "animation":"fade ease-in-back",
+                        style: "margin-top:5%;"
+                    },                {
+                        _id:"buttons-pack" ,
+                        _type:"grid",
+                        class:"container-fluid ",
+                        style:"margin-top: 3vw;display:block",
+                        rows: [
+                            {
+                                _id:"first_row",
+                                cols: [
+                                    {
+                                        "_id":"g1",
+                                        spells: [
+                                            {
+                                                _type:"button",
+                                                text:"Entites",
+                                                style:"text-align:center",
+                                                class:"xyz-in pai-button",
+                                                "animation":"fade flip ease-out-back",
+                                                onclick:"show_view('enteties-view')"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        spells: [
+                                            
+                                            {
+                                                _type:"button",
+                                                text:"Web Services",
+                                                class:"xyz-in  pai-button",
+                                                style:"",
+                                                "animation":"fade  ease-out-back",
+                                                onclick:"fire()"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        spells: [
+                                            
+                                            {
+                                                _type:"button",
+                                                text:"Commands",
+                                                class:"xyz-in pai-button",
+                                                style:"",
+                                                "animation":"fade ease-out-back",
+                                                onclick:" show_view('product-view')"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         },
-        "enteties-view": {
-            _type : "view",
-            _id: "enteties-view" ,
-            style: "width:100%;margin: 0;padding:0;display:block",
-            "class":"container-fluid xyz-in",
-            animation:"fade",
-            spells: [
-                {
-                    _type : "label",
-                    text:"PAI-Entites",
-                    class:"xyz-in page-title",
-                    "animation":"fade  ease-in-back",
-                    style: "margin-top:50px",
-                }
-            ]
+        defaults:{
+            view:"main-views"
         }
         
     }
 
-    if (spell_data_from_server["pai-entities"])
-    {
-        spell_data_from_server["pai-entities"].forEach(entity => {
-            vuz["enteties-view"].spells.push({
-                _type:"pai-entity-view",
-                _id: SpellUtils.guid() ,
-                style: "width:250px;border:1px solid var(--text-color);margin: 20px;padding:10px;display:block",
-                "css-class":" xyz-in",
-                animation:"fade",
-                "xdata":entity
-            })
-        })        
-    }
-    
-    
+    let pai_web_bot = null;
     $(document).ready( function () {
-        
-        // $('.navbar-nav>li>a').on('click', function(){
-        //     $('.navbar-collapse').collapse('hide');
-        // });
 
         Spell.init().then(() => {
-            Spell.vm.add_raw_views(vuz);
-            Spell.vm.load_page("main-view");
-            spell_start();
-
-
+            Spell.load_app(spell_app)
+            start_pai_web_bot()
+            const wormhole_url = "ws://" + window.location.host + window.location.pathname;
+            pai_web_bot.open_wormhole(wormhole_url)
+            //let player = new SpellPlayer()
+            //player.load();
         });
         
     });
 
-    let fx = 100,fy=100;
 
-    function fire() {
-        let se = new SpellEvent('air-move', {detail:{x:++fx,y:++fy}})
-            console.log('fire')
-            SpellEventManager.fire(se);
-    }
+   
 
     
 
     
     
-    let pai_web_bot = null;
-
-    let colors=["rgba(255,255,255,0.2)","rgba(255,255,255,0.4)","rgba(255,255,255,0.6)","rgba(255,255,255,0.8)"]
-    let cidx = 0;
-    let spk_icon =  null;
-
-    function on_speech_interval(event) {
-        //console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.');
-        let bgcolor = colors[cidx];
-        if(++cidx >= colors.length)
-            cidx = 0;
-        spk_icon.css('background-color',bgcolor)
-    }
-
-    function on_speech_end(event) {
-        spk_icon.css('background-color',"rgba(0,0,0,0)");
-    }
-
-    async function bot_speak(elem_to_speak) {
-
-        //console.log(elem_to_speak)
-        spk_icon = $("#"+elem_to_speak + "-bot");
 
 
-        let txt = "";
-        $("#" + elem_to_speak).find(".speak").each(function() {
-
-            let l_txt_u = $(this).text();
-            pai_web_bot.speech.speak(l_txt_u,on_speech_interval,on_speech_end);
-        });
-    }
-
-
-    function spell_start() {
-        //let spell_program = `spell-player load spell:'${JSON.stringify(vuz)}'`;
-
-        //Spell.play(spell_program);
+    function start_pai_web_bot() {
+        
+        const pron = {
+            "-": " ",
+            "pai" : "pi"
+        }
+        
         pai_web_bot = new PAIWebBot();
         pai_web_bot.load_speech_abilities("Samantha");
         pai_web_bot.speech.set_pron(pron);
         //pai_web_bot.speech.set_voice_by_name();
-        let player = new SpellPlayer()
-        player.load();
-
-        test_ws()
-
+        
     }
 
-    function test_ws(){
-        //const ws = require('ws');
-
-        const ws = new WebSocket('ws://localhost:3141/module-1');
-        ws.onopen = function() {
-                    
-            // Web Socket is connected, send data using send()
-            const pai_code_command = {
-                "op":"subscribe-client",
-                "params": {
-                    "event":"pose-est"
-                }
-            }
-
-            ws.send(JSON.stringify(pai_code_command));
-            console.log("Message is sent...");
-        };
-        
-        ws.onmessage = function (evt) { 
-            try{
-                const msg = JSON.parse(evt.data)
-                if(msg.id && msg.id == "pai-event") {
-                    let se = new SpellEvent('air-move', {detail:{x:msg.data.hands["right-palm"].x,y:msg.data.hands["right-palm"].y}})
-                    SpellEventManager.fire(se);
-                }
-            }catch(e){
-                console.error(e);
-            }
-            
-        };
-        
-        ws.onclose = function() { 
-            // websocket is closed.
-            console.log("Connection is closed..."); 
-        };
-    }
+    
 
     
 

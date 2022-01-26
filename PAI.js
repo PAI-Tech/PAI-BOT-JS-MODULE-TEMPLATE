@@ -57,7 +57,7 @@ async function start(){
  * Script activation command
  */
 
-require("../PAI-BOT-JS/PAI");
+//require("../PAI-BOT-JS/PAI");
 
 start().then().catch(e => {
     console.log("Error " + e);
