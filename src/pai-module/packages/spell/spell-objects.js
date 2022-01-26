@@ -1,12 +1,5 @@
 
 
-
-
-
-
-
-
-
 class SpellView extends SpellObject {
     static get defaults()
     {
@@ -23,6 +16,7 @@ class SpellView extends SpellObject {
         super(data);
     }
 }
+
 class SpellHeader extends SpellObject {
     constructor(data) {
         data["_type"] = "header";
@@ -176,6 +170,7 @@ class SpellGrid extends SpellObject {
             style:"margin-top: 50px;"
         };
     }
+    
     constructor(data) {
         data["_type"] = "grid";
         data["_ignore"] = "rows";
