@@ -61,14 +61,14 @@
                     },
                     {   
                         _type : "label",
-                        text:"pai tech",
+                        text:"Spell",
                         class:"xyz-in page-title",
                         "animation":"fade ease-in-back",
                         style: "margin-top:5%;"
                     }, 
                     {
                         _type : "label",
-                        text:"S P E L L",
+                        text:"by pai-tech",
                         class:"xyz-in page-subtitle",
                         "animation":"fade ease-in-back",
                         style: "margin-top:5%;"
@@ -86,11 +86,11 @@
                                         spells: [
                                             {
                                                 _type:"button",
-                                                text:"Entites",
+                                                text:"Editor",
                                                 style:"text-align:center",
                                                 class:"xyz-in pai-button",
                                                 "animation":"fade flip ease-out-back",
-                                                onclick:"show_view('enteties-view')"
+                                                onclick:"show_view('spell-editor')"
                                             }
                                         ]
                                     },
@@ -125,7 +125,38 @@
                         ]
                     }
                 ]
+            },
+            "spell-editor": {
+                _type : "view",
+                _id: "main-view" ,
+                style: "width:100%;margin: 0;padding:0;display:none",
+                "class":"container-fluid xyz-in",
+                animation:"fade",
+                spells: [
+                    {
+                        _id:"air-cursor",
+                        _type:"air-cursor",
+                        class:"spell-air-cursor",
+                        _source:"air",
+                        src:"public/images/pai/pai-bot.png"
+                    },
+                    {   
+                        _type : "label",
+                        text:"pai tech",
+                        class:"xyz-in page-title",
+                        "animation":"fade ease-in-back",
+                        style: "margin-top:5%;"
+                    }, 
+                    {
+                        _type : "label",
+                        text:"S P E L L",
+                        class:"xyz-in page-subtitle",
+                        "animation":"fade ease-in-back",
+                        style: "margin-top:5%;"
+                    }
+                ]
             }
+
         },
         defaults:{
             view:"main-views"
@@ -139,21 +170,12 @@
         Spell.init().then(() => {
             Spell.load_app(spell_app)
             start_pai_web_bot()
-            const wormhole_url = "ws://" + window.location.host + window.location.pathname;
-            pai_web_bot.open_wormhole(wormhole_url)
             //let player = new SpellPlayer()
             //player.load();
         });
         
     });
 
-
-   
-
-    
-
-    
-    
 
 
     function start_pai_web_bot() {
@@ -167,38 +189,16 @@
         pai_web_bot.load_speech_abilities("Samantha");
         pai_web_bot.speech.set_pron(pron);
         //pai_web_bot.speech.set_voice_by_name();
+        const wormhole_url = "ws://" + window.location.host + window.location.pathname;
+        pai_web_bot.open_wormhole(wormhole_url)
         
     }
-
-    
-
-    
-
-
 
 
     function show_view(view_name)
     {
         Spell.view_manager.show_view(view_name);
     }
-
-    function create_view(vdata) {
-        let spellview = Spell.create(vdata);
-        return spellview;
-    }
-
-    
-
-    function start_flow()
-    {
-        //setTimeout('show_view("main-view")',3000)
-    }
-
-
-
-
-
-
 
 </script>
 </html>
