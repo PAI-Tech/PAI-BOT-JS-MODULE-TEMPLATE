@@ -69,6 +69,27 @@ class SpellTextField extends SpellObject {
     }
 }
 
+class SpellTextArea extends SpellObject {
+    constructor(data) {
+        const defs = {
+            "_type":"textarea",
+            "class":"form-control",
+            "_html_tag":"textarea"
+        }
+        super(data,defs);
+    }
+
+    set_text(text)
+    {
+        this.text = text;
+        this.jquery_object.val(text);
+    }
+
+    get_text() {
+        return this.text
+    }
+}
+
 class SpellLink extends SpellObject {
     static get  defaults()  {
         let oid = "link-" + SpellUtils.guid();
@@ -112,19 +133,13 @@ class SpellLabel extends SpellObject {
 }
 
 class SpellButton extends SpellObject {
-    
-    static get defaults() {
-        return  {
-            _type : "button",
-            class:"pai-button"
-        };
-    }
-
     constructor(data) {
-        if(!data) {data=SpellButton.defaults;}
-        data["_type"] = SpellButton.defaults._type;
-        super(data);
-        this._html_tag = "button";
+        const defs = {
+            _type : "button",
+            class:"pai-button",
+            _html_tag :"button"
+        }
+        super(data,defs);        
     }
 
     set_text(text)
@@ -460,13 +475,14 @@ class SpellAirCursor extends SpellObject {
     }
 }
 
-Spell.Object_Manager.add_objects(
+Spell.om.register_objects(
     {
         "view":SpellView,
         "label":SpellLabel,
         "link" :SpellLink,
         "button" :SpellButton,
         "text" : SpellTextField,
+        "textarea":SpellTextArea,
         "video" : SpellVideo,
         "image" : SpellImage,
         "grid" : SpellGrid,

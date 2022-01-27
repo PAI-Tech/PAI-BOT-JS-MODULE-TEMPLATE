@@ -10,7 +10,7 @@
 class SpellExtended {
 
     static init() {
-        Spell.Object_Manager.add_objects({
+        Spell.om.register_objects({
                 "youtube":SpellYoutubeVideo,
                 "pai-entity-view":PAIEntityView
             })

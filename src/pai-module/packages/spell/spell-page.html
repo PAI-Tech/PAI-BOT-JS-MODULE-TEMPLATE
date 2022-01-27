@@ -44,6 +44,9 @@
     const spell_data_from_server = "$spell_data_from_server";
     
     const spell_app = {
+        spell:{
+            version:1
+        },
         views:{        
             "main-view": {
                 _type : "view",
@@ -72,7 +75,8 @@
                         class:"xyz-in page-subtitle",
                         "animation":"fade ease-in-back",
                         style: "margin-top:5%;"
-                    },                {
+                    },                
+                    {
                         _id:"buttons-pack" ,
                         _type:"grid",
                         class:"container-fluid ",
@@ -128,38 +132,87 @@
             },
             "spell-editor": {
                 _type : "view",
-                _id: "main-view" ,
+                _id: "spell-editor" ,
                 style: "width:100%;margin: 0;padding:0;display:none",
                 "class":"container-fluid xyz-in",
                 animation:"fade",
                 spells: [
-                    {
-                        _id:"air-cursor",
-                        _type:"air-cursor",
-                        class:"spell-air-cursor",
-                        _source:"air",
-                        src:"public/images/pai/pai-bot.png"
-                    },
-                    {   
-                        _type : "label",
-                        text:"pai tech",
-                        class:"xyz-in page-title",
-                        "animation":"fade ease-in-back",
-                        style: "margin-top:5%;"
-                    }, 
-                    {
-                        _type : "label",
-                        text:"S P E L L",
-                        class:"xyz-in page-subtitle",
-                        "animation":"fade ease-in-back",
-                        style: "margin-top:5%;"
+                {
+                        _id:"spell-editor-grid" ,
+                        _type:"grid",
+                        rows: [{
+                                cols: [
+                                    {
+                                        _id:"spell-editor-toolbox",
+                                        class:"col-sm-2",
+                                        spells: [
+                                            {
+                                                _type:"view",
+                                                _id:"spell-editor-toolbox-view",
+                                                style:"height:100vh;border-right:1px white solid;padding-top:10px", 
+                                                spells: [
+                                                    {
+                                                        _type:"button",
+                                                        text:"View",
+                                                        onclick:"player_add_object('view')"
+                                                    }
+                                                ]                                             
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        spells: [
+                                            {
+                                                _id:"spell-editor-code",
+                                                _type:"grid",
+                                                style:"width:100%;height:50vh;border:1px solid white;padding:10px",
+                                                rows:[
+                                                    {
+                                                        _id:"row_1",
+                                                        style:"height:100%",
+                                                        cols:[
+                                                            {
+                                                                _id:"code-text-col",
+                                                                spells:[
+                                                                    {
+                                                                        _id:"spell-code-text",
+                                                                        style:"height:80%",
+                                                                        _type:"textarea"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                _id:"code-text-compile",
+                                                                class:"col-sm-2",
+                                                                spells:[
+                                                                    {
+                                                                        _id:"spell-code-button",
+                                                                        _type:"button",
+                                                                        text:"Run",
+                                                                        onclick:"run_spell()"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                _id:"spell-editor-player",
+                                                _type:"view",
+                                                style:"width:100%;height:50vh;border:1px solid green;",
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
-
         },
         defaults:{
-            view:"main-views"
+            view:"main-view"
         }
         
     }
@@ -198,6 +251,31 @@
     function show_view(view_name)
     {
         Spell.view_manager.show_view(view_name);
+    }
+
+    function player_add_object(object_name) {
+        
+
+        let vdata = {
+            _id:"new-view",
+            style:"width:100px;height:100px;background-color:red"
+        }
+        let txt = Spell.om.get_object("spell-code-text")
+        txt.set_text(JSON.stringify(vdata))
+    }
+
+    function run_spell() {
+        let text = Spell.om.get_object("spell-code-text").get_text()
+        try {
+            let so = JSON.parse(text)
+            let player = Spell.om.get_object("spell-editor-player")
+            if(player) {
+                player.append(new SpellView(so))
+            }
+        }
+        catch (e) {}
+        
+        
     }
 
 </script>

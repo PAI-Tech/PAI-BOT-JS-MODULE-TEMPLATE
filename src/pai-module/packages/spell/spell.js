@@ -25,7 +25,8 @@ let _speech_manager = null;
 
 class SpellObjectManager {
     constructor() {
-        this.registered_objects = {};
+        this.object_classes = {};
+        this.spell_objects = {};
     }
 
 
@@ -33,25 +34,39 @@ class SpellObjectManager {
      *
      * @param spell_objects - key value list -> {"view":SpellView,...}
      */
-    add_objects(spell_objects) {
+    register_objects(spell_objects) {
         let names = Object.keys(spell_objects)
-        names.forEach(name => this.add_object(name,spell_objects[name]))
+        names.forEach(name => this.register_object(name,spell_objects[name]))
     }
 
-    add_object(name,spell_object) {
-        this.registered_objects[name] = spell_object;
+    register_object(name,spell_object) {
+        this.object_classes[name] = spell_object;
     }
 
-    has_object(name) {
-        return this.registered_objects.hasOwnProperty(name);
+    has_object_class(name) {
+        return this.object_classes.hasOwnProperty(name);
     }
 
-    get_object(name) {
-        return this.registered_objects[name];
+    get_object_class(name) {
+        return this.object_classes[name];
     }
 
-    get_all() {
-        return this.registered_objects;
+    get_all_classes() {
+        return this.object_classes;
+    }
+
+    add_object(spell_object) {
+        if(spell_object && spell_object._id) {
+            console.log("adding " + spell_object._type + " as " + spell_object._id)
+            this.spell_objects[spell_object._id] = spell_object
+        }
+        else {
+            console.log("unable to add object ")
+        }
+    }
+
+    get_object(spell_object_id) {
+        return this.spell_objects[spell_object_id]
     }
 }
 /**
@@ -78,11 +93,14 @@ class Spell {
         return Spell.view_manager;
     }
 
-    static get Object_Manager() {
+    static get object_manager() {
         if(!_object_manager) {
             _object_manager = new SpellObjectManager();
         }
         return _object_manager;
+    }
+    static get om() {
+        return Spell.object_manager
     }
 
     static async  init() {
@@ -118,9 +136,9 @@ class Spell {
 
         let ro;
         if(data.hasOwnProperty("_type")) {
-            if(Spell.Object_Manager.has_object(data["_type"])) {
+            if(Spell.om.has_object_class(data["_type"])) {
 
-                let spell_object_class = Spell.Object_Manager.get_object(data["_type"]);
+                let spell_object_class = Spell.om.get_object_class(data["_type"]);
                 if(spell_object_class.hasOwnProperty("defaults")) {
                     SpellUtils.merge_defaults_with_data(data,spell_object_class.defaults);
                 }
@@ -135,7 +153,7 @@ class Spell {
         }
 
         ro.init();
-
+        Spell.om.add_object(ro)
         if(data.hasOwnProperty("spells"))
         {
 
@@ -242,7 +260,6 @@ class SpellObject {
                 //console.log(JSON.stringify(this._spells));
                 this._spells.forEach(child => {
                     dom_object.appendChild(child.get_dom_object());
-
                 })
             }
             this._dom_object = dom_object;
@@ -251,6 +268,7 @@ class SpellObject {
     }
 
     get_html() {
+        console.log("html for " + this._id)
         this._html = this.get_dom_object().outerHTML;
         return this._html;
     }
@@ -308,8 +326,10 @@ class SpellObject {
 
     append(spell_object) {
         this._spells.push(spell_object);
-        if(this._html) {
-            this.get_dom_object().append(spell_object.get_html());
+        if(this._dom_object ) {
+            let jqo = this.jquery_object;
+            jqo.append (spell_object.get_html())
+            //this._dom_object.append();
         }
     }
 
