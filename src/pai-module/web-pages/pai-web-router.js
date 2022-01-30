@@ -67,12 +67,23 @@ class PAI_WEB_ROUTER
     {
             
         let data_to_client = {}
-        if(pai_code_interface["pai-entities"] && pai_code_interface["pai-entities"]["define"]) {
-            data_to_client["pai-entities"] = pai_code_interface["pai-entities"]["define"];
-        }
         let page = spell_server.get_spell_html_page("spell-page.html",data_to_client)
         res.send(page);
     }
+
+    /**
+     * Get Home Page from PAI-UI builder send back to the client (Http response)
+     * @param req - Http Request
+     * @param res = Http Response
+     * @param route - the route including file name
+     */
+     login(req, res,route)
+     {
+             
+         let data_to_client = {}
+         let page = spell_server.get_spell_html_page("login.html",data_to_client)
+         res.send(page);
+     }
 
 
     

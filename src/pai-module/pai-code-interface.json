@@ -2,11 +2,8 @@
   "pai-code-version":"2.0",
   "pai-module-name":"module-1",
   "pai-module-desc":"Module 1",
-  "pai-module-settings":[
-    "module-name"
-  ],
-  "required-modules":[
-  ],
+  "pai-module-settings":["module-name"],
+  "required-modules":[],
   "pai-code-commands":[
     {"command-name":"version", "js-function":"version"},
     {"command-name":"ws-message", "js-function":"handle_ws_message",
@@ -37,40 +34,11 @@
       ]
     }, 
     {"command-name":"release-notes", "js-function":"get_release_notes"},
-    {"command-name":"install-required-modules", "js-function":"install_required_modules","invisible":true},
-    {"command-name":"hello-world", "js-function":"hello_world",
-      "params" : [
-        {"name":"name", "label":"you name", "description":"what is your name", "required":true}
-      ]
-    },
-    {"command-name":"search-world", "js-function":"search_world",
-      "params" : [
-        {"name":"filter", "label":"filter", "description":"filter", "required":true}
-      ]
-    },
-    {"command-name":"update-world", "js-function":"update_world",
-      "params" : [
-        {"name":"filter", "label":"filter", "description":"filter", "required":true},
-        {"name":"updates", "label":"updates", "description":"updates", "required":true}
-      ]
-    },
-    {"command-name":"del-world", "js-function":"del_world",
-      "params" : [
-        {"name":"filter", "label":"filter", "description":"filter", "required":true}
-      ]
-    }
+    {"command-name":"install-required-modules", "js-function":"install_required_modules","invisible":true}
   ],
   "pai-entities" : {
     "define" : [
-      {
-      "name": "hello-world-entity",
-      "fields": [
-        {"name": "world-id","type": "string", "required": true},
-        {"name": "world-name","type": "string", "required": true},
-        {"name": "world-image","type": "string", "required": true},
-        {"name": "Creator","type": "string", "required": true}
-        ]
-      }
+      
   ]
   }
   ,
@@ -81,7 +49,8 @@
   "pai-bot-web-interface": {
     "static-web-folders": ["public", "packages"],
     "web-services":[
-      {"service-name":"home","js-function":"get_home","method": "GET"}
+      {"service-name":"home","js-function":"get_home","method": "GET"},
+      {"service-name":"login","js-function":"login","method": "GET"}
     ]
   },
   "#pai-web-server": {
