@@ -428,6 +428,55 @@ class SpellDialogFooter extends SpellObject {
 }
 
 
+class PAIFaceDetecor {
+    static translate_data(spell_event){
+        //console.dir(spell_event)
+        return {
+            top:spell_event["faces"][0].pos.top * 2,
+            left:spell_event["faces"][0].pos.left * 2
+        }
+    }
+}
+
+class PAIPoseEstimation {
+    static translate_data(spell_event){
+        //console.dir(spell_event)
+        const fkp = 9
+        let rv = {
+            top:-1,
+            left:-1 
+        }
+
+        if(spell_event["persons"][0].kp.hasOwnProperty(fkp)) {
+            rv = {
+                top:spell_event["persons"][0].kp[fkp].y ,
+                left:spell_event["persons"][0].kp[fkp].x 
+            }
+        }
+        return rv;
+    }
+}
+
+
+class PAIDetectors {
+    
+
+    static get detectors() {
+        return  {
+            "pai-face-detector":PAIFaceDetecor,
+            "pai-pose-estimation":PAIPoseEstimation
+        }
+    }
+
+    static translate_event_data(spell_event) {
+        
+        const d =  PAIDetectors.detectors[spell_event["detector"]] 
+        
+        //console.dir(d)
+        return d["translate_data"](spell_event)
+    }
+}
+
 class SpellAirCursor extends SpellObject {
     constructor(data) {
         const defaults={
@@ -455,6 +504,7 @@ class SpellAirCursor extends SpellObject {
         } 
         else if(this._source == "air") {
             document.addEventListener('air-data',(ev)=>{
+                //console.dir(ev)
                 this.air_move(ev.detail)
             })
             
@@ -464,11 +514,16 @@ class SpellAirCursor extends SpellObject {
         }
     }
 
+    
+
     async air_move(spell_event) {
-        //console.dir(spell_event)
-        const obj = spell_event["faces"][this._follow].pos
-        this.jqo.css({top:obj.top*2,left:obj.left*2})
-        this.air_hover_detector()
+        //spell_event["faces"][this._follow].pos.top*.2,
+        //console.log(spell_event)
+        const new_pos = PAIDetectors.translate_event_data(spell_event)
+        if(new_pos.top > -1 && new_pos.left >-1) {
+            this.jqo.css(new_pos)
+            this.air_hover_detector()
+        }
         //check for collision
     }
 
@@ -479,7 +534,6 @@ class SpellAirCursor extends SpellObject {
     }
 
     air_hover_detector() {
-        //if(!this._jq_obj) {this._jq_obj = $("#" + this._id)}
         const air_cursor_br = this.dom_element.getBoundingClientRect()
         const hovering_object_id = this._id
         const air_objects = $(".air-hover").map(function() {
@@ -524,7 +578,7 @@ class SpellAirButton extends SpellObject {
             this.hovering_object_id = hovering_object_id
             this.interval = setInterval(() => {
                 const br = this.dom_element.getBoundingClientRect()
-                console.log(hovering_object_id)
+                //console.log(hovering_object_id)
                 const hov_br = Spell.om.get_object(this.hovering_object_id).dom_element.getBoundingClientRect()
                 if(SpellUtils.check_overlaping_rects(hov_br,br,true)) {
                     const timediff = Date.now() - this.start_hovered
