@@ -435,14 +435,15 @@ class SpellAirCursor extends SpellObject {
             _buttons:[], //Array of SpellButtons
             class:"spell-air-cursor",
             "_html_tag": "img",
-            _source:"air"            
+            _source:"air",
+            _follow:0            
         };
         super(data,defaults);
         
         if(this._source == "mouse") {
             document.body.onmousemove = (ev) => {
                 const e = ev || window.event;
-                const se = {x:ev.clientX,y:ev.clientY}
+                const se = [{x:ev.clientX,y:ev.clientY}]
                 this.air_move(se)
             }
 
@@ -465,7 +466,8 @@ class SpellAirCursor extends SpellObject {
 
     async air_move(spell_event) {
         if(!this._jq_obj) {this._jq_obj = $("#" + this._id);}
-        this._jq_obj.css({top:spell_event.y,left:spell_event.x})
+        const obj = spell_event[this._follow]
+        this._jq_obj.css({top:obj.y,left:obj.x})
     }
 
     async air_click(spell_event) {

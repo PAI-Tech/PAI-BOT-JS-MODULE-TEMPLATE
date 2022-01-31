@@ -57,12 +57,17 @@ class SpellObjectManager {
 
     add_object(spell_object) {
         if(spell_object && spell_object._id) {
-            console.log("adding " + spell_object._type + " as " + spell_object._id)
+            //console.log("adding " + spell_object._type + " as " + spell_object._id)
             this.spell_objects[spell_object._id] = spell_object
         }
         else {
             console.log("unable to add object ")
         }
+    }
+
+    // TO-DO - remove object
+    remove_object(spell_object_id) {
+        this.spell_objects[spell_object_id] = null;
     }
 
     get_object(spell_object_id) {
