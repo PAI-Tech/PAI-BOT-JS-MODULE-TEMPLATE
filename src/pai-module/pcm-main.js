@@ -174,7 +174,7 @@ class PCM_MAIN extends PAICodeModule {
 
     async handle_event(cmd) {
         let pai_event = cmd.params["event"].value
-        console.log("event is being handled by module")
+        //console.log("event is being handled by module")
         if(this.local_es[pai_event.name]) {
             //console.dir()
             this.local_es[pai_event.name].forEach(wsid => {
@@ -223,8 +223,8 @@ class PCM_MAIN extends PAICodeModule {
             }
             cmd.params["wsid"] = wsid;
             
-            console.log("parsing command op " + cmd.op + " for module " + cmd.module )
-            
+            //console.log("parsing command op " + cmd.op + " for module " + cmd.module )
+            //console.dir(cmd.params)
             
             //console.dir(cmd)
             

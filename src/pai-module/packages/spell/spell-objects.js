@@ -454,7 +454,7 @@ class SpellAirCursor extends SpellObject {
             });
         } 
         else if(this._source == "air") {
-            document.addEventListener('air-move',(ev)=>{
+            document.addEventListener('air-data',(ev)=>{
                 this.air_move(ev.detail)
             })
             
@@ -465,9 +465,9 @@ class SpellAirCursor extends SpellObject {
     }
 
     async air_move(spell_event) {
-        if(!this._jq_obj) {this._jq_obj = $("#" + this._id)}
-        const obj = spell_event[this._follow]
-        this._jq_obj.css({top:obj.y,left:obj.x})
+        //console.dir(spell_event)
+        const obj = spell_event["faces"][this._follow].pos
+        this.jqo.css({top:obj.top*2,left:obj.left*2})
         this.air_hover_detector()
         //check for collision
     }
@@ -484,7 +484,9 @@ class SpellAirCursor extends SpellObject {
         const hovering_object_id = this._id
         const air_objects = $(".air-hover").map(function() {
             const br = this.getBoundingClientRect()
+            
             if (SpellUtils.check_overlaping_rects(air_cursor_br,br,true)) {
+                //console.log("hov " + this.id)
                 const so = Spell.om.get_object(this.id)
                 so.air_hover(hovering_object_id)
             }
@@ -515,12 +517,14 @@ class SpellAirButton extends SpellObject {
     }
 
     async air_hover(hovering_object_id) {
+        
         if(!this.hovered) {
             this.hovered = true
             this.start_hovered = Date.now()
             this.hovering_object_id = hovering_object_id
             this.interval = setInterval(() => {
                 const br = this.dom_element.getBoundingClientRect()
+                console.log(hovering_object_id)
                 const hov_br = Spell.om.get_object(this.hovering_object_id).dom_element.getBoundingClientRect()
                 if(SpellUtils.check_overlaping_rects(hov_br,br,true)) {
                     const timediff = Date.now() - this.start_hovered
