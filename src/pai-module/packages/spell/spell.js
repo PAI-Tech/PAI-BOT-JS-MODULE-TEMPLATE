@@ -517,7 +517,7 @@ class SpellViewManager {
         if(anc && anc.length>1) {
             let v_name = anc.substring(1);
             if(this.active_view != v_name) {
-                this.show_view(v_name)
+                Spell.vm.show_view(v_name)
             }
         }
     }
