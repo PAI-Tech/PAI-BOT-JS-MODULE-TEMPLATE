@@ -318,6 +318,11 @@ class SpellObject {
         return this._html;
     }
 
+    //alias
+    get jqo() {
+        return this.jquery_object
+    }
+
     get jquery_object() {
         if(!this._jq_obj) {
             this._jq_obj =$("#" + this._id);
@@ -412,6 +417,21 @@ class SpellUtils {
                 resolve(script);
               });
             });
+    }
+
+
+    static check_overlaping_rects (rect1, rect2,inside = false) {
+        if(!inside) {
+            return !(rect1.top > rect2.bottom || rect1.right < rect2.left || rect1.bottom < rect2.top || rect1.left > rect2.right);
+        }
+        else {
+            return (
+                ((rect2.top <= rect1.top) && (rect1.top <= rect2.bottom)) &&
+                ((rect2.top <= rect1.bottom) && (rect1.bottom <= rect2.bottom)) &&
+                ((rect2.left <= rect1.left) && (rect1.left <= rect2.right)) &&
+                ((rect2.left <= rect1.right) && (rect1.right <= rect2.right))
+            );
+        }
     }
 }
 

@@ -465,9 +465,11 @@ class SpellAirCursor extends SpellObject {
     }
 
     async air_move(spell_event) {
-        if(!this._jq_obj) {this._jq_obj = $("#" + this._id);}
+        if(!this._jq_obj) {this._jq_obj = $("#" + this._id)}
         const obj = spell_event[this._follow]
         this._jq_obj.css({top:obj.y,left:obj.x})
+        this.air_hover_detector()
+        //check for collision
     }
 
     async air_click(spell_event) {
@@ -475,6 +477,91 @@ class SpellAirCursor extends SpellObject {
         //this._jq_obj.addClass("anim_air_click xyz-in")
         //console.log(spell_event.x + " : " + spell_event.y)
     }
+
+    air_hover_detector() {
+        //if(!this._jq_obj) {this._jq_obj = $("#" + this._id)}
+        const air_cursor_br = this.dom_element.getBoundingClientRect()
+        const hovering_object_id = this._id
+        const air_objects = $(".air-hover").map(function() {
+            const br = this.getBoundingClientRect()
+            if (SpellUtils.check_overlaping_rects(air_cursor_br,br,true)) {
+                const so = Spell.om.get_object(this.id)
+                so.air_hover(hovering_object_id)
+            }
+            return this.id;
+        }).get();
+
+        
+        
+    }
+
+    
+
+}
+
+class SpellAirButton extends SpellObject {
+    constructor(data) {
+        const defaults={
+            _type:"air-button",
+            class:"spell-air-button air-hover",
+            "_html_tag": "button"      
+        };
+        super(data,defaults);
+        this.start_hovered = 0
+        this.hovered = false
+        this.hovering_object_id = null
+        this.interval = null;
+        
+    }
+
+    async air_hover(hovering_object_id) {
+        if(!this.hovered) {
+            this.hovered = true
+            this.start_hovered = Date.now()
+            this.hovering_object_id = hovering_object_id
+            this.interval = setInterval(() => {
+                const br = this.dom_element.getBoundingClientRect()
+                const hov_br = Spell.om.get_object(this.hovering_object_id).dom_element.getBoundingClientRect()
+                if(SpellUtils.check_overlaping_rects(hov_br,br,true)) {
+                    const timediff = Date.now() - this.start_hovered
+                    if(timediff>3000) {
+                        clearInterval(this.interval)
+                        this.jqo.animate({opacity: '1'},10)
+                        this.air_button_click()
+                    }
+                    else {
+                        const jqoo = this.jqo.css("opacity")
+                        if( jqoo > 0.1 || jqoo > 0.9)
+                            this.jqo.animate({opacity: '0.1'},100)
+                        else 
+                            this.jqo.animate({opacity: '0.95'},100)
+                    }
+
+                    //console.log("hover time " +  timediff)
+                }
+                else {
+                    this.jqo.animate({opacity: '1'},10)
+                    clearInterval(this.interval)
+                }
+            }, 200);
+        }
+        //this.activate_hover()
+        //console.log("air hover " +this.last_hovered_ts )
+    }
+
+    async activate_hover() {
+        
+    }
+
+    async air_button_click() {
+        
+        this.jqo.css("border" , "2px solid green")
+        this.jqo.click()
+    }
+
+    
+
+    
 }
 
 Spell.om.register_objects(
@@ -491,6 +578,7 @@ Spell.om.register_objects(
         "list": SpellList,
         "form":SpellForm,
         "table":SpellTable,
-        "air-cursor":SpellAirCursor
+        "air-cursor":SpellAirCursor,
+        "air-button":SpellAirButton
     }
 )
