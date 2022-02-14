@@ -825,6 +825,7 @@ class SpellEventManager {
     }
 
     static fire(spell_event) {
+        //console.log(spell_event)
         document.dispatchEvent(spell_event)
     }
 }

@@ -429,7 +429,7 @@ class SpellDialogFooter extends SpellObject {
 
 
 class PAIFaceDetecor {
-    static translate_data(spell_event){
+    static translate_data(spell_event,spell_object = null){
         //console.dir(spell_event)
         return {
             top:spell_event["faces"][0].pos.top * 2,
@@ -439,9 +439,13 @@ class PAIFaceDetecor {
 }
 
 class PAIPoseEstimation {
-    static translate_data(spell_event){
+    static translate_data(spell_event,spell_object = null){
         //console.dir(spell_event)
-        const fkp = 9
+        
+        let fkp = 0
+        if(spell_object && spell_object["_follow"] ) {
+            fkp=spell_object["_follow"]
+        }
         let rv = {
             top:-1,
             left:-1 
@@ -468,12 +472,12 @@ class PAIDetectors {
         }
     }
 
-    static translate_event_data(spell_event) {
+    static translate_event_data(spell_event,spell_object = null) {
         
         const d =  PAIDetectors.detectors[spell_event["detector"]] 
         
         //console.dir(d)
-        return d["translate_data"](spell_event)
+        return d["translate_data"](spell_event,spell_object)
     }
 }
 
@@ -519,7 +523,7 @@ class SpellAirCursor extends SpellObject {
     async air_move(spell_event) {
         //spell_event["faces"][this._follow].pos.top*.2,
         //console.log(spell_event)
-        const new_pos = PAIDetectors.translate_event_data(spell_event)
+        const new_pos = PAIDetectors.translate_event_data(spell_event,this)
         if(new_pos.top > -1 && new_pos.left >-1) {
             this.jqo.css(new_pos)
             this.air_hover_detector()

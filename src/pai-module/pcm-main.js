@@ -176,7 +176,6 @@ class PCM_MAIN extends PAICodeModule {
         let pai_event = cmd.params["event"].value
         //console.log("event is being handled by module")
         if(this.local_es[pai_event.name]) {
-            //console.dir()
             this.local_es[pai_event.name].forEach(wsid => {
                 this.ws_clients[wsid].ws.send(JSON.stringify(pai_event))
             })

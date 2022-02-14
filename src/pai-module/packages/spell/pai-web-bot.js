@@ -144,7 +144,7 @@ class PAIWebBot {
             const pai_code_command = {
                 "op":"subscribe-client",
                 "params": {
-                    "event":"air-data"
+                    "event":"air-pres"
                 }
             }
 
@@ -156,8 +156,8 @@ class PAIWebBot {
             try{
                 const msg = JSON.parse(evt.data)
                 if(msg.id && msg.id == "pai-event") {
-                    //console.dir(msg)
-                    let se = new SpellEvent('air-data', {detail:msg.data})
+                    let se = new SpellEvent(msg.name, {detail:msg.data})
+                    //console.dir(se)
                     SpellEventManager.fire(se);
                 }
             }catch(e){
